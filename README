@@ -11,11 +11,13 @@ Prerequisites:
 
 Get/setup repo:
     git clone https://github.com/Gadgetoid/WiringPi2-Python.git
-    cd WiringPi-Python
-    git submodule update --init
+    cd WiringPi2-Python
     
 Build & install with:
     sudo python setup.py install
+
+Or Python 3
+    sudo python3 setup.py install
 
 Class-based Usage:
     No classes have been created for this version yet.

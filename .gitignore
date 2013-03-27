@@ -1,2 +1,4 @@
 build/
+wiringpi.egg-info/
+dist/
 __pycache__

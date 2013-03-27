@@ -2,30 +2,8 @@
 
 from setuptools import setup, find_packages, Extension
 
-wiringpi_module = Extension(
+_wiringpi = Extension(
     '_wiringpi',
-    headers=[
-        'WiringPi/wiringPi/ds1302.h',
-        'WiringPi/wiringPi/gertboard.h',
-        'WiringPi/wiringPi/lcd.h',
-        'WiringPi/wiringPi/mcp23008.h',
-        'WiringPi/wiringPi/mcp23017.h',
-        'WiringPi/wiringPi/mcp23s08.h',
-        'WiringPi/wiringPi/mcp23s17.h',
-        'WiringPi/wiringPi/mcp23x0817.h',
-        'WiringPi/wiringPi/mcp23x08.h',
-        'WiringPi/wiringPi/piFace.h',
-        'WiringPi/wiringPi/piNes.h',
-        'WiringPi/wiringPi/softPwm.h',
-        'WiringPi/wiringPi/softServo.h',
-        'WiringPi/wiringPi/softTone.h',
-        'WiringPi/wiringPi/sr595.h',
-        'WiringPi/wiringPi/wiringPi.h',
-        'WiringPi/wiringPi/wiringPiI2C.h',
-        'WiringPi/wiringPi/wiringPiSPI.h',
-        'WiringPi/wiringPi/wiringSerial.h',
-        'WiringPi/wiringPi/wiringShift.h'
-        ],
     sources=[
         'WiringPi/wiringPi/ds1302.c',
         'WiringPi/wiringPi/gertboard.c',
@@ -61,7 +39,7 @@ setup(
     easily interfacing with the GPIO pins of the Raspberry Pi. Also supports
     i2c and SPI""",
     long_description=open('README').read(),
-    ext_modules = [wiringpi_module],
+    ext_modules = [ _wiringpi ],
     py_modules = ["wiringpi"],
     install_requires=[],
     headers=[

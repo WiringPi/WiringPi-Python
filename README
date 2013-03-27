@@ -2,13 +2,15 @@
 WiringPi: An implementation of most of the Arduino Wiring
 	functions for the Raspberry Pi
 
+WiringPi2: WiringPi version 2 implements new functions for managing IO expanders.
+
 Prerequisites:
     You must have python-dev and python-setuptools installed
     If you manually rebuild the bindings with swig -python wiringpi.i
     then cat wiringpi_class.py >> wiringpi.py to get the class-based wrapper
 
 Get/setup repo:
-    git clone https://github.com/WiringPi/WiringPi-Python.git
+    git clone https://github.com/Gadgetoid/WiringPi2-Python.git
     cd WiringPi-Python
     git submodule update --init
     
@@ -16,21 +18,7 @@ Build & install with:
     sudo python setup.py install
 
 Class-based Usage:
-    import wiringpi
-    io = wiringpi.GPIO(wiringpi.GPIO.WPI_MODE_PINS)
-    io.pinMode(1,io.OUTPUT)
-    io.digitalWrite(1,io.HIGH)
-
-    GPIO with /sys/class/gpio (You must first export the interfaces):
-    import wiringpi
-    io = wiringpi.GPIO(wiringpi.GPIO.WPI_MODE_SYS)
-    io.pinMode(1,io.OUTPUT)
-    io.digitalWrite(1,io.HIGH)
-
-    Serial:
-    serial = wiringpi.Serial('/dev/ttyAMA0',9600)
-    serial.puts("hello")
-    serial.close()
+    No classes have been created for this version yet.
 
 Usage:
     import wiringpi
@@ -39,6 +27,11 @@ Usage:
     wiringpi.wiringPiSetupSys // For /sys/class/gpio with GPIO pin numbering
     OR
     wiringpi.wiringPiSetupGpio // For GPIO pin numbering
+
+    Setting up IO expanders (This example was tested on a quick2wire board with one digital IO expansion board connected via I2C):
+    wiringpi.mcp23017Setup(65,0x20)
+    wiringpi.pinMode(65,1)
+    wiringpi.digitalWrite(65,1)
 
     General IO:
     wiringpi.pinMode(1,1) // Set pin 1 to output
@@ -54,5 +47,4 @@ Usage:
     wiringpi.serialClose(serial) // Pass in ID
 
 Full details at:
-	https://projects.drogon.net/raspberry-pi/wiringpi/
-
+    http://www.wiringpi.com

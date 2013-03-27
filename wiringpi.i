@@ -1,25 +1,25 @@
-%module wiringpi
+%module wiringpi2
 
 %{
-#include "WiringPi/wiringPi/ds1302.h",
-#include "WiringPi/wiringPi/gertboard.h",
-#include "WiringPi/wiringPi/lcd.h",
-#include "WiringPi/wiringPi/mcp23008.h",
-#include "WiringPi/wiringPi/mcp23017.h",
-#include "WiringPi/wiringPi/mcp23s08.h",
-#include "WiringPi/wiringPi/mcp23s17.h",
-#include "WiringPi/wiringPi/mcp23x0817.h",
-#include "WiringPi/wiringPi/mcp23x08.h",
-#include "WiringPi/wiringPi/piFace.h",
-#include "WiringPi/wiringPi/piNes.h",
-#include "WiringPi/wiringPi/softPwm.h",
-#include "WiringPi/wiringPi/softServo.h",
-#include "WiringPi/wiringPi/softTone.h",
-#include "WiringPi/wiringPi/sr595.h",
-#include "WiringPi/wiringPi/wiringPi.h",
-#include "WiringPi/wiringPi/wiringPiI2C.h",
-#include "WiringPi/wiringPi/wiringPiSPI.h",
-#include "WiringPi/wiringPi/wiringSerial.h",
+#include "WiringPi/wiringPi/ds1302.h"
+#include "WiringPi/wiringPi/gertboard.h"
+#include "WiringPi/wiringPi/lcd.h"
+#include "WiringPi/wiringPi/mcp23008.h"
+#include "WiringPi/wiringPi/mcp23017.h"
+#include "WiringPi/wiringPi/mcp23s08.h"
+#include "WiringPi/wiringPi/mcp23s17.h"
+#include "WiringPi/wiringPi/mcp23x0817.h"
+#include "WiringPi/wiringPi/mcp23x08.h"
+#include "WiringPi/wiringPi/piFace.h"
+#include "WiringPi/wiringPi/piNes.h"
+#include "WiringPi/wiringPi/softPwm.h"
+#include "WiringPi/wiringPi/softServo.h"
+#include "WiringPi/wiringPi/softTone.h"
+#include "WiringPi/wiringPi/sr595.h"
+#include "WiringPi/wiringPi/wiringPi.h"
+#include "WiringPi/wiringPi/wiringPiI2C.h"
+#include "WiringPi/wiringPi/wiringPiSPI.h"
+#include "WiringPi/wiringPi/wiringSerial.h"
 #include "WiringPi/wiringPi/wiringShift.h"
 %}
 

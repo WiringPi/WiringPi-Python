@@ -2,8 +2,8 @@
 
 from setuptools import setup, find_packages, Extension
 
-_wiringpi = Extension(
-    '_wiringpi',
+_wiringpi2 = Extension(
+    '_wiringpi2',
     sources=[
         'WiringPi/wiringPi/ds1302.c',
         'WiringPi/wiringPi/gertboard.c',
@@ -30,17 +30,17 @@ _wiringpi = Extension(
 )
 
 setup(
-    name = 'wiringpi',
-    version = '1.1.0',
+    name = 'wiringpi2',
+    version = '1.0.0',
     author = "Philip Howard",
     author_email = "phil@gadgetoid.com",
-    url = 'https://github.com/WiringPi/WiringPi-Python/',
-    description = """A python interface to WiringPi library which allows for
+    url = 'https://github.com/Gadgetoid/WiringPi2-Python/',
+    description = """A python interface to WiringPi 2.0 library which allows for
     easily interfacing with the GPIO pins of the Raspberry Pi. Also supports
     i2c and SPI""",
     long_description=open('README').read(),
-    ext_modules = [ _wiringpi ],
-    py_modules = ["wiringpi"],
+    ext_modules = [ _wiringpi2 ],
+    py_modules = ["wiringpi2"],
     install_requires=[],
     headers=[
         'WiringPi/wiringPi/ds1302.h',

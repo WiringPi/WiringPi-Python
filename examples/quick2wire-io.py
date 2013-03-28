@@ -11,5 +11,5 @@ wiringpi2.mcp23017Setup(pin_base,i2c_addr)
 for pin in pins:
 	wiringpi2.pinMode(pin,1)
 	wiringpi2.digitalWrite(pin,1)
-	wiringpi2.delay(1000)
-	wiringpi2.digitalWrite(pin,0)
+#	wiringpi2.delay(1000)
+#	wiringpi2.digitalWrite(pin,0)

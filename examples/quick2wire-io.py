@@ -1,3 +1,4 @@
+# Turns on each pin of an mcp23017 on address 0x20 ( quick2wire IO expander )
 import wiringpi2
 
 pin_base = 65
@@ -10,4 +11,5 @@ wiringpi2.mcp23017Setup(pin_base,i2c_addr)
 for pin in pins:
 	wiringpi2.pinMode(pin,1)
 	wiringpi2.digitalWrite(pin,1)
-
+	wiringpi2.delay(1000)
+	wiringpi2.digitalWrite(pin,0)

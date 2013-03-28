@@ -1,3 +1,7 @@
+WARNING: This is an in-development library, it will not be bug free and fully featured.
+    Please tweet @gadgetoid, find Gadgetoid in IRC, email Phil at Gadgetoid dot com,
+    or visit http://pi.gadgetoid.com/post/039-wiringpi-version-2-with-extra-python and
+    comment if you have any problems, suggestions, questions or words of support.
 
 WiringPi: An implementation of most of the Arduino Wiring
 	functions for the Raspberry Pi

@@ -25,27 +25,34 @@
 
 %apply unsigned char { uint8_t };
 
+// Core wiringPi functions
+
 extern int  wiringPiSetup       (void) ;
 extern int  wiringPiSetupSys    (void) ;
 extern int  wiringPiSetupGpio   (void) ;
+extern int  wiringPiSetupPhys   (void) ;
 
 extern int  piFaceSetup (int pinbase) ;
 
+extern void pinMode             (int pin, int mode) ;
+extern void pullUpDnControl     (int pin, int pud) ;
+extern int  digitalRead         (int pin) ;
+extern void digitalWrite        (int pin, int value) ;
+extern void pwmWrite            (int pin, int value) ;
+extern int  analogRead          (int pin) ;
+extern void analogWrite         (int pin, int value) ;
+
+// On-Board Raspberry Pi hardware specific stuff
+
 extern int  piBoardRev          (void) ;
 extern int  wpiPinToGpio        (int wpiPin) ;
-
-extern void pinMode           (int pin, int mode) ;
-extern int  getAlt            (int pin) ;
-extern void pullUpDnControl   (int pin, int pud) ;
-extern void digitalWrite      (int pin, int value) ;
-extern void digitalWriteByte  (int value) ;
-extern void gpioClockSet      (int pin, int freq) ;
-extern void pwmWrite          (int pin, int value) ;
-extern void setPadDrive       (int group, int value) ;
-extern int  digitalRead       (int pin) ;
-extern void pwmSetMode        (int mode) ;
-extern void pwmSetRange       (unsigned int range) ;
-extern void pwmSetClock       (int divisor) ;
+extern void setPadDrive         (int group, int value) ;
+extern int  getAlt              (int pin) ;
+extern void digitalWriteByte    (int value) ;
+extern void pwmSetMode          (int mode) ;
+extern void pwmSetRange         (unsigned int range) ;
+extern void pwmSetClock         (int divisor) ;
+extern void gpioClockSet        (int pin, int freq) ;
 
 // Interrupts
 
@@ -57,6 +64,10 @@ extern int  wiringPiISR         (int pin, int mode, void (*function)(void)) ;
 extern int  piThreadCreate (void *(*fn)(void *)) ;
 extern void piLock         (int key) ;
 extern void piUnlock       (int key) ;
+
+// Schedulling priority
+
+extern int piHiPri (int pri) ;
 
 // Extras from arduino land
 
@@ -125,3 +136,16 @@ extern int mcp23s08Setup (int pinBase, int spiPort, int devId) ;
 extern int mcp23008Setup (int pinBase, int i2cAddress) ;
 
 extern int sr595Setup (int pinBase, int numPins, int dataPin, int clockPin, int latchPin) ;
+
+extern void lcdHome        (int fd) ;
+extern void lcdClear       (int fd) ;
+extern void lcdSendCommand (int fd, uint8_t command) ;
+extern void lcdPosition    (int fd, int x, int y) ;
+extern void lcdPutchar     (int fd, uint8_t data) ;
+extern void lcdPuts        (int fd, char *string) ;
+extern void lcdPrintf      (int fd, char *message, ...) ;
+
+extern int  lcdInit (int rows, int cols, int bits, int rs, int strb,
+    int d0, int d1, int d2, int d3, int d4, int d5, int d6, int d7) ;
+
+%include "wiringpi2-class.py"

@@ -1083,7 +1083,7 @@ void digitalWrite (int pin, int value)
     }
     else if (wiringPiMode == WPI_MODE_PINS)
       pin = pinToGpio [pin] ;
-    else if (wiringPiMode == WPI_MODE_GPIO)
+    else if (wiringPiMode == WPI_MODE_PHYS)
       pin = physToGpio [pin] ;
     else if (wiringPiMode != WPI_MODE_GPIO)
       return ;

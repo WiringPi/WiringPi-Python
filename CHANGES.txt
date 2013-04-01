@@ -1,0 +1,8 @@
+v1.0.0 -- Branched from original WiringPi to deliver new WiringPi 2 functionality
+v1.0.1 -- Fixed build problems involving missing header files
+v1.0.2 -- Fixed build issue with piNes.c
+v1.0.3 -- Fixed bug in physical pin assignment mode
+v1.0.4 -- Added class wrapper, plus analogRead/Write functions
+v1.0.5 -- Second attempt at pretty Pypi page
+v1.0.6 -- Fixed spelling error in softToneCreate - Thanks oevsegneev
+v1.0.7 -- Added LCD functionality

@@ -4418,6 +4418,62 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_wiringPiI2CSetupInterface(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  char *arg1 = (char *) 0 ;
+  int arg2 ;
+  int res1 ;
+  char *buf1 = 0 ;
+  int alloc1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  int result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:wiringPiI2CSetupInterface",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_AsCharPtrAndSize(obj0, &buf1, NULL, &alloc1);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "wiringPiI2CSetupInterface" "', argument " "1"" of type '" "char *""'");
+  }
+  arg1 = (char *)(buf1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "wiringPiI2CSetupInterface" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = (int)(val2);
+  result = (int)wiringPiI2CSetupInterface(arg1,arg2);
+  resultobj = SWIG_From_int((int)(result));
+  if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
+  return resultobj;
+fail:
+  if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_wiringPiI2CSetup(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  int result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:wiringPiI2CSetup",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "wiringPiI2CSetup" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = (int)(val1);
+  result = (int)wiringPiI2CSetup(arg1);
+  resultobj = SWIG_From_int((int)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_wiringPiI2CRead(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   int arg1 ;
@@ -5447,6 +5503,8 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"wiringPiSPIGetFd", _wrap_wiringPiSPIGetFd, METH_VARARGS, NULL},
 	 { (char *)"wiringPiSPIDataRW", _wrap_wiringPiSPIDataRW, METH_VARARGS, NULL},
 	 { (char *)"wiringPiSPISetup", _wrap_wiringPiSPISetup, METH_VARARGS, NULL},
+	 { (char *)"wiringPiI2CSetupInterface", _wrap_wiringPiI2CSetupInterface, METH_VARARGS, NULL},
+	 { (char *)"wiringPiI2CSetup", _wrap_wiringPiI2CSetup, METH_VARARGS, NULL},
 	 { (char *)"wiringPiI2CRead", _wrap_wiringPiI2CRead, METH_VARARGS, NULL},
 	 { (char *)"wiringPiI2CReadReg8", _wrap_wiringPiI2CReadReg8, METH_VARARGS, NULL},
 	 { (char *)"wiringPiI2CReadReg16", _wrap_wiringPiI2CReadReg16, METH_VARARGS, NULL},

@@ -26,6 +26,24 @@ class Serial(object):
   def __del__(self):
     serialClose(self.serial_id)
 
+class I2C(object):
+  def setupInterface(self,*args):
+  	return wiringPiI2CSetupInterface(*args)
+  def setup(self,*args):
+    return wiringPiI2CSetup(*args)
+  def read(self,*args):
+    return wiringPiI2CRead(*args)
+  def readReg8(self,*args):
+    return wiringPiI2CRead(*args)
+  def readReg16(self,*args):
+    return wiringPiI2CReadReg16(*args)
+  def write(self,*args):
+    return wiringPiI2CWrite(*args)
+  def writeReg8(self,*args):
+    return wiringPiI2CWriteReg8(*args)
+  def writeReg16(self,*args):
+    return wiringPiI2CWriteReg16(*args)
+
 class GPIO(object):
   WPI_MODE_PINS = 0
   WPI_MODE_GPIO = 1

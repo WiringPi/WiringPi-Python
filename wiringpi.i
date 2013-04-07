@@ -105,6 +105,9 @@ int wiringPiSPISetup  (int channel, int speed) ;
 
 // i2c
 
+extern int wiringPiI2CSetupInterface (char *device, int devId) ;
+extern int wiringPiI2CSetup          (int devId) ;
+
 extern int wiringPiI2CRead       (int fd) ;
 extern int wiringPiI2CReadReg8   (int fd, int reg) ;
 extern int wiringPiI2CReadReg16  (int fd, int reg) ;

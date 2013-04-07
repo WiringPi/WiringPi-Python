@@ -1,2 +1,3 @@
 graft WiringPi/wiringPi
 include *.txt
+include *.rst

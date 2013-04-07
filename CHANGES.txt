@@ -6,3 +6,6 @@ v1.0.4 -- Added class wrapper, plus analogRead/Write functions
 v1.0.5 -- Second attempt at pretty Pypi page
 v1.0.6 -- Fixed spelling error in softToneCreate - Thanks oevsegneev
 v1.0.7 -- Added LCD functionality
+v1.0.8 -- Updated manifest to include .rst and fix build error
+v1.0.9 -- Erroneous non-fix due to stupidity
+v1.0.10 -- Added I2CSetup and new I2C class

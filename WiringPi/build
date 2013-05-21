@@ -1,0 +1,87 @@
+#!/bin/bash
+
+check-make-ok()
+{
+  if [ $? != 0 ]; then
+    echo ""
+    echo "Make Failed..."
+    echo "Please check the messages and fix any problems. If you're still stuck,"
+    echo "then please email all the output and as many details as you can to"
+    echo "  projects@drogon.net"
+    echo ""
+    exit 1
+  fi
+}
+
+if [ x$1 = "xclean" ]; then
+  cd wiringPi
+  echo -n "wiringPi:   "	; make clean
+  cd ../devLib
+  echo -n "DevLib:     "	; make clean
+  cd ../gpio
+  echo -n "gpio:       "	; make clean
+  cd ../examples
+  echo -n "Examples:   "	; make clean
+  cd Gertboard
+  echo -n "Gertboard:  "	; make clean
+  cd ../PiFace
+  echo -n "PiFace:     "	; make clean
+  cd ../q2w
+  echo -n "Quick2Wire: "	; make clean
+  exit
+fi
+
+if [ x$1 = "xuninstall" ]; then
+  cd wiringPi
+  echo -n "wiringPi: " ; sudo make uninstall
+  cd ../devLib
+  echo -n "DevLib:   " ; sudo make uninstall
+  cd ../gpio
+  echo -n "gpio:     " ; sudo make uninstall
+  exit
+fi
+
+
+  echo "wiringPi Build script"
+  echo "====================="
+  echo
+
+  echo
+  echo "WiringPi Library"
+  cd wiringPi
+  sudo make uninstall
+  make
+  check-make-ok
+  sudo make install
+  check-make-ok
+
+  echo
+  echo "WiringPi Devices Library"
+  cd ../devLib
+  sudo make uninstall
+  make
+  check-make-ok
+  sudo make install
+  check-make-ok
+
+  echo
+  echo "GPIO Utility"
+  cd ../gpio
+  make
+  check-make-ok
+  sudo make install
+  check-make-ok
+
+# echo
+# echo "Examples"
+# cd ../examples
+# make
+# cd ..
+
+echo
+echo All Done.
+echo ""
+echo "NOTE: This is wiringPi v2, and if you need to use the lcd, Piface,"
+echo "  Gertboard, MaxDetext, etc. routines then you must change your"
+echo "  compile scripts to add -lwiringPiDev"
+echo ""

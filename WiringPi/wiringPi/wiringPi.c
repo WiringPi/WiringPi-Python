@@ -202,11 +202,13 @@ static uint64_t epochMilli, epochMicro ;
 // Misc
 
 static int wiringPiMode = WPI_MODE_UNINITIALISED ;
+static volatile int    pinPass = -1 ;
+static pthread_mutex_t pinMutex ;
 
 // Debugging & Return codes
 
-int wiringPiDebug = FALSE ;
-int wiringPiCodes = FALSE ;
+int wiringPiDebug       = FALSE ;
+int wiringPiReturnCodes = FALSE ;
 
 // sysFds:
 //	Map a file descriptor from the /sys/class/gpio/gpioX/value
@@ -512,16 +514,19 @@ static uint8_t gpioToClkDiv [] =
  *********************************************************************************
  */
 
-int wiringPiFailure (char *message, ...)
+int wiringPiFailure (int fatal, const char *message, ...)
 {
   va_list argp ;
   char buffer [1024] ;
+
+  if (!fatal && wiringPiReturnCodes)
+    return -1 ;
 
   va_start (argp, message) ;
     vsnprintf (buffer, 1023, message, argp) ;
   va_end (argp) ;
 
-  fprintf (stderr,"%s", buffer) ;
+  fprintf (stderr, "%s", buffer) ;
   exit (EXIT_FAILURE) ;
 
   return 0 ;
@@ -531,7 +536,7 @@ int wiringPiFailure (char *message, ...)
 /*
  * piBoardRev:
  *	Return a number representing the hardware revision of the board.
- *	Revision is currently 1 or 2. -1 is returned on error.
+ *	Revision is currently 1 or 2.
  *
  *	Much confusion here )-:
  *	Seems there are some boards with 0000 in them (mistake in manufacture)
@@ -554,7 +559,7 @@ int wiringPiFailure (char *message, ...)
  *********************************************************************************
  */
 
-static void piBoardRevOops (char *why)
+static void piBoardRevOops (const char *why)
 {
   fprintf (stderr, "piBoardRev: Unable to determine board revision from /proc/cpuinfo\n") ;
   fprintf (stderr, " -> %s\n", why) ;
@@ -658,7 +663,7 @@ void setPadDrive (int group, int value)
 {
   uint32_t wrVal ;
 
-  if ((wiringPiMode == WPI_MODE_PINS) || (wiringPiMode == WPI_MODE_GPIO))
+  if ((wiringPiMode == WPI_MODE_PINS) || (wiringPiMode == WPI_MODE_PHYS) || (wiringPiMode == WPI_MODE_GPIO))
   {
     if ((group < 0) || (group > 2))
       return ;
@@ -712,7 +717,7 @@ int getAlt (int pin)
 
 void pwmSetMode (int mode)
 {
-  if ((wiringPiMode == WPI_MODE_PINS) || (wiringPiMode == WPI_MODE_GPIO) || (wiringPiMode == WPI_MODE_PHYS))
+  if ((wiringPiMode == WPI_MODE_PINS) || (wiringPiMode == WPI_MODE_PHYS) || (wiringPiMode == WPI_MODE_GPIO))
   {
     if (mode == PWM_MODE_MS)
       *(pwm + PWM_CONTROL) = PWM0_ENABLE | PWM1_ENABLE | PWM0_MS_MODE | PWM1_MS_MODE ;
@@ -731,7 +736,7 @@ void pwmSetMode (int mode)
 
 void pwmSetRange (unsigned int range)
 {
-  if ((wiringPiMode == WPI_MODE_PINS) || (wiringPiMode == WPI_MODE_GPIO) || (wiringPiMode == WPI_MODE_PHYS))
+  if ((wiringPiMode == WPI_MODE_PINS) || (wiringPiMode == WPI_MODE_PHYS) || (wiringPiMode == WPI_MODE_GPIO))
   {
     *(pwm + PWM0_RANGE) = range ; delayMicroseconds (10) ;
     *(pwm + PWM1_RANGE) = range ; delayMicroseconds (10) ;
@@ -752,7 +757,7 @@ void pwmSetClock (int divisor)
   uint32_t pwm_control ;
   divisor &= 4095 ;
 
-  if ((wiringPiMode == WPI_MODE_PINS) || (wiringPiMode == WPI_MODE_GPIO) || (wiringPiMode == WPI_MODE_PHYS))
+  if ((wiringPiMode == WPI_MODE_PINS) || (wiringPiMode == WPI_MODE_PHYS) || (wiringPiMode == WPI_MODE_GPIO))
   {
     if (wiringPiDebug)
       printf ("Setting to: %d. Current: 0x%08X\n", divisor, *(clk + PWMCLK_DIV)) ;
@@ -864,17 +869,17 @@ struct wiringPiNodeStruct *wiringPiNewNode (int pinBase, int numPins)
 // Minimum pin base is 64
 
   if (pinBase < 64)
-    (void)wiringPiFailure ("wiringPiNewNode: pinBase of %d is < 64\n", pinBase) ;
+    (void)wiringPiFailure (WPI_FATAL, "wiringPiNewNode: pinBase of %d is < 64\n", pinBase) ;
 
 // Check all pins in-case there is overlap:
 
   for (pin = pinBase ; pin < (pinBase + numPins) ; ++pin)
     if (wiringPiFindNode (pin) != NULL)
-      (void)wiringPiFailure ("wiringPiNewNode: Pin %d overlaps with existing definition\n", pin) ;
+      (void)wiringPiFailure (WPI_FATAL, "wiringPiNewNode: Pin %d overlaps with existing definition\n", pin) ;
 
-  node = calloc (sizeof (struct wiringPiNodeStruct), 1) ;	// calloc zeros
+  node = (struct wiringPiNodeStruct *)calloc (sizeof (struct wiringPiNodeStruct), 1) ;	// calloc zeros
   if (node == NULL)
-    (void)wiringPiFailure ("wiringPiNewNode: Unable to allocate memory: %s\n", strerror (errno)) ;
+    (void)wiringPiFailure (WPI_FATAL, "wiringPiNewNode: Unable to allocate memory: %s\n", strerror (errno)) ;
 
   node->pinBase         = pinBase ;
   node->pinMax          = pinBase + numPins - 1 ;
@@ -999,15 +1004,13 @@ void pullUpDnControl (int pin, int pud)
     else if (wiringPiMode != WPI_MODE_GPIO)
       return ;
 
-    pud &= 3 ;
-
-    *(gpio + GPPUD)              = pud ;		delayMicroseconds (5) ;
+    *(gpio + GPPUD)              = pud & 3 ;		delayMicroseconds (5) ;
     *(gpio + gpioToPUDCLK [pin]) = 1 << (pin & 31) ;	delayMicroseconds (5) ;
     
     *(gpio + GPPUD)              = 0 ;			delayMicroseconds (5) ;
     *(gpio + gpioToPUDCLK [pin]) = 0 ;			delayMicroseconds (5) ;
   }
-  else
+  else						// Extension module
   {
     if ((node = wiringPiFindNode (pin)) != NULL)
       node->pullUpDnControl (node, pin, pud) ;
@@ -1034,8 +1037,8 @@ int digitalRead (int pin)
       if (sysFds [pin] == -1)
 	return LOW ;
 
-      lseek (sysFds [pin], 0L, SEEK_SET) ;
-      read  (sysFds [pin], &c, 1) ;
+      lseek  (sysFds [pin], 0L, SEEK_SET) ;
+      read   (sysFds [pin], &c, 1) ;
       return (c == '0') ? LOW : HIGH ;
     }
     else if (wiringPiMode == WPI_MODE_PINS)
@@ -1080,6 +1083,7 @@ void digitalWrite (int pin, int value)
 	else
 	  write (sysFds [pin], "1\n", 2) ;
       }
+      return ;
     }
     else if (wiringPiMode == WPI_MODE_PINS)
       pin = pinToGpio [pin] ;
@@ -1194,6 +1198,7 @@ void digitalWriteByte (int value)
       digitalWrite (pin, value & mask) ;
       mask <<= 1 ;
     }
+    return ;
   }
   else
   {
@@ -1234,7 +1239,7 @@ int waitForInterrupt (int pin, int mS)
   else if (wiringPiMode == WPI_MODE_PHYS)
     pin = physToGpio [pin] ;
 
-  if ((fd = sysFds [pin & 63]) == -1)
+  if ((fd = sysFds [pin]) == -1)
     return -2 ;
 
 // Setup poll structure
@@ -1265,9 +1270,12 @@ int waitForInterrupt (int pin, int mS)
 
 static void *interruptHandler (void *arg)
 {
-  int myPin = *(int *)arg ;
+  int myPin ;
 
   (void)piHiPri (55) ;	// Only effective if we run as root
+
+  myPin   = pinPass ;
+  pinPass = -1 ;
 
   for (;;)
     if (waitForInterrupt (myPin, -1) > 0)
@@ -1288,21 +1296,24 @@ static void *interruptHandler (void *arg)
 int wiringPiISR (int pin, int mode, void (*function)(void))
 {
   pthread_t threadId ;
+  const char *modeS ;
   char fName   [64] ;
-  char *modeS ;
   char  pinS [8] ;
   pid_t pid ;
   int   count, i ;
-  uint8_t c ;
+  char  c ;
+  int   bcmGpioPin ;
 
   pin &= 63 ;
 
   /**/ if (wiringPiMode == WPI_MODE_UNINITIALISED)
-    (void)wiringPiFailure ("wiringPiISR: wiringPi has not been initialised. Unable to continue.\n") ;
+    return wiringPiFailure (WPI_FATAL, "wiringPiISR: wiringPi has not been initialised. Unable to continue.\n") ;
   else if (wiringPiMode == WPI_MODE_PINS)
-    pin = pinToGpio [pin] ;
+    bcmGpioPin = pinToGpio [pin] ;
   else if (wiringPiMode == WPI_MODE_PHYS)
-    pin = physToGpio [pin] ;
+    bcmGpioPin = physToGpio [pin] ;
+  else
+    bcmGpioPin = pin ;
 
 // Now export the pin and set the right edge
 //	We're going to use the gpio program to do this, so it assumes
@@ -1319,7 +1330,7 @@ int wiringPiISR (int pin, int mode, void (*function)(void))
     else
       modeS = "both" ;
 
-    sprintf (pinS, "%d", pin) ;
+    sprintf (pinS, "%d", bcmGpioPin) ;
 
     if ((pid = fork ()) < 0)	// Fail
       return pid ;
@@ -1334,23 +1345,29 @@ int wiringPiISR (int pin, int mode, void (*function)(void))
   }
 
 // Now pre-open the /sys/class node - it may already be open if
-//	we are in Sys mode, but this will do no harm.
+//	we are in Sys mode or if we call here twice, if-so, we'll close it.
 
-  sprintf (fName, "/sys/class/gpio/gpio%d/value", pin) ;
-  if ((sysFds [pin] = open (fName, O_RDWR)) < 0)
+  if (sysFds [bcmGpioPin] != -1)
+    close (sysFds [bcmGpioPin]) ;
+
+  sprintf (fName, "/sys/class/gpio/gpio%d/value", bcmGpioPin) ;
+  if ((sysFds [bcmGpioPin] = open (fName, O_RDWR)) < 0)
     return -1 ;
 
 // Clear any initial pending interrupt
 
-  ioctl (sysFds [pin], FIONREAD, &count) ;
+  ioctl (sysFds [bcmGpioPin], FIONREAD, &count) ;
   for (i = 0 ; i < count ; ++i)
-    read (sysFds [pin], &c, 1) ;
+    read (sysFds [bcmGpioPin], &c, 1) ;
 
   isrFunctions [pin] = function ;
 
-  pthread_create (&threadId, NULL, interruptHandler, &pin) ;
-
-  delay (1) ;
+  pthread_mutex_lock (&pinMutex) ;
+    pinPass = pin ;
+    pthread_create (&threadId, NULL, interruptHandler, NULL) ;
+    while (pinPass != -1)
+      delay (1) ;
+  pthread_mutex_unlock (&pinMutex) ;
 
   return 0 ;
 }
@@ -1492,10 +1509,10 @@ int wiringPiSetup (void)
     wiringPiDebug = TRUE ;
 
   if (getenv (ENV_CODES) != NULL)
-    wiringPiCodes = TRUE ;
+    wiringPiReturnCodes = TRUE ;
 
   if (geteuid () != 0)
-    (void)wiringPiFailure ("wiringPiSetup: Must be root. (Did you forget sudo?)\n") ;
+    (void)wiringPiFailure (WPI_FATAL, "wiringPiSetup: Must be root. (Did you forget sudo?)\n") ;
 
   if (wiringPiDebug)
     printf ("wiringPi: wiringPiSetup called\n") ;
@@ -1516,38 +1533,38 @@ int wiringPiSetup (void)
 // Open the master /dev/memory device
 
   if ((fd = open ("/dev/mem", O_RDWR | O_SYNC) ) < 0)
-    (void)wiringPiFailure ("wiringPiSetup: Unable to open /dev/mem: %s\n", strerror (errno)) ;
+    return wiringPiFailure (WPI_ALMOST, "wiringPiSetup: Unable to open /dev/mem: %s\n", strerror (errno)) ;
 
 // GPIO:
 
   gpio = (uint32_t *)mmap(0, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, fd, GPIO_BASE) ;
   if ((int32_t)gpio == -1)
-    (void)wiringPiFailure ("wiringPiSetup: mmap (GPIO) failed: %s\n", strerror (errno)) ;
+    return wiringPiFailure (WPI_ALMOST, "wiringPiSetup: mmap (GPIO) failed: %s\n", strerror (errno)) ;
 
 // PWM
 
   pwm = (uint32_t *)mmap(0, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, fd, GPIO_PWM) ;
   if ((int32_t)pwm == -1)
-    (void)wiringPiFailure ("wiringPiSetup: mmap (PWM) failed: %s\n", strerror (errno)) ;
+    return wiringPiFailure (WPI_ALMOST, "wiringPiSetup: mmap (PWM) failed: %s\n", strerror (errno)) ;
  
 // Clock control (needed for PWM)
 
   clk = (uint32_t *)mmap(0, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, fd, CLOCK_BASE) ;
   if ((int32_t)clk == -1)
-    (void)wiringPiFailure ("wiringPiSetup: mmap (CLOCK) failed: %s\n", strerror (errno)) ;
+    return wiringPiFailure (WPI_ALMOST, "wiringPiSetup: mmap (CLOCK) failed: %s\n", strerror (errno)) ;
  
 // The drive pads
 
   pads = (uint32_t *)mmap(0, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, fd, GPIO_PADS) ;
   if ((int32_t)pads == -1)
-    (void)wiringPiFailure ("wiringPiSetup: mmap (PADS) failed: %s\n", strerror (errno)) ;
+    return wiringPiFailure (WPI_ALMOST, "wiringPiSetup: mmap (PADS) failed: %s\n", strerror (errno)) ;
 
 #ifdef	USE_TIMER
 // The system timer
 
   timer = (uint32_t *)mmap(0, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, fd, GPIO_TIMER) ;
   if ((int32_t)timer == -1)
-    (void)wiringPiFailure ("wiringPiSetup: mmap (TIMER) failed: %s\n", strerror (errno)) ;
+    return wiringPiFailure (WPI_ALMOST, "wiringPiSetup: mmap (TIMER) failed: %s\n", strerror (errno)) ;
 
 // Set the timer to free-running, 1MHz.
 //	0xF9 is 249, the timer divide is base clock / (divide+1)
@@ -1629,7 +1646,7 @@ int wiringPiSetupSys (void)
     wiringPiDebug = TRUE ;
 
   if (getenv (ENV_CODES) != NULL)
-    wiringPiCodes = TRUE ;
+    wiringPiReturnCodes = TRUE ;
 
   if (wiringPiDebug)
     printf ("wiringPi: wiringPiSetupSys called\n") ;

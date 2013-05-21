@@ -2,3 +2,4 @@ build/
 wiringpi2.egg-info/
 dist/
 __pycache__
+.pyc

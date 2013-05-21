@@ -78,27 +78,27 @@ static uint8_t readByte (uint8_t spiPort, uint8_t devId, uint8_t reg)
 
 static void myPinMode (struct wiringPiNodeStruct *node, int pin, int mode)
 {
-  int mask, old, ddr ;
+  int mask, old, reg ;
 
   pin -= node->pinBase ;
 
   if (pin < 8)		// Bank A
-    ddr = MCP23x17_IODIRA ;
+    reg  = MCP23x17_IODIRA ;
   else
   {
-    ddr = MCP23x17_IODIRB ;
+    reg  = MCP23x17_IODIRB ;
     pin &= 0x07 ;
   }
 
   mask = 1 << pin ;
-  old  = readByte (node->data0, node->data1, ddr) ;
+  old  = readByte (node->data0, node->data1, reg) ;
 
   if (mode == OUTPUT)
     old &= (~mask) ;
   else
     old |=   mask ;
 
-  writeByte (node->data0, node->data1, ddr, old) ;
+  writeByte (node->data0, node->data1, reg, old) ;
 }
 
 
@@ -109,27 +109,27 @@ static void myPinMode (struct wiringPiNodeStruct *node, int pin, int mode)
 
 static void myPullUpDnControl (struct wiringPiNodeStruct *node, int pin, int mode)
 {
-  int mask, old, pud ;
+  int mask, old, reg ;
 
   pin -= node->pinBase ;
 
   if (pin < 8)		// Bank A
-    pud = MCP23x17_GPPUA ;
+    reg  = MCP23x17_GPPUA ;
   else
   {
-    pud  = MCP23x17_GPPUB ;
-    pin  &= 0x07 ;
+    reg  = MCP23x17_GPPUB ;
+    pin &= 0x07 ;
   }
 
   mask = 1 << pin ;
-  old  = readByte (node->data0, node->data1, pud) ;
+  old  = readByte (node->data0, node->data1, reg) ;
 
   if (mode == PUD_UP)
     old |=   mask ;
   else
     old &= (~mask) ;
 
-  writeByte (node->data0, node->data1, pud, old) ;
+  writeByte (node->data0, node->data1, reg, old) ;
 }
 
 
@@ -185,7 +185,7 @@ static int myDigitalRead (struct wiringPiNodeStruct *node, int pin)
   pin -= node->pinBase ;
 
   if (pin < 8)		// Bank A
-    gpio = MCP23x17_GPIOA ;
+    gpio  = MCP23x17_GPIOA ;
   else
   {
     gpio  = MCP23x17_GPIOB ;
@@ -210,7 +210,7 @@ static int myDigitalRead (struct wiringPiNodeStruct *node, int pin)
  *********************************************************************************
  */
 
-int mcp23s17Setup (int pinBase, int spiPort, int devId)
+int mcp23s17Setup (const int pinBase, const int spiPort, const int devId)
 {
   int    x ;
   struct wiringPiNodeStruct *node ;

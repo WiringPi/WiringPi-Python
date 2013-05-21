@@ -39,19 +39,18 @@
 
 static void myPinMode (struct wiringPiNodeStruct *node, int pin, int mode)
 {
-  int mask, old, ddr ;
+  int mask, old, reg ;
 
-  pin -= node->pinBase ;
-  ddr  = MCP23x08_IODIR ;
-  mask = 1 << pin ;
-  old  = wiringPiI2CReadReg8 (node->fd, ddr) ;
+  reg  = MCP23x08_IODIR ;
+  mask = 1 << (pin - node->pinBase) ;
+  old  = wiringPiI2CReadReg8 (node->fd, reg) ;
 
   if (mode == OUTPUT)
     old &= (~mask) ;
   else
     old |=   mask ;
 
-  wiringPiI2CWriteReg8 (node->fd, ddr, old) ;
+  wiringPiI2CWriteReg8 (node->fd, reg, old) ;
 }
 
 
@@ -62,20 +61,19 @@ static void myPinMode (struct wiringPiNodeStruct *node, int pin, int mode)
 
 static void myPullUpDnControl (struct wiringPiNodeStruct *node, int pin, int mode)
 {
-  int mask, old, pud ;
+  int mask, old, reg ;
 
-  pin -= node->pinBase ;
-  pud  = MCP23x08_GPPU ;
-  mask = 1 << pin ;
+  reg  = MCP23x08_GPPU ;
+  mask = 1 << (pin - node->pinBase) ;
 
-  old  = wiringPiI2CReadReg8 (node->fd, pud) ;
+  old  = wiringPiI2CReadReg8 (node->fd, reg) ;
 
   if (mode == PUD_UP)
     old |=   mask ;
   else
     old &= (~mask) ;
 
-  wiringPiI2CWriteReg8 (node->fd, pud, old) ;
+  wiringPiI2CWriteReg8 (node->fd, reg, old) ;
 }
 
 
@@ -88,8 +86,7 @@ static void myDigitalWrite (struct wiringPiNodeStruct *node, int pin, int value)
 {
   int bit, old ;
 
-  pin -= node->pinBase ;
-  bit  = 1 << (pin & 7) ;
+  bit  = 1 << ((pin - node->pinBase) & 7) ;
 
   old = node->data2 ;
   if (value == LOW)
@@ -109,13 +106,10 @@ static void myDigitalWrite (struct wiringPiNodeStruct *node, int pin, int value)
 
 static int myDigitalRead (struct wiringPiNodeStruct *node, int pin)
 {
-  int mask, value, gpio ;
+  int mask, value ;
 
-  pin -= node->pinBase ;
-  gpio = MCP23x08_GPIO ;
-  mask = 1 << pin ;
-
-  value = wiringPiI2CReadReg8 (node->fd, gpio) ;
+  mask  = 1 << ((pin - node->pinBase) & 7) ;
+  value = wiringPiI2CReadReg8 (node->fd, MCP23x08_GPIO) ;
 
   if ((value & mask) == 0)
     return LOW ;
@@ -127,12 +121,12 @@ static int myDigitalRead (struct wiringPiNodeStruct *node, int pin)
 /*
  * mcp23008Setup:
  *	Create a new instance of an MCP23008 I2C GPIO interface. We know it
- *	has 16 pins, so all we need to know here is the I2C address and the
+ *	has 8 pins, so all we need to know here is the I2C address and the
  *	user-defined pin base.
  *********************************************************************************
  */
 
-int mcp23008Setup (int pinBase, int i2cAddress)
+int mcp23008Setup (const int pinBase, const int i2cAddress)
 {
   int fd ;
   struct wiringPiNodeStruct *node ;
@@ -142,7 +136,7 @@ int mcp23008Setup (int pinBase, int i2cAddress)
 
   wiringPiI2CWriteReg8 (fd, MCP23x08_IOCON, IOCON_INIT) ;
 
-  node = wiringPiNewNode (pinBase, 16) ;
+  node = wiringPiNewNode (pinBase, 8) ;
 
   node->fd              = fd ;
   node->pinMode         = myPinMode ;

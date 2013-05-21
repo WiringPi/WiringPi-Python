@@ -21,6 +21,9 @@
  ***********************************************************************
  */
 
+#ifndef	__WIRING_PI_H__
+#define	__WIRING_PI_H__
+
 // Handy defines
 
 // Deprecated
@@ -65,6 +68,12 @@
 
 #define	PI_THREAD(X)	void *X (void *dummy)
 
+// Failure modes
+
+#define	WPI_FATAL	(1==1)
+#define	WPI_ALMOST	(1==2)
+
+
 // wiringPiNodeStruct:
 //	This describes additional device nodes in the extended wiringPi
 //	2.0 scheme of things.
@@ -104,6 +113,9 @@ struct wiringPiNodeStruct
 extern "C" {
 #endif
 
+// Internal
+
+extern int wiringPiFailure (int fatal, const char *message, ...) ;
 
 // Core wiringPi functions
 
@@ -132,6 +144,7 @@ extern int  wiringPiSetupPiFaceForGpioProg (void) ;	// Don't use this - for gpio
 
 extern int  piBoardRev          (void) ;
 extern int  wpiPinToGpio        (int wpiPin) ;
+extern int  physPinToGpio       (int physPin) ;
 extern void setPadDrive         (int group, int value) ;
 extern int  getAlt              (int pin) ;
 extern void digitalWriteByte    (int value) ;
@@ -154,7 +167,7 @@ extern void piUnlock            (int key) ;
 
 // Schedulling priority
 
-extern int piHiPri (int pri) ;
+extern int piHiPri (const int pri) ;
 
 // Extras from arduino land
 
@@ -165,4 +178,6 @@ extern unsigned int micros            (void) ;
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif

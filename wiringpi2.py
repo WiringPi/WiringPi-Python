@@ -296,9 +296,13 @@ def softPwmWrite(*args):
   return _wiringpi2.softPwmWrite(*args)
 softPwmWrite = _wiringpi2.softPwmWrite
 
-def mcp23s17Setup(*args):
-  return _wiringpi2.mcp23s17Setup(*args)
-mcp23s17Setup = _wiringpi2.mcp23s17Setup
+def mcp23008Setup(*args):
+  return _wiringpi2.mcp23008Setup(*args)
+mcp23008Setup = _wiringpi2.mcp23008Setup
+
+def mcp23016Setup(*args):
+  return _wiringpi2.mcp23016Setup(*args)
+mcp23016Setup = _wiringpi2.mcp23016Setup
 
 def mcp23017Setup(*args):
   return _wiringpi2.mcp23017Setup(*args)
@@ -308,9 +312,29 @@ def mcp23s08Setup(*args):
   return _wiringpi2.mcp23s08Setup(*args)
 mcp23s08Setup = _wiringpi2.mcp23s08Setup
 
-def mcp23008Setup(*args):
-  return _wiringpi2.mcp23008Setup(*args)
-mcp23008Setup = _wiringpi2.mcp23008Setup
+def mcp23s17Setup(*args):
+  return _wiringpi2.mcp23s17Setup(*args)
+mcp23s17Setup = _wiringpi2.mcp23s17Setup
+
+def mcp3002Setup(*args):
+  return _wiringpi2.mcp3002Setup(*args)
+mcp3002Setup = _wiringpi2.mcp3002Setup
+
+def mcp3422Setup(*args):
+  return _wiringpi2.mcp3422Setup(*args)
+mcp3422Setup = _wiringpi2.mcp3422Setup
+
+def mcp4802Setup(*args):
+  return _wiringpi2.mcp4802Setup(*args)
+mcp4802Setup = _wiringpi2.mcp4802Setup
+
+def pcf8574Setup(*args):
+  return _wiringpi2.pcf8574Setup(*args)
+pcf8574Setup = _wiringpi2.pcf8574Setup
+
+def pcf8591Setup(*args):
+  return _wiringpi2.pcf8591Setup(*args)
+pcf8591Setup = _wiringpi2.pcf8591Setup
 
 def sr595Setup(*args):
   return _wiringpi2.sr595Setup(*args)
@@ -324,6 +348,18 @@ def lcdClear(*args):
   return _wiringpi2.lcdClear(*args)
 lcdClear = _wiringpi2.lcdClear
 
+def lcdDisplay(*args):
+  return _wiringpi2.lcdDisplay(*args)
+lcdDisplay = _wiringpi2.lcdDisplay
+
+def lcdCursor(*args):
+  return _wiringpi2.lcdCursor(*args)
+lcdCursor = _wiringpi2.lcdCursor
+
+def lcdCursorBlink(*args):
+  return _wiringpi2.lcdCursorBlink(*args)
+lcdCursorBlink = _wiringpi2.lcdCursorBlink
+
 def lcdSendCommand(*args):
   return _wiringpi2.lcdSendCommand(*args)
 lcdSendCommand = _wiringpi2.lcdSendCommand
@@ -331,6 +367,10 @@ lcdSendCommand = _wiringpi2.lcdSendCommand
 def lcdPosition(*args):
   return _wiringpi2.lcdPosition(*args)
 lcdPosition = _wiringpi2.lcdPosition
+
+def lcdCharDef(*args):
+  return _wiringpi2.lcdCharDef(*args)
+lcdCharDef = _wiringpi2.lcdCharDef
 
 def lcdPutchar(*args):
   return _wiringpi2.lcdPutchar(*args)
@@ -347,6 +387,122 @@ lcdPrintf = _wiringpi2.lcdPrintf
 def lcdInit(*args):
   return _wiringpi2.lcdInit(*args)
 lcdInit = _wiringpi2.lcdInit
+
+def ds1302rtcRead(*args):
+  return _wiringpi2.ds1302rtcRead(*args)
+ds1302rtcRead = _wiringpi2.ds1302rtcRead
+
+def ds1302rtcWrite(*args):
+  return _wiringpi2.ds1302rtcWrite(*args)
+ds1302rtcWrite = _wiringpi2.ds1302rtcWrite
+
+def ds1302ramRead(*args):
+  return _wiringpi2.ds1302ramRead(*args)
+ds1302ramRead = _wiringpi2.ds1302ramRead
+
+def ds1302ramWrite(*args):
+  return _wiringpi2.ds1302ramWrite(*args)
+ds1302ramWrite = _wiringpi2.ds1302ramWrite
+
+def ds1302clockRead(*args):
+  return _wiringpi2.ds1302clockRead(*args)
+ds1302clockRead = _wiringpi2.ds1302clockRead
+
+def ds1302clockWrite(*args):
+  return _wiringpi2.ds1302clockWrite(*args)
+ds1302clockWrite = _wiringpi2.ds1302clockWrite
+
+def ds1302trickleCharge(*args):
+  return _wiringpi2.ds1302trickleCharge(*args)
+ds1302trickleCharge = _wiringpi2.ds1302trickleCharge
+
+def ds1302setup(*args):
+  return _wiringpi2.ds1302setup(*args)
+ds1302setup = _wiringpi2.ds1302setup
+
+def gertboardAnalogWrite(*args):
+  return _wiringpi2.gertboardAnalogWrite(*args)
+gertboardAnalogWrite = _wiringpi2.gertboardAnalogWrite
+
+def gertboardAnalogRead(*args):
+  return _wiringpi2.gertboardAnalogRead(*args)
+gertboardAnalogRead = _wiringpi2.gertboardAnalogRead
+
+def gertboardSPISetup():
+  return _wiringpi2.gertboardSPISetup()
+gertboardSPISetup = _wiringpi2.gertboardSPISetup
+
+def gertboardAnalogSetup(*args):
+  return _wiringpi2.gertboardAnalogSetup(*args)
+gertboardAnalogSetup = _wiringpi2.gertboardAnalogSetup
+
+def lcd128x64setOrigin(*args):
+  return _wiringpi2.lcd128x64setOrigin(*args)
+lcd128x64setOrigin = _wiringpi2.lcd128x64setOrigin
+
+def lcd128x64setOrientation(*args):
+  return _wiringpi2.lcd128x64setOrientation(*args)
+lcd128x64setOrientation = _wiringpi2.lcd128x64setOrientation
+
+def lcd128x64orientCoordinates(*args):
+  return _wiringpi2.lcd128x64orientCoordinates(*args)
+lcd128x64orientCoordinates = _wiringpi2.lcd128x64orientCoordinates
+
+def lcd128x64getScreenSize(*args):
+  return _wiringpi2.lcd128x64getScreenSize(*args)
+lcd128x64getScreenSize = _wiringpi2.lcd128x64getScreenSize
+
+def lcd128x64point(*args):
+  return _wiringpi2.lcd128x64point(*args)
+lcd128x64point = _wiringpi2.lcd128x64point
+
+def lcd128x64line(*args):
+  return _wiringpi2.lcd128x64line(*args)
+lcd128x64line = _wiringpi2.lcd128x64line
+
+def lcd128x64lineTo(*args):
+  return _wiringpi2.lcd128x64lineTo(*args)
+lcd128x64lineTo = _wiringpi2.lcd128x64lineTo
+
+def lcd128x64rectangle(*args):
+  return _wiringpi2.lcd128x64rectangle(*args)
+lcd128x64rectangle = _wiringpi2.lcd128x64rectangle
+
+def lcd128x64circle(*args):
+  return _wiringpi2.lcd128x64circle(*args)
+lcd128x64circle = _wiringpi2.lcd128x64circle
+
+def lcd128x64ellipse(*args):
+  return _wiringpi2.lcd128x64ellipse(*args)
+lcd128x64ellipse = _wiringpi2.lcd128x64ellipse
+
+def lcd128x64putchar(*args):
+  return _wiringpi2.lcd128x64putchar(*args)
+lcd128x64putchar = _wiringpi2.lcd128x64putchar
+
+def lcd128x64puts(*args):
+  return _wiringpi2.lcd128x64puts(*args)
+lcd128x64puts = _wiringpi2.lcd128x64puts
+
+def lcd128x64update():
+  return _wiringpi2.lcd128x64update()
+lcd128x64update = _wiringpi2.lcd128x64update
+
+def lcd128x64clear(*args):
+  return _wiringpi2.lcd128x64clear(*args)
+lcd128x64clear = _wiringpi2.lcd128x64clear
+
+def lcd128x64setup():
+  return _wiringpi2.lcd128x64setup()
+lcd128x64setup = _wiringpi2.lcd128x64setup
+
+def setupNesJoystick(*args):
+  return _wiringpi2.setupNesJoystick(*args)
+setupNesJoystick = _wiringpi2.setupNesJoystick
+
+def readNesJoystick(*args):
+  return _wiringpi2.readNesJoystick(*args)
+readNesJoystick = _wiringpi2.readNesJoystick
 class nes(object):
   def setupNesJoystick(self,*args):
     return setupNesJoystick(*args)

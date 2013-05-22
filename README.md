@@ -13,6 +13,12 @@ Built against Python 2.7.2, Python 3.2.3
 You must have python-dev and python-setuptools installed
 If you manually rebuild the bindings with swig -python wiringpi.i
 
+YOU MUST FIRST INSTALL WIRINGPI2!!
+
+git clone git://git.drogon.net/wiringPi
+cd wiringPi
+sudo ./build
+
 **Get/setup repo:**
 git clone https://github.com/Gadgetoid/WiringPi2-Python.git
 cd WiringPi2-Python

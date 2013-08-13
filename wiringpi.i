@@ -6,6 +6,8 @@
 #include "WiringPi/wiringPi/wiringPiI2C.h"
 #include "WiringPi/wiringPi/wiringSerial.h"
 #include "WiringPi/wiringPi/wiringShift.h"
+#include "WiringPi/wiringPi/max31855.h"
+#include "WiringPi/wiringPi/max5322.h"
 #include "WiringPi/wiringPi/mcp23017.h"
 #include "WiringPi/wiringPi/mcp4802.h"
 #include "WiringPi/wiringPi/mcp3422.h"
@@ -14,7 +16,9 @@
 #include "WiringPi/wiringPi/mcp23x08.h"
 #include "WiringPi/wiringPi/mcp23016.h"
 #include "WiringPi/wiringPi/mcp3002.h"
+#include "WiringPi/wiringPi/mcp3004.h"
 #include "WiringPi/wiringPi/mcp23016reg.h"
+#include "WiringPi/wiringPi/sn3218.h"
 #include "WiringPi/wiringPi/mcp23x0817.h"
 #include "WiringPi/wiringPi/mcp23s17.h"
 #include "WiringPi/wiringPi/pcf8574.h"
@@ -32,6 +36,7 @@
 #include "WiringPi/devLib/piFace.h"
 #include "WiringPi/devLib/ds1302.h"
 #include "WiringPi/devLib/piNes.h"
+#include "WiringPi/devLib/piGlow.h"
 %}
 
 %apply unsigned char { uint8_t };
@@ -209,6 +214,9 @@ extern int  lcd128x64setup             (void) ;
 extern int          setupNesJoystick (int dPin, int cPin, int lPin) ;
 extern unsigned int  readNesJoystick (int joystick) ;
 
-
+// PiGlow
+extern void piGlow1     (const int leg,  const int ring, const int intensity) ;
+extern void piGlowLeg   (const int leg,  const int intensity) ;
+extern void piGlowRing  (const int ring, const int intensity) ;
 
 %include "wiringpi2-class.py"

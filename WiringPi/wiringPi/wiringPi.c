@@ -88,7 +88,7 @@
 
 #define	PI_GPIO_MASK	(0xFFFFFFC0)
 
-static struct wiringPiNodeStruct *wiringPiNodes = NULL ;
+struct wiringPiNodeStruct *wiringPiNodes = NULL ;
 
 // BCM Magic
 
@@ -117,7 +117,6 @@ static struct wiringPiNodeStruct *wiringPiNodes = NULL ;
 
 #define	FSEL_INPT		0b000
 #define	FSEL_OUTP		0b001
-#define	FSEL_ALT0		0b100
 #define	FSEL_ALT0		0b100
 #define	FSEL_ALT1		0b101
 #define	FSEL_ALT2		0b110
@@ -213,7 +212,13 @@ int wiringPiReturnCodes = FALSE ;
 // sysFds:
 //	Map a file descriptor from the /sys/class/gpio/gpioX/value
 
-static int sysFds [64] ;
+static int sysFds [64] =
+{
+  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+  -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+} ;
 
 // ISR Data
 
@@ -833,7 +838,7 @@ void gpioClockSet (int pin, int freq)
  *********************************************************************************
  */
 
-static struct wiringPiNodeStruct *wiringPiFindNode (int pin)
+struct wiringPiNodeStruct *wiringPiFindNode (int pin)
 {
   struct wiringPiNodeStruct *node = wiringPiNodes ;
 
@@ -918,6 +923,32 @@ void pinEnableED01Pi (int pin)
  * Core Functions
  *********************************************************************************
  */
+
+/*
+ * pinModeAlt:
+ *	This is an un-documented special to let you set any pin to any mode
+ *********************************************************************************
+ */
+
+void pinModeAlt (int pin, int mode)
+{
+  int fSel, shift ;
+
+  if ((pin & PI_GPIO_MASK) == 0)		// On-board pin
+  {
+    /**/ if (wiringPiMode == WPI_MODE_PINS)
+      pin = pinToGpio [pin] ;
+    else if (wiringPiMode == WPI_MODE_PHYS)
+      pin = physToGpio [pin] ;
+    else if (wiringPiMode != WPI_MODE_GPIO)
+      return ;
+
+    fSel  = gpioToGPFSEL [pin] ;
+    shift = gpioToShift  [pin] ;
+
+    *(gpio + fSel) = (*(gpio + fSel) & ~(7 << shift)) | ((mode & 0x7) << shift) ;
+  }
+}
 
 
 /*
@@ -1304,7 +1335,8 @@ int wiringPiISR (int pin, int mode, void (*function)(void))
   char  c ;
   int   bcmGpioPin ;
 
-  pin &= 63 ;
+  if ((pin < 0) || (pin > 63))
+    return wiringPiFailure (WPI_FATAL, "wiringPiISR: pin must be 0-63 (%d)\n", pin) ;
 
   /**/ if (wiringPiMode == WPI_MODE_UNINITIALISED)
     return wiringPiFailure (WPI_FATAL, "wiringPiISR: wiringPi has not been initialised. Unable to continue.\n") ;
@@ -1333,26 +1365,26 @@ int wiringPiISR (int pin, int mode, void (*function)(void))
     sprintf (pinS, "%d", bcmGpioPin) ;
 
     if ((pid = fork ()) < 0)	// Fail
-      return pid ;
+      return wiringPiFailure (WPI_FATAL, "wiringPiISR: fork failed: %s\n", strerror (errno)) ;
 
     if (pid == 0)	// Child, exec
     {
       execl ("/usr/local/bin/gpio", "gpio", "edge", pinS, modeS, (char *)NULL) ;
-      return -1 ;	// Failure ...
+      return wiringPiFailure (WPI_FATAL, "wiringPiISR: execl failed: %s\n", strerror (errno)) ;
     }
     else		// Parent, wait
       wait (NULL) ;
   }
 
-// Now pre-open the /sys/class node - it may already be open if
-//	we are in Sys mode or if we call here twice, if-so, we'll close it.
+// Now pre-open the /sys/class node - but it may already be open if
+//	we are in Sys mode...
 
-  if (sysFds [bcmGpioPin] != -1)
-    close (sysFds [bcmGpioPin]) ;
-
-  sprintf (fName, "/sys/class/gpio/gpio%d/value", bcmGpioPin) ;
-  if ((sysFds [bcmGpioPin] = open (fName, O_RDWR)) < 0)
-    return -1 ;
+  if (sysFds [bcmGpioPin] == -1)
+  {
+    sprintf (fName, "/sys/class/gpio/gpio%d/value", bcmGpioPin) ;
+    if ((sysFds [bcmGpioPin] = open (fName, O_RDWR)) < 0)
+      return wiringPiFailure (WPI_FATAL, "wiringPiISR: unable to open %s: %s\n", fName, strerror (errno)) ;
+  }
 
 // Clear any initial pending interrupt
 
@@ -1441,6 +1473,8 @@ void delayMicrosecondsHard (unsigned int howLong)
 void delayMicroseconds (unsigned int howLong)
 {
   struct timespec sleeper ;
+  unsigned int uSecs = howLong % 1000000 ;
+  unsigned int wSecs = howLong / 1000000 ;
 
   /**/ if (howLong ==   0)
     return ;
@@ -1448,8 +1482,8 @@ void delayMicroseconds (unsigned int howLong)
     delayMicrosecondsHard (howLong) ;
   else
   {
-    sleeper.tv_sec  = 0 ;
-    sleeper.tv_nsec = (long)(howLong * 1000) ;
+    sleeper.tv_sec  = wSecs ;
+    sleeper.tv_nsec = (long)(uSecs * 1000L) ;
     nanosleep (&sleeper, NULL) ;
   }
 }
@@ -1532,7 +1566,7 @@ int wiringPiSetup (void)
 
 // Open the master /dev/memory device
 
-  if ((fd = open ("/dev/mem", O_RDWR | O_SYNC) ) < 0)
+  if ((fd = open ("/dev/mem", O_RDWR | O_SYNC | O_CLOEXEC) ) < 0)
     return wiringPiFailure (WPI_ALMOST, "wiringPiSetup: Unable to open /dev/mem: %s\n", strerror (errno)) ;
 
 // GPIO:

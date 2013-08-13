@@ -104,6 +104,8 @@ struct wiringPiNodeStruct
   struct wiringPiNodeStruct *next ;
 } ;
 
+extern struct wiringPiNodeStruct *wiringPiNodes ;
+
 
 // Function prototypes
 //	c++ wrappers thanks to a comment by Nick Lott
@@ -119,13 +121,15 @@ extern int wiringPiFailure (int fatal, const char *message, ...) ;
 
 // Core wiringPi functions
 
-extern struct wiringPiNodeStruct *wiringPiNewNode (int pinBase, int numPins) ;
+extern struct wiringPiNodeStruct *wiringPiFindNode (int pin) ;
+extern struct wiringPiNodeStruct *wiringPiNewNode  (int pinBase, int numPins) ;
 
 extern int  wiringPiSetup       (void) ;
 extern int  wiringPiSetupSys    (void) ;
 extern int  wiringPiSetupGpio   (void) ;
 extern int  wiringPiSetupPhys   (void) ;
 
+extern void pinModeAlt          (int pin, int mode) ;
 extern void pinMode             (int pin, int mode) ;
 extern void pullUpDnControl     (int pin, int pud) ;
 extern int  digitalRead         (int pin) ;

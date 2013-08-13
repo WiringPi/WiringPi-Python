@@ -7,13 +7,17 @@ _wiringpi2 = Extension(
     sources=[
 	'WiringPi/wiringPi/wiringPi.c',
         'WiringPi/wiringPi/wiringPiSPI.c',
+        'WiringPi/wiringPi/max31855.c',
+        'WiringPi/wiringPi/max5322.c',
         'WiringPi/wiringPi/drc.c',
+        'WiringPi/wiringPi/sn3218.c',
         'WiringPi/wiringPi/mcp23s17.c',
         'WiringPi/wiringPi/pcf8591.c',
         'WiringPi/wiringPi/softTone.c',
         'WiringPi/wiringPi/wiringSerial.c',
         'WiringPi/wiringPi/mcp23008.c',
         'WiringPi/wiringPi/mcp3002.c',
+        'WiringPi/wiringPi/mcp3004.c',
         'WiringPi/wiringPi/piHiPri.c',
         'WiringPi/wiringPi/sr595.c',
         'WiringPi/wiringPi/wiringShift.c',
@@ -34,6 +38,7 @@ _wiringpi2 = Extension(
         'WiringPi/devLib/lcd.c',
         'WiringPi/devLib/piFace.c',
         'WiringPi/devLib/piNes.c',
+        'WiringPi/devLib/piGlow.c',
         'wiringpi_wrap.c'
     ],
 )
@@ -54,7 +59,10 @@ setup(
     headers=[
 	'WiringPi/wiringPi/wiringPi.h',
         'WiringPi/wiringPi/wiringPiI2C.h',
+        'WiringPi/wiringPi/max31855.h',
+        'WiringPi/wiringPi/max5322.h',
         'WiringPi/wiringPi/drc.h',
+        'WiringPi/wiringPi/sn3218.h',
         'WiringPi/wiringPi/mcp23s08.h',
         'WiringPi/wiringPi/mcp3422.h',
         'WiringPi/wiringPi/softServo.h',
@@ -74,6 +82,7 @@ setup(
         'WiringPi/wiringPi/pcf8591.h',
         'WiringPi/wiringPi/mcp23017.h',
         'WiringPi/wiringPi/mcp3002.h',
+        'WiringPi/wiringPi/mcp3004.h',
         'WiringPi/wiringPi/softPwm.h',
         'WiringPi/devLib/ds1302.h',
         'WiringPi/devLib/gertboard.h',
@@ -83,5 +92,6 @@ setup(
         'WiringPi/devLib/lcd128x64.h',
         'WiringPi/devLib/maxdetect.h',
         'WiringPi/devLib/piNes.h'
+        'WiringPi/devLib/piGlow.h',
         ]
 )

@@ -2972,6 +2972,8 @@ static swig_module_info swig_module = {swig_types, 6, 0, 0, 0, 0};
 #include "WiringPi/wiringPi/wiringPiI2C.h"
 #include "WiringPi/wiringPi/wiringSerial.h"
 #include "WiringPi/wiringPi/wiringShift.h"
+#include "WiringPi/wiringPi/max31855.h"
+#include "WiringPi/wiringPi/max5322.h"
 #include "WiringPi/wiringPi/mcp23017.h"
 #include "WiringPi/wiringPi/mcp4802.h"
 #include "WiringPi/wiringPi/mcp3422.h"
@@ -2980,6 +2982,7 @@ static swig_module_info swig_module = {swig_types, 6, 0, 0, 0, 0};
 #include "WiringPi/wiringPi/mcp23x08.h"
 #include "WiringPi/wiringPi/mcp23016.h"
 #include "WiringPi/wiringPi/mcp3002.h"
+#include "WiringPi/wiringPi/mcp3004.h"
 #include "WiringPi/wiringPi/mcp23016reg.h"
 #include "WiringPi/wiringPi/mcp23x0817.h"
 #include "WiringPi/wiringPi/mcp23s17.h"
@@ -2998,6 +3001,7 @@ static swig_module_info swig_module = {swig_types, 6, 0, 0, 0, 0};
 #include "WiringPi/devLib/piFace.h"
 #include "WiringPi/devLib/ds1302.h"
 #include "WiringPi/devLib/piNes.h"
+#include "WiringPi/devLib/piGlow.h"
 
 
 SWIGINTERNINLINE PyObject*
@@ -6774,6 +6778,105 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_piGlow1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int arg2 ;
+  int arg3 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:piGlow1",&obj0,&obj1,&obj2)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "piGlow1" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = (int)(val1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "piGlow1" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = (int)(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "piGlow1" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = (int)(val3);
+  piGlow1(arg1,arg2,arg3);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_piGlowLeg(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int arg2 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:piGlowLeg",&obj0,&obj1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "piGlowLeg" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = (int)(val1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "piGlowLeg" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = (int)(val2);
+  piGlowLeg(arg1,arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_piGlowRing(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int arg2 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:piGlowRing",&obj0,&obj1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "piGlowRing" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = (int)(val1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "piGlowRing" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = (int)(val2);
+  piGlowRing(arg1,arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 static PyMethodDef SwigMethods[] = {
 	 { (char *)"SWIG_PyInstanceMethod_New", (PyCFunction)SWIG_PyInstanceMethod_New, METH_O, NULL},
 	 { (char *)"wiringPiSetup", _wrap_wiringPiSetup, METH_VARARGS, NULL},
@@ -6885,6 +6988,9 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"lcd128x64setup", _wrap_lcd128x64setup, METH_VARARGS, NULL},
 	 { (char *)"setupNesJoystick", _wrap_setupNesJoystick, METH_VARARGS, NULL},
 	 { (char *)"readNesJoystick", _wrap_readNesJoystick, METH_VARARGS, NULL},
+	 { (char *)"piGlow1", _wrap_piGlow1, METH_VARARGS, NULL},
+	 { (char *)"piGlowLeg", _wrap_piGlowLeg, METH_VARARGS, NULL},
+	 { (char *)"piGlowRing", _wrap_piGlowRing, METH_VARARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 

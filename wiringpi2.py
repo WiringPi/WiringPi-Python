@@ -503,6 +503,18 @@ setupNesJoystick = _wiringpi2.setupNesJoystick
 def readNesJoystick(*args):
   return _wiringpi2.readNesJoystick(*args)
 readNesJoystick = _wiringpi2.readNesJoystick
+
+def piGlow1(*args):
+  return _wiringpi2.piGlow1(*args)
+piGlow1 = _wiringpi2.piGlow1
+
+def piGlowLeg(*args):
+  return _wiringpi2.piGlowLeg(*args)
+piGlowLeg = _wiringpi2.piGlowLeg
+
+def piGlowRing(*args):
+  return _wiringpi2.piGlowRing(*args)
+piGlowRing = _wiringpi2.piGlowRing
 class nes(object):
   def setupNesJoystick(self,*args):
     return setupNesJoystick(*args)
@@ -658,7 +670,7 @@ class GPIO(object):
   def softPwmCreate(self,*args):
     return softPwmCreate(*args)
   def softPwmWrite(self,*args):
-    return softPwmWrite(*args)
+    return sofPwmWrite(*args)
 
   def softToneCreate(self,*args):
     return softToneCreate(*args)

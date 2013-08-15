@@ -515,6 +515,10 @@ piGlowLeg = _wiringpi2.piGlowLeg
 def piGlowRing(*args):
   return _wiringpi2.piGlowRing(*args)
 piGlowRing = _wiringpi2.piGlowRing
+
+def piGlowSetup(*args):
+  return _wiringpi2.piGlowSetup(*args)
+piGlowSetup = _wiringpi2.piGlowSetup
 class nes(object):
   def setupNesJoystick(self,*args):
     return setupNesJoystick(*args)
@@ -693,6 +697,14 @@ class GPIO(object):
     return lcdPrintf(self,*args)
   def lcdInit(self,*args):
     return lcdInit(self,*args)
+  def piGlowSetup(self,*args):
+    return piGlowSetup(self,*args)
+  def piGlow1(self,*args):
+    return piGlow1(self,*args)
+  def piGlowLeg(self,*args):
+    return piGlowLeg(self,*args)
+  def piGlowRing(self,*args):
+    return piGlowRing(self,*args)
 
 # This file is compatible with both classic and new-style classes.
 

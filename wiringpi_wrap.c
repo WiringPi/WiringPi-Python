@@ -2984,6 +2984,7 @@ static swig_module_info swig_module = {swig_types, 6, 0, 0, 0, 0};
 #include "WiringPi/wiringPi/mcp3002.h"
 #include "WiringPi/wiringPi/mcp3004.h"
 #include "WiringPi/wiringPi/mcp23016reg.h"
+#include "WiringPi/wiringPi/sn3218.h"
 #include "WiringPi/wiringPi/mcp23x0817.h"
 #include "WiringPi/wiringPi/mcp23s17.h"
 #include "WiringPi/wiringPi/pcf8574.h"
@@ -6877,6 +6878,27 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_piGlowSetup(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:piGlowSetup",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "piGlowSetup" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = (int)(val1);
+  piGlowSetup(arg1);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 static PyMethodDef SwigMethods[] = {
 	 { (char *)"SWIG_PyInstanceMethod_New", (PyCFunction)SWIG_PyInstanceMethod_New, METH_O, NULL},
 	 { (char *)"wiringPiSetup", _wrap_wiringPiSetup, METH_VARARGS, NULL},
@@ -6991,6 +7013,7 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"piGlow1", _wrap_piGlow1, METH_VARARGS, NULL},
 	 { (char *)"piGlowLeg", _wrap_piGlowLeg, METH_VARARGS, NULL},
 	 { (char *)"piGlowRing", _wrap_piGlowRing, METH_VARARGS, NULL},
+	 { (char *)"piGlowSetup", _wrap_piGlowSetup, METH_VARARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 

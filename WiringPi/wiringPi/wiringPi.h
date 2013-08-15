@@ -24,6 +24,9 @@
 #ifndef	__WIRING_PI_H__
 #define	__WIRING_PI_H__
 
+#ifndef O_CLOEXEC
+#define O_CLOEXEC 0
+#endif
 // Handy defines
 
 // Deprecated

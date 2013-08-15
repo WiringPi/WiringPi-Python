@@ -218,5 +218,6 @@ extern unsigned int  readNesJoystick (int joystick) ;
 extern void piGlow1     (const int leg,  const int ring, const int intensity) ;
 extern void piGlowLeg   (const int leg,  const int intensity) ;
 extern void piGlowRing  (const int ring, const int intensity) ;
+extern void piGlowSetup (int clear) ;
 
 %include "wiringpi2-class.py"

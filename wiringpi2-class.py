@@ -177,4 +177,12 @@ class GPIO(object):
     return lcdPrintf(self,*args)
   def lcdInit(self,*args):
     return lcdInit(self,*args)
+  def piGlowSetup(self,*args):
+    return piGlowSetup(self,*args)
+  def piGlow1(self,*args):
+    return piGlow1(self,*args)
+  def piGlowLeg(self,*args):
+    return piGlowLeg(self,*args)
+  def piGlowRing(self,*args):
+    return piGlowRing(self,*args)
 %}

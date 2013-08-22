@@ -674,7 +674,7 @@ class GPIO(object):
   def softPwmCreate(self,*args):
     return softPwmCreate(*args)
   def softPwmWrite(self,*args):
-    return sofPwmWrite(*args)
+    return softPwmWrite(*args)
 
   def softToneCreate(self,*args):
     return softToneCreate(*args)

@@ -29,11 +29,11 @@ Description incoming!
 **Usage:**
 
 	import wiringpi2
-	wiringpi2.wiringPiSetup // For sequential pin numbering, one of these MUST be called before using IO functions
+	wiringpi2.wiringPiSetup() // For sequential pin numbering, one of these MUST be called before using IO functions
 	OR
-	wiringpi2.wiringPiSetupSys // For /sys/class/gpio with GPIO pin numbering
+	wiringpi2.wiringPiSetupSys() // For /sys/class/gpio with GPIO pin numbering
 	OR
-	wiringpi2.wiringPiSetupGpio // For GPIO pin numbering
+	wiringpi2.wiringPiSetupGpio() // For GPIO pin numbering
 
 Setting up IO expanders (This example was tested on a quick2wire board with one digital IO expansion board connected via I2C):
 

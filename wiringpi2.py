@@ -554,7 +554,7 @@ class I2C(object):
   def read(self,*args):
     return wiringPiI2CRead(*args)
   def readReg8(self,*args):
-    return wiringPiI2CRead(*args)
+    return wiringPiI2CReadReg8(*args)
   def readReg16(self,*args):
     return wiringPiI2CReadReg16(*args)
   def write(self,*args):

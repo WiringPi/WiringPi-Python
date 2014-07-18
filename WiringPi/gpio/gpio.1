@@ -13,11 +13,11 @@ gpio \- Command-line access to Raspberry Pi's GPIO
 .PP
 .B gpio
 .B [ \-x extension:params ]
-.B mode/read/write/aread/awrite/pwm ...
+.B mode/read/write/aread/awrite/pwm/pwmTone ...
 .PP
 .B gpio
 .B [ \-p ]
-.B read/write/wb
+.B read/write/toggle/wb
 .B ...
 .PP
 .B gpio
@@ -37,6 +37,10 @@ gpio \- Command-line access to Raspberry Pi's GPIO
 .B gpio
 .B drive
 group value
+.PP
+.B gpio
+.B usbp
+high | low
 .PP
 .B gpio
 .B pwm-bal/pwm-ms
@@ -115,6 +119,28 @@ Write the given value (0 or 1) to the pin. You need to set the pin
 to output mode first.
 
 .TP
+.B aread <pin>
+Read the analog value of the given pin. This needs to be uses in
+conjunction with a -x flag to add in an extension that handles analog
+inputs.  respective logic levels.
+
+e.g. gpio -x mcp3002:200:0 aread 200
+
+will read the first analog input on an mcp3002 SPI ADC chip.
+
+.TP
+.B awrite <pin> <value>
+Write the analog value to the given pin. This needs to be used in
+conjunction with a -x flag to add in an extension that handles analog
+inputs.  respective logic levels.
+
+e.g. gpio -x mcp4802:200:0 awrite 200 128
+
+will write the value 128 to the first DAC port on an mcp4802 chip on
+the Pi's SPI bus 0.
+
+
+.TP
 .B wb <value>
 Write the given byte to the 8 main GPIO pins. You can prefix it with 0x
 to specify a hexadecimal number. You need to set pins to output mode
@@ -126,10 +152,19 @@ Output a table of all GPIO pins values. The values represent the actual values r
 if the pin is in input mode, or the last value written if the pin is in output
 mode.
 
+The readall command is usable with an extension module (via the -x parameter),
+but it's unable to determine pin modes or states, so will perform both a
+digital and analog read on each pin in-turn.
+
 .TP
 .B reset
-Resets the GPIO - As much as it's possible to do. All pins are set to input
-mode and all the internal pull-up/down resistors are disconnected (tristate mode).
+Resets the GPIO - As much as it's possible to do. All pins are set to
+input mode and all the internal pull-up/down resistors are disconnected
+(tristate mode).
+
+The reset command is usable with an extension module (via the -x parameter),
+but it's limited to turning the pin into input mode (if applicable) and
+removing any pull up/down resistor.
 
 .TP
 .B pwm <pin> <value>
@@ -201,6 +236,13 @@ value. Group is 0, 1 or 2 and value is 0-7. Do not use unless you are
 absolutely sure you know what you're doing.
 
 .TP
+.B usbp
+high | low
+
+Change the USB current limiter to high (1.2 amps) or low (the default, 600mA)
+This is only applicable to the model B+
+
+.TP
 .B pwm-bal/pwm-ms 
 Change the PWM mode to balanced (the default) or mark:space ratio (traditional)
 
@@ -212,8 +254,8 @@ Change the PWM range register. The default is 1024.
 .B load i2c [baudrate]
 This loads the i2c or drivers into the kernel and changes the permissions
 on the associated /dev/ entries so that the current user has access to
-them. Optionally it will set the I2C baudrate to that supplied (or as
-close as the Pi can manage) The default speed is 100Kb/sec.
+them. Optionally it will set the I2C baudrate to that supplied in Kb/sec
+(or as close as the Pi can manage) The default speed is 100Kb/sec.
 
 .TP
 .B load spi [buffer size in KB]

@@ -1,7 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
-check-make-ok()
-{
+check_make_ok() {
   if [ $? != 0 ]; then
     echo ""
     echo "Make Failed..."
@@ -28,6 +27,8 @@ if [ x$1 = "xclean" ]; then
   echo -n "PiFace:     "	; make clean
   cd ../q2w
   echo -n "Quick2Wire: "	; make clean
+  cd ../PiGlow
+  echo -n "PiGlow:     "	; make clean
   exit
 fi
 
@@ -50,27 +51,39 @@ fi
   echo "WiringPi Library"
   cd wiringPi
   sudo make uninstall
-  make
-  check-make-ok
-  sudo make install
-  check-make-ok
+  if [ x$1 = "xstatic" ]; then
+    make static
+    check_make_ok
+    sudo make install-static
+  else
+    make
+    check_make_ok
+    sudo make install
+  fi
+  check_make_ok
 
   echo
   echo "WiringPi Devices Library"
   cd ../devLib
   sudo make uninstall
-  make
-  check-make-ok
-  sudo make install
-  check-make-ok
+  if [ x$1 = "xstatic" ]; then
+    make static
+    check_make_ok
+    sudo make install-static
+  else
+    make
+    check_make_ok
+    sudo make install
+  fi
+  check_make_ok
 
   echo
   echo "GPIO Utility"
   cd ../gpio
   make
-  check-make-ok
+  check_make_ok
   sudo make install
-  check-make-ok
+  check_make_ok
 
 # echo
 # echo "Examples"
@@ -81,7 +94,10 @@ fi
 echo
 echo All Done.
 echo ""
-echo "NOTE: This is wiringPi v2, and if you need to use the lcd, Piface,"
-echo "  Gertboard, MaxDetext, etc. routines then you must change your"
-echo "  compile scripts to add -lwiringPiDev"
+echo "NOTE: To compile programs with wiringPi, you need to add:"
+echo "    -lwiringPi"
+echo "  to your compile line(s) To use the Gertboard, MaxDetect, etc."
+echo "  code (the devLib), you need to also add:"
+echo "    -lwiringPiDev"
+echo "  to your compile line(s)."
 echo ""

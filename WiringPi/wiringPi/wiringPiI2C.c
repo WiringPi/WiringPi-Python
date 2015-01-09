@@ -48,6 +48,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <errno.h>
+#include <string.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
 
@@ -148,7 +150,7 @@ int wiringPiI2CReadReg16 (int fd, int reg)
   if (i2c_smbus_access (fd, I2C_SMBUS_READ, reg, I2C_SMBUS_WORD_DATA, &data))
     return -1 ;
   else
-    return data.byte & 0xFF ;
+    return data.word & 0xFFFF ;
 }
 
 
@@ -188,35 +190,38 @@ int wiringPiI2CWriteReg16 (int fd, int reg, int value)
 
 
 /*
- * wiringPiI2CSetup:
- *	Open the I2C device, and regsiter the target device
+ * wiringPiI2CSetupInterface:
+ *	Undocumented access to set the interface explicitly - might be used
+ *	for the Pi's 2nd I2C interface...
  *********************************************************************************
  */
 
-int wiringPiI2CSetupInterface (char *device, int devId)
+int wiringPiI2CSetupInterface (const char *device, int devId)
 {
   int fd ;
 
   if ((fd = open (device, O_RDWR)) < 0)
-    return -1 ;
+    return wiringPiFailure (WPI_ALMOST, "Unable to open I2C device: %s\n", strerror (errno)) ;
 
   if (ioctl (fd, I2C_SLAVE, devId) < 0)
-    return -1 ;
+    return wiringPiFailure (WPI_ALMOST, "Unable to select I2C device: %s\n", strerror (errno)) ;
 
   return fd ;
 }
 
 
-int wiringPiI2CSetup (int devId)
+/*
+ * wiringPiI2CSetup:
+ *	Open the I2C device, and regsiter the target device
+ *********************************************************************************
+ */
+
+int wiringPiI2CSetup (const int devId)
 {
   int rev ;
-  char *device ;
+  const char *device ;
 
-  if ((rev = piBoardRev ()) < 0)
-  {
-    fprintf (stderr, "wiringPiI2CSetup: Unable to determine Pi board revision\n") ;
-    exit (1) ;
-  }
+  rev = piBoardRev () ;
 
   if (rev == 1)
     device = "/dev/i2c-0" ;

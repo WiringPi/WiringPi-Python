@@ -39,27 +39,27 @@
 
 static void myPinMode (struct wiringPiNodeStruct *node, int pin, int mode)
 {
-  int mask, old, ddr ;
+  int mask, old, reg ;
 
   pin -= node->pinBase ;
 
   if (pin < 8)		// Bank A
-    ddr =  MCP23x17_IODIRA ;
+    reg  = MCP23x17_IODIRA ;
   else
   {
-    ddr =  MCP23x17_IODIRB ;
+    reg  = MCP23x17_IODIRB ;
     pin &= 0x07 ;
   }
 
   mask = 1 << pin ;
-  old  = wiringPiI2CReadReg8 (node->fd, ddr) ;
+  old  = wiringPiI2CReadReg8 (node->fd, reg) ;
 
   if (mode == OUTPUT)
     old &= (~mask) ;
   else
     old |=   mask ;
 
-  wiringPiI2CWriteReg8 (node->fd, ddr, old) ;
+  wiringPiI2CWriteReg8 (node->fd, reg, old) ;
 }
 
 
@@ -70,27 +70,27 @@ static void myPinMode (struct wiringPiNodeStruct *node, int pin, int mode)
 
 static void myPullUpDnControl (struct wiringPiNodeStruct *node, int pin, int mode)
 {
-  int mask, old, pud ;
+  int mask, old, reg ;
 
   pin -= node->pinBase ;
 
   if (pin < 8)		// Bank A
-    pud =  MCP23x17_GPPUA ;
+    reg  = MCP23x17_GPPUA ;
   else
   {
-    pud  =  MCP23x17_GPPUB ;
-    pin  &= 0x07 ;
+    reg  = MCP23x17_GPPUB ;
+    pin &= 0x07 ;
   }
 
   mask = 1 << pin ;
-  old  = wiringPiI2CReadReg8 (node->fd, pud) ;
+  old  = wiringPiI2CReadReg8 (node->fd, reg) ;
 
   if (mode == PUD_UP)
     old |=   mask ;
   else
     old &= (~mask) ;
 
-  wiringPiI2CWriteReg8 (node->fd, pud, old) ;
+  wiringPiI2CWriteReg8 (node->fd, reg, old) ;
 }
 
 
@@ -146,7 +146,7 @@ static int myDigitalRead (struct wiringPiNodeStruct *node, int pin)
   pin -= node->pinBase ;
 
   if (pin < 8)		// Bank A
-    gpio = MCP23x17_GPIOA ;
+    gpio  = MCP23x17_GPIOA ;
   else
   {
     gpio  = MCP23x17_GPIOB ;
@@ -171,7 +171,7 @@ static int myDigitalRead (struct wiringPiNodeStruct *node, int pin)
  *********************************************************************************
  */
 
-int mcp23017Setup (int pinBase, int i2cAddress)
+int mcp23017Setup (const int pinBase, const int i2cAddress)
 {
   int fd ;
   struct wiringPiNodeStruct *node ;

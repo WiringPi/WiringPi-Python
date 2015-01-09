@@ -21,6 +21,9 @@
  ***********************************************************************
  */
 
+#ifndef	__WIRING_PI_H__
+#define	__WIRING_PI_H__
+
 // Handy defines
 
 // Deprecated
@@ -39,6 +42,9 @@
 #define	OUTPUT			 1
 #define	PWM_OUTPUT		 2
 #define	GPIO_CLOCK		 3
+#define	SOFT_PWM_OUTPUT		 4
+#define	SOFT_TONE_OUTPUT	 5
+#define	PWM_TONE_OUTPUT		 6
 
 #define	LOW			 0
 #define	HIGH			 1
@@ -61,9 +67,42 @@
 #define	INT_EDGE_RISING		2
 #define	INT_EDGE_BOTH		3
 
+// Pi model types and version numbers
+//	Intended for the GPIO program Use at your own risk.
+
+#define	PI_MODEL_UNKNOWN	0
+#define	PI_MODEL_A		1
+#define	PI_MODEL_B		2
+#define	PI_MODEL_BP		3
+#define	PI_MODEL_CM		4
+
+#define	PI_VERSION_UNKNOWN	0
+#define	PI_VERSION_1		1
+#define	PI_VERSION_1_1		2
+#define	PI_VERSION_1_2		3
+#define	PI_VERSION_2		4
+
+#define	PI_MAKER_UNKNOWN	0
+#define	PI_MAKER_EGOMAN		1
+#define	PI_MAKER_SONY		2
+#define	PI_MAKER_QISDA		3
+
+extern const char *piModelNames    [5] ;
+extern const char *piRevisionNames [5] ;
+extern const char *piMakerNames    [4] ;
+
+
+//	Intended for the GPIO program Use at your own risk.
+
 // Threads
 
 #define	PI_THREAD(X)	void *X (void *dummy)
+
+// Failure modes
+
+#define	WPI_FATAL	(1==1)
+#define	WPI_ALMOST	(1==2)
+
 
 // wiringPiNodeStruct:
 //	This describes additional device nodes in the extended wiringPi
@@ -95,6 +134,8 @@ struct wiringPiNodeStruct
   struct wiringPiNodeStruct *next ;
 } ;
 
+extern struct wiringPiNodeStruct *wiringPiNodes ;
+
 
 // Function prototypes
 //	c++ wrappers thanks to a comment by Nick Lott
@@ -104,16 +145,26 @@ struct wiringPiNodeStruct
 extern "C" {
 #endif
 
+// Data
+
+//extern const char *piModelNames [] ;
+//extern const char *piRevisionNames[] ;
+
+// Internal
+
+extern int wiringPiFailure (int fatal, const char *message, ...) ;
 
 // Core wiringPi functions
 
-extern struct wiringPiNodeStruct *wiringPiNewNode (int pinBase, int numPins) ;
+extern struct wiringPiNodeStruct *wiringPiFindNode (int pin) ;
+extern struct wiringPiNodeStruct *wiringPiNewNode  (int pinBase, int numPins) ;
 
 extern int  wiringPiSetup       (void) ;
 extern int  wiringPiSetupSys    (void) ;
 extern int  wiringPiSetupGpio   (void) ;
 extern int  wiringPiSetupPhys   (void) ;
 
+extern void pinModeAlt          (int pin, int mode) ;
 extern void pinMode             (int pin, int mode) ;
 extern void pullUpDnControl     (int pin, int pud) ;
 extern int  digitalRead         (int pin) ;
@@ -131,9 +182,12 @@ extern int  wiringPiSetupPiFaceForGpioProg (void) ;	// Don't use this - for gpio
 // On-Board Raspberry Pi hardware specific stuff
 
 extern int  piBoardRev          (void) ;
+extern void piBoardId           (int *model, int *rev, int *mem, int *maker, int *overVolted) ;
 extern int  wpiPinToGpio        (int wpiPin) ;
+extern int  physPinToGpio       (int physPin) ;
 extern void setPadDrive         (int group, int value) ;
 extern int  getAlt              (int pin) ;
+extern void pwmToneWrite        (int pin, int freq) ;
 extern void digitalWriteByte    (int value) ;
 extern void pwmSetMode          (int mode) ;
 extern void pwmSetRange         (unsigned int range) ;
@@ -154,7 +208,7 @@ extern void piUnlock            (int key) ;
 
 // Schedulling priority
 
-extern int piHiPri (int pri) ;
+extern int piHiPri (const int pri) ;
 
 // Extras from arduino land
 
@@ -165,4 +219,6 @@ extern unsigned int micros            (void) ;
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif

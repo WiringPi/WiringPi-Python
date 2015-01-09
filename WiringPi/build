@@ -1,0 +1,103 @@
+#!/bin/sh
+
+check_make_ok() {
+  if [ $? != 0 ]; then
+    echo ""
+    echo "Make Failed..."
+    echo "Please check the messages and fix any problems. If you're still stuck,"
+    echo "then please email all the output and as many details as you can to"
+    echo "  projects@drogon.net"
+    echo ""
+    exit 1
+  fi
+}
+
+if [ x$1 = "xclean" ]; then
+  cd wiringPi
+  echo -n "wiringPi:   "	; make clean
+  cd ../devLib
+  echo -n "DevLib:     "	; make clean
+  cd ../gpio
+  echo -n "gpio:       "	; make clean
+  cd ../examples
+  echo -n "Examples:   "	; make clean
+  cd Gertboard
+  echo -n "Gertboard:  "	; make clean
+  cd ../PiFace
+  echo -n "PiFace:     "	; make clean
+  cd ../q2w
+  echo -n "Quick2Wire: "	; make clean
+  cd ../PiGlow
+  echo -n "PiGlow:     "	; make clean
+  exit
+fi
+
+if [ x$1 = "xuninstall" ]; then
+  cd wiringPi
+  echo -n "wiringPi: " ; sudo make uninstall
+  cd ../devLib
+  echo -n "DevLib:   " ; sudo make uninstall
+  cd ../gpio
+  echo -n "gpio:     " ; sudo make uninstall
+  exit
+fi
+
+
+  echo "wiringPi Build script"
+  echo "====================="
+  echo
+
+  echo
+  echo "WiringPi Library"
+  cd wiringPi
+  sudo make uninstall
+  if [ x$1 = "xstatic" ]; then
+    make static
+    check_make_ok
+    sudo make install-static
+  else
+    make
+    check_make_ok
+    sudo make install
+  fi
+  check_make_ok
+
+  echo
+  echo "WiringPi Devices Library"
+  cd ../devLib
+  sudo make uninstall
+  if [ x$1 = "xstatic" ]; then
+    make static
+    check_make_ok
+    sudo make install-static
+  else
+    make
+    check_make_ok
+    sudo make install
+  fi
+  check_make_ok
+
+  echo
+  echo "GPIO Utility"
+  cd ../gpio
+  make
+  check_make_ok
+  sudo make install
+  check_make_ok
+
+# echo
+# echo "Examples"
+# cd ../examples
+# make
+# cd ..
+
+echo
+echo All Done.
+echo ""
+echo "NOTE: To compile programs with wiringPi, you need to add:"
+echo "    -lwiringPi"
+echo "  to your compile line(s) To use the Gertboard, MaxDetect, etc."
+echo "  code (the devLib), you need to also add:"
+echo "    -lwiringPiDev"
+echo "  to your compile line(s)."
+echo ""

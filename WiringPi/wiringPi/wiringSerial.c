@@ -41,7 +41,7 @@
  *********************************************************************************
  */
 
-int serialOpen (char *device, int baud)
+int serialOpen (const char *device, const int baud)
 {
   struct termios options ;
   speed_t myBaud ;
@@ -117,7 +117,7 @@ int serialOpen (char *device, int baud)
  *********************************************************************************
  */
 
-void serialFlush (int fd)
+void serialFlush (const int fd)
 {
   tcflush (fd, TCIOFLUSH) ;
 }
@@ -129,7 +129,7 @@ void serialFlush (int fd)
  *********************************************************************************
  */
 
-void serialClose (int fd)
+void serialClose (const int fd)
 {
   close (fd) ;
 }
@@ -141,7 +141,7 @@ void serialClose (int fd)
  *********************************************************************************
  */
 
-void serialPutchar (int fd, unsigned char c)
+void serialPutchar (const int fd, const unsigned char c)
 {
   write (fd, &c, 1) ;
 }
@@ -153,7 +153,7 @@ void serialPutchar (int fd, unsigned char c)
  *********************************************************************************
  */
 
-void serialPuts (int fd, char *s)
+void serialPuts (const int fd, const char *s)
 {
   write (fd, s, strlen (s)) ;
 }
@@ -164,7 +164,7 @@ void serialPuts (int fd, char *s)
  *********************************************************************************
  */
 
-void serialPrintf (int fd, char *message, ...)
+void serialPrintf (const int fd, const char *message, ...)
 {
   va_list argp ;
   char buffer [1024] ;
@@ -183,7 +183,7 @@ void serialPrintf (int fd, char *message, ...)
  *********************************************************************************
  */
 
-int serialDataAvail (int fd)
+int serialDataAvail (const int fd)
 {
   int result ;
 
@@ -202,7 +202,7 @@ int serialDataAvail (int fd)
  *********************************************************************************
  */
 
-int serialGetchar (int fd)
+int serialGetchar (const int fd)
 {
   uint8_t x ;
 

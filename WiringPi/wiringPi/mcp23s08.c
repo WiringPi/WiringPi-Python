@@ -78,19 +78,18 @@ static uint8_t readByte (uint8_t spiPort, uint8_t devId, uint8_t reg)
 
 static void myPinMode (struct wiringPiNodeStruct *node, int pin, int mode)
 {
-  int mask, old, ddr ;
+  int mask, old, reg ;
 
-  pin -= node->pinBase ;
-  ddr  = MCP23x08_IODIR ;
-  mask = 1 << pin ;
-  old  = readByte (node->data0, node->data1, ddr) ;
+  reg  = MCP23x08_IODIR ;
+  mask = 1 << (pin - node->pinBase) ;
+  old  = readByte (node->data0, node->data1, reg) ;
 
   if (mode == OUTPUT)
     old &= (~mask) ;
   else
     old |=   mask ;
 
-  writeByte (node->data0, node->data1, ddr, old) ;
+  writeByte (node->data0, node->data1, reg, old) ;
 }
 
 
@@ -101,20 +100,19 @@ static void myPinMode (struct wiringPiNodeStruct *node, int pin, int mode)
 
 static void myPullUpDnControl (struct wiringPiNodeStruct *node, int pin, int mode)
 {
-  int mask, old, pud ;
+  int mask, old, reg ;
 
-  pin -= node->pinBase ;
-  pud  = MCP23x08_GPPU ;
-  mask = 1 << pin ;
+  reg  = MCP23x08_GPPU ;
+  mask = 1 << (pin - node->pinBase) ;
 
-  old  = readByte (node->data0, node->data1, pud) ;
+  old  = readByte (node->data0, node->data1, reg) ;
 
   if (mode == PUD_UP)
     old |=   mask ;
   else
     old &= (~mask) ;
 
-  writeByte (node->data0, node->data1, pud, old) ;
+  writeByte (node->data0, node->data1, reg, old) ;
 }
 
 
@@ -127,8 +125,7 @@ static void myDigitalWrite (struct wiringPiNodeStruct *node, int pin, int value)
 {
   int bit, old ;
 
-  pin -= node->pinBase ;
-  bit  = 1 << pin  ;
+  bit  = 1 << ((pin - node->pinBase) & 7) ;
 
   old = node->data2 ;
   if (value == LOW)
@@ -148,13 +145,10 @@ static void myDigitalWrite (struct wiringPiNodeStruct *node, int pin, int value)
 
 static int myDigitalRead (struct wiringPiNodeStruct *node, int pin)
 {
-  int mask, value, gpio ;
+  int mask, value ;
 
-  pin -= node->pinBase ;
-  gpio = MCP23x08_GPIO ;
-  mask = 1 << pin ;
-
-  value = readByte (node->data0, node->data1, gpio) ;
+  mask  = 1 << ((pin - node->pinBase) & 7) ;
+  value = readByte (node->data0, node->data1, MCP23x08_GPIO) ;
 
   if ((value & mask) == 0)
     return LOW ;
@@ -166,12 +160,12 @@ static int myDigitalRead (struct wiringPiNodeStruct *node, int pin)
 /*
  * mcp23s08Setup:
  *	Create a new instance of an MCP23s08 SPI GPIO interface. We know it
- *	has 16 pins, so all we need to know here is the SPI address and the
+ *	has 8 pins, so all we need to know here is the SPI address and the
  *	user-defined pin base.
  *********************************************************************************
  */
 
-int mcp23s08Setup (int pinBase, int spiPort, int devId)
+int mcp23s08Setup (const int pinBase, const int spiPort, const int devId)
 {
   int    x ;
   struct wiringPiNodeStruct *node ;
@@ -181,7 +175,7 @@ int mcp23s08Setup (int pinBase, int spiPort, int devId)
 
   writeByte (spiPort, devId, MCP23x08_IOCON, IOCON_INIT) ;
 
-  node = wiringPiNewNode (pinBase, 16) ;
+  node = wiringPiNewNode (pinBase, 8) ;
 
   node->data0           = spiPort ;
   node->data1           = devId ;

@@ -1,7 +1,6 @@
 #
 # Makefile:
-#	The gpio command:
-#	  A swiss-army knige of GPIO shenanigans.
+#	wiringPi - Wiring Compatable library for the Raspberry Pi
 #	https://projects.drogon.net/wiring-pi
 #
 #	Copyright (c) 2012-2013 Gordon Henderson
@@ -23,65 +22,58 @@
 #    along with wiringPi.  If not, see <http://www.gnu.org/licenses/>.
 #################################################################################
 
-DESTDIR=/usr
-PREFIX=/local
 
 #DEBUG	= -g -O0
-DEBUG	= -O2
+DEBUG	= -O3
 CC	= gcc
-INCLUDE	= -I$(DESTDIR)$(PREFIX)/include
+INCLUDE	= -I/usr/local/include
 CFLAGS	= $(DEBUG) -Wall $(INCLUDE) -Winline -pipe
 
-LDFLAGS	= -L$(DESTDIR)$(PREFIX)/lib
-LIBS    = -lwiringPi -lwiringPiDev -lpthread -lm
+LDFLAGS	= -L/usr/local/lib
+LDLIBS    = -lwiringPi -lwiringPiDev -lpthread -lm
 
-# May not need to  alter anything below this line
+# Should not alter anything below this line
 ###############################################################################
 
-SRC	=	gpio.c extensions.c readall.c pins.c
+SRC	=	piGlow0.c piGlow1.c piglow.c
 
 OBJ	=	$(SRC:.c=.o)
 
-all:		gpio
+BINS	=	$(SRC:.c=)
 
-gpio:	$(OBJ)
-	@echo [Link]
-	@$(CC) -o $@ $(OBJ) $(LDFLAGS) $(LIBS)
-	
+all:	$(BINS)
+
+piGlow0:	piGlow0.o
+	@echo [link]
+	@$(CC) -o $@ piGlow0.o $(LDFLAGS) $(LDLIBS)
+
+piGlow1:	piGlow1.o
+	@echo [link]
+	@$(CC) -o $@ piGlow1.o $(LDFLAGS) $(LDLIBS)
+
+piglow:	piglow.o
+	@echo [link]
+	@$(CC) -o $@ piglow.o $(LDFLAGS) $(LDLIBS)
+
 .c.o:
-	@echo [Compile] $<
+	@echo [CC] $<
 	@$(CC) -c $(CFLAGS) $< -o $@
 
-.PHONY:	clean
 clean:
 	@echo "[Clean]"
-	@rm -f $(OBJ) gpio *~ core tags *.bak
+	@rm -f $(OBJ) *~ core tags $(BINS)
 
-.PHONY:	tags
 tags:	$(SRC)
 	@echo [ctags]
 	@ctags $(SRC)
 
-.PHONY:	install
-install:
-	@echo "[Install]"
-	@cp gpio		$(DESTDIR)$(PREFIX)/bin
-	@chown root.root	$(DESTDIR)$(PREFIX)/bin/gpio
-	@chmod 4755		$(DESTDIR)$(PREFIX)/bin/gpio
-	@mkdir -p		$(DESTDIR)$(PREFIX)/man/man1
-	@cp gpio.1		$(DESTDIR)$(PREFIX)/man/man1
+install:	piglow
+	@echo Installing piglow into /usr/local/bin
+	@cp -a piglow /usr/local/bin/piglow
+	@chmod 755 /usr/local/bin/piglow
+	@echo Done. Remember to load the I2C drivers!
 
-.PHONY:	uninstall
-uninstall:
-	@echo "[UnInstall]"
-	@rm -f $(DESTDIR)$(PREFIX)/bin/gpio
-	@rm -f $(DESTDIR)$(PREFIX)/man/man1/gpio.1
-
-.PHONY:	depend
 depend:
 	makedepend -Y $(SRC)
 
 # DO NOT DELETE
-
-gpio.o: extensions.h
-extensions.o: extensions.h

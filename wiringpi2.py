@@ -68,6 +68,18 @@ except AttributeError:
 
 
 
+def wiringPiFailure(*args):
+  return _wiringpi2.wiringPiFailure(*args)
+wiringPiFailure = _wiringpi2.wiringPiFailure
+
+def wiringPiFindNode(*args):
+  return _wiringpi2.wiringPiFindNode(*args)
+wiringPiFindNode = _wiringpi2.wiringPiFindNode
+
+def wiringPiNewNode(*args):
+  return _wiringpi2.wiringPiNewNode(*args)
+wiringPiNewNode = _wiringpi2.wiringPiNewNode
+
 def wiringPiSetup():
   return _wiringpi2.wiringPiSetup()
 wiringPiSetup = _wiringpi2.wiringPiSetup
@@ -84,9 +96,9 @@ def wiringPiSetupPhys():
   return _wiringpi2.wiringPiSetupPhys()
 wiringPiSetupPhys = _wiringpi2.wiringPiSetupPhys
 
-def piFaceSetup(*args):
-  return _wiringpi2.piFaceSetup(*args)
-piFaceSetup = _wiringpi2.piFaceSetup
+def pinModeAlt(*args):
+  return _wiringpi2.pinModeAlt(*args)
+pinModeAlt = _wiringpi2.pinModeAlt
 
 def pinMode(*args):
   return _wiringpi2.pinMode(*args)
@@ -120,9 +132,17 @@ def piBoardRev():
   return _wiringpi2.piBoardRev()
 piBoardRev = _wiringpi2.piBoardRev
 
+def piBoardId(*args):
+  return _wiringpi2.piBoardId(*args)
+piBoardId = _wiringpi2.piBoardId
+
 def wpiPinToGpio(*args):
   return _wiringpi2.wpiPinToGpio(*args)
 wpiPinToGpio = _wiringpi2.wpiPinToGpio
+
+def physPinToGpio(*args):
+  return _wiringpi2.physPinToGpio(*args)
+physPinToGpio = _wiringpi2.physPinToGpio
 
 def setPadDrive(*args):
   return _wiringpi2.setPadDrive(*args)
@@ -131,6 +151,10 @@ setPadDrive = _wiringpi2.setPadDrive
 def getAlt(*args):
   return _wiringpi2.getAlt(*args)
 getAlt = _wiringpi2.getAlt
+
+def pwmToneWrite(*args):
+  return _wiringpi2.pwmToneWrite(*args)
+pwmToneWrite = _wiringpi2.pwmToneWrite
 
 def digitalWriteByte(*args):
   return _wiringpi2.digitalWriteByte(*args)
@@ -151,6 +175,10 @@ pwmSetClock = _wiringpi2.pwmSetClock
 def gpioClockSet(*args):
   return _wiringpi2.gpioClockSet(*args)
 gpioClockSet = _wiringpi2.gpioClockSet
+
+def waitForInterrupt(*args):
+  return _wiringpi2.waitForInterrupt(*args)
+waitForInterrupt = _wiringpi2.waitForInterrupt
 
 def wiringPiISR(*args):
   return _wiringpi2.wiringPiISR(*args)
@@ -187,206 +215,6 @@ millis = _wiringpi2.millis
 def micros():
   return _wiringpi2.micros()
 micros = _wiringpi2.micros
-
-def serialOpen(*args):
-  return _wiringpi2.serialOpen(*args)
-serialOpen = _wiringpi2.serialOpen
-
-def serialClose(*args):
-  return _wiringpi2.serialClose(*args)
-serialClose = _wiringpi2.serialClose
-
-def serialFlush(*args):
-  return _wiringpi2.serialFlush(*args)
-serialFlush = _wiringpi2.serialFlush
-
-def serialPutchar(*args):
-  return _wiringpi2.serialPutchar(*args)
-serialPutchar = _wiringpi2.serialPutchar
-
-def serialPuts(*args):
-  return _wiringpi2.serialPuts(*args)
-serialPuts = _wiringpi2.serialPuts
-
-def serialPrintf(*args):
-  return _wiringpi2.serialPrintf(*args)
-serialPrintf = _wiringpi2.serialPrintf
-
-def serialDataAvail(*args):
-  return _wiringpi2.serialDataAvail(*args)
-serialDataAvail = _wiringpi2.serialDataAvail
-
-def serialGetchar(*args):
-  return _wiringpi2.serialGetchar(*args)
-serialGetchar = _wiringpi2.serialGetchar
-
-def shiftOut(*args):
-  return _wiringpi2.shiftOut(*args)
-shiftOut = _wiringpi2.shiftOut
-
-def shiftIn(*args):
-  return _wiringpi2.shiftIn(*args)
-shiftIn = _wiringpi2.shiftIn
-
-def wiringPiSPIGetFd(*args):
-  return _wiringpi2.wiringPiSPIGetFd(*args)
-wiringPiSPIGetFd = _wiringpi2.wiringPiSPIGetFd
-
-def wiringPiSPIDataRW(*args):
-  return _wiringpi2.wiringPiSPIDataRW(*args)
-wiringPiSPIDataRW = _wiringpi2.wiringPiSPIDataRW
-
-def wiringPiSPISetup(*args):
-  return _wiringpi2.wiringPiSPISetup(*args)
-wiringPiSPISetup = _wiringpi2.wiringPiSPISetup
-
-def wiringPiI2CSetupInterface(*args):
-  return _wiringpi2.wiringPiI2CSetupInterface(*args)
-wiringPiI2CSetupInterface = _wiringpi2.wiringPiI2CSetupInterface
-
-def wiringPiI2CSetup(*args):
-  return _wiringpi2.wiringPiI2CSetup(*args)
-wiringPiI2CSetup = _wiringpi2.wiringPiI2CSetup
-
-def wiringPiI2CRead(*args):
-  return _wiringpi2.wiringPiI2CRead(*args)
-wiringPiI2CRead = _wiringpi2.wiringPiI2CRead
-
-def wiringPiI2CReadReg8(*args):
-  return _wiringpi2.wiringPiI2CReadReg8(*args)
-wiringPiI2CReadReg8 = _wiringpi2.wiringPiI2CReadReg8
-
-def wiringPiI2CReadReg16(*args):
-  return _wiringpi2.wiringPiI2CReadReg16(*args)
-wiringPiI2CReadReg16 = _wiringpi2.wiringPiI2CReadReg16
-
-def wiringPiI2CWrite(*args):
-  return _wiringpi2.wiringPiI2CWrite(*args)
-wiringPiI2CWrite = _wiringpi2.wiringPiI2CWrite
-
-def wiringPiI2CWriteReg8(*args):
-  return _wiringpi2.wiringPiI2CWriteReg8(*args)
-wiringPiI2CWriteReg8 = _wiringpi2.wiringPiI2CWriteReg8
-
-def wiringPiI2CWriteReg16(*args):
-  return _wiringpi2.wiringPiI2CWriteReg16(*args)
-wiringPiI2CWriteReg16 = _wiringpi2.wiringPiI2CWriteReg16
-
-def softToneCreate(*args):
-  return _wiringpi2.softToneCreate(*args)
-softToneCreate = _wiringpi2.softToneCreate
-
-def softToneWrite(*args):
-  return _wiringpi2.softToneWrite(*args)
-softToneWrite = _wiringpi2.softToneWrite
-
-def softServoWrite(*args):
-  return _wiringpi2.softServoWrite(*args)
-softServoWrite = _wiringpi2.softServoWrite
-
-def softServoSetup(*args):
-  return _wiringpi2.softServoSetup(*args)
-softServoSetup = _wiringpi2.softServoSetup
-
-def softPwmCreate(*args):
-  return _wiringpi2.softPwmCreate(*args)
-softPwmCreate = _wiringpi2.softPwmCreate
-
-def softPwmWrite(*args):
-  return _wiringpi2.softPwmWrite(*args)
-softPwmWrite = _wiringpi2.softPwmWrite
-
-def mcp23008Setup(*args):
-  return _wiringpi2.mcp23008Setup(*args)
-mcp23008Setup = _wiringpi2.mcp23008Setup
-
-def mcp23016Setup(*args):
-  return _wiringpi2.mcp23016Setup(*args)
-mcp23016Setup = _wiringpi2.mcp23016Setup
-
-def mcp23017Setup(*args):
-  return _wiringpi2.mcp23017Setup(*args)
-mcp23017Setup = _wiringpi2.mcp23017Setup
-
-def mcp23s08Setup(*args):
-  return _wiringpi2.mcp23s08Setup(*args)
-mcp23s08Setup = _wiringpi2.mcp23s08Setup
-
-def mcp23s17Setup(*args):
-  return _wiringpi2.mcp23s17Setup(*args)
-mcp23s17Setup = _wiringpi2.mcp23s17Setup
-
-def mcp3002Setup(*args):
-  return _wiringpi2.mcp3002Setup(*args)
-mcp3002Setup = _wiringpi2.mcp3002Setup
-
-def mcp3422Setup(*args):
-  return _wiringpi2.mcp3422Setup(*args)
-mcp3422Setup = _wiringpi2.mcp3422Setup
-
-def mcp4802Setup(*args):
-  return _wiringpi2.mcp4802Setup(*args)
-mcp4802Setup = _wiringpi2.mcp4802Setup
-
-def pcf8574Setup(*args):
-  return _wiringpi2.pcf8574Setup(*args)
-pcf8574Setup = _wiringpi2.pcf8574Setup
-
-def pcf8591Setup(*args):
-  return _wiringpi2.pcf8591Setup(*args)
-pcf8591Setup = _wiringpi2.pcf8591Setup
-
-def sr595Setup(*args):
-  return _wiringpi2.sr595Setup(*args)
-sr595Setup = _wiringpi2.sr595Setup
-
-def lcdHome(*args):
-  return _wiringpi2.lcdHome(*args)
-lcdHome = _wiringpi2.lcdHome
-
-def lcdClear(*args):
-  return _wiringpi2.lcdClear(*args)
-lcdClear = _wiringpi2.lcdClear
-
-def lcdDisplay(*args):
-  return _wiringpi2.lcdDisplay(*args)
-lcdDisplay = _wiringpi2.lcdDisplay
-
-def lcdCursor(*args):
-  return _wiringpi2.lcdCursor(*args)
-lcdCursor = _wiringpi2.lcdCursor
-
-def lcdCursorBlink(*args):
-  return _wiringpi2.lcdCursorBlink(*args)
-lcdCursorBlink = _wiringpi2.lcdCursorBlink
-
-def lcdSendCommand(*args):
-  return _wiringpi2.lcdSendCommand(*args)
-lcdSendCommand = _wiringpi2.lcdSendCommand
-
-def lcdPosition(*args):
-  return _wiringpi2.lcdPosition(*args)
-lcdPosition = _wiringpi2.lcdPosition
-
-def lcdCharDef(*args):
-  return _wiringpi2.lcdCharDef(*args)
-lcdCharDef = _wiringpi2.lcdCharDef
-
-def lcdPutchar(*args):
-  return _wiringpi2.lcdPutchar(*args)
-lcdPutchar = _wiringpi2.lcdPutchar
-
-def lcdPuts(*args):
-  return _wiringpi2.lcdPuts(*args)
-lcdPuts = _wiringpi2.lcdPuts
-
-def lcdPrintf(*args):
-  return _wiringpi2.lcdPrintf(*args)
-lcdPrintf = _wiringpi2.lcdPrintf
-
-def lcdInit(*args):
-  return _wiringpi2.lcdInit(*args)
-lcdInit = _wiringpi2.lcdInit
 
 def ds1302rtcRead(*args):
   return _wiringpi2.ds1302rtcRead(*args)
@@ -496,13 +324,57 @@ def lcd128x64setup():
   return _wiringpi2.lcd128x64setup()
 lcd128x64setup = _wiringpi2.lcd128x64setup
 
-def setupNesJoystick(*args):
-  return _wiringpi2.setupNesJoystick(*args)
-setupNesJoystick = _wiringpi2.setupNesJoystick
+def lcdHome(*args):
+  return _wiringpi2.lcdHome(*args)
+lcdHome = _wiringpi2.lcdHome
 
-def readNesJoystick(*args):
-  return _wiringpi2.readNesJoystick(*args)
-readNesJoystick = _wiringpi2.readNesJoystick
+def lcdClear(*args):
+  return _wiringpi2.lcdClear(*args)
+lcdClear = _wiringpi2.lcdClear
+
+def lcdDisplay(*args):
+  return _wiringpi2.lcdDisplay(*args)
+lcdDisplay = _wiringpi2.lcdDisplay
+
+def lcdCursor(*args):
+  return _wiringpi2.lcdCursor(*args)
+lcdCursor = _wiringpi2.lcdCursor
+
+def lcdCursorBlink(*args):
+  return _wiringpi2.lcdCursorBlink(*args)
+lcdCursorBlink = _wiringpi2.lcdCursorBlink
+
+def lcdSendCommand(*args):
+  return _wiringpi2.lcdSendCommand(*args)
+lcdSendCommand = _wiringpi2.lcdSendCommand
+
+def lcdPosition(*args):
+  return _wiringpi2.lcdPosition(*args)
+lcdPosition = _wiringpi2.lcdPosition
+
+def lcdCharDef(*args):
+  return _wiringpi2.lcdCharDef(*args)
+lcdCharDef = _wiringpi2.lcdCharDef
+
+def lcdPutchar(*args):
+  return _wiringpi2.lcdPutchar(*args)
+lcdPutchar = _wiringpi2.lcdPutchar
+
+def lcdPuts(*args):
+  return _wiringpi2.lcdPuts(*args)
+lcdPuts = _wiringpi2.lcdPuts
+
+def lcdPrintf(*args):
+  return _wiringpi2.lcdPrintf(*args)
+lcdPrintf = _wiringpi2.lcdPrintf
+
+def lcdInit(*args):
+  return _wiringpi2.lcdInit(*args)
+lcdInit = _wiringpi2.lcdInit
+
+def piFaceSetup(*args):
+  return _wiringpi2.piFaceSetup(*args)
+piFaceSetup = _wiringpi2.piFaceSetup
 
 def piGlow1(*args):
   return _wiringpi2.piGlow1(*args)
@@ -519,6 +391,194 @@ piGlowRing = _wiringpi2.piGlowRing
 def piGlowSetup(*args):
   return _wiringpi2.piGlowSetup(*args)
 piGlowSetup = _wiringpi2.piGlowSetup
+
+def setupNesJoystick(*args):
+  return _wiringpi2.setupNesJoystick(*args)
+setupNesJoystick = _wiringpi2.setupNesJoystick
+
+def readNesJoystick(*args):
+  return _wiringpi2.readNesJoystick(*args)
+readNesJoystick = _wiringpi2.readNesJoystick
+
+def sr595Setup(*args):
+  return _wiringpi2.sr595Setup(*args)
+sr595Setup = _wiringpi2.sr595Setup
+
+def drcSetupSerial(*args):
+  return _wiringpi2.drcSetupSerial(*args)
+drcSetupSerial = _wiringpi2.drcSetupSerial
+
+def max31855Setup(*args):
+  return _wiringpi2.max31855Setup(*args)
+max31855Setup = _wiringpi2.max31855Setup
+
+def max5322Setup(*args):
+  return _wiringpi2.max5322Setup(*args)
+max5322Setup = _wiringpi2.max5322Setup
+
+def mcp23008Setup(*args):
+  return _wiringpi2.mcp23008Setup(*args)
+mcp23008Setup = _wiringpi2.mcp23008Setup
+
+def mcp23016Setup(*args):
+  return _wiringpi2.mcp23016Setup(*args)
+mcp23016Setup = _wiringpi2.mcp23016Setup
+
+def mcp23017Setup(*args):
+  return _wiringpi2.mcp23017Setup(*args)
+mcp23017Setup = _wiringpi2.mcp23017Setup
+
+def mcp23s08Setup(*args):
+  return _wiringpi2.mcp23s08Setup(*args)
+mcp23s08Setup = _wiringpi2.mcp23s08Setup
+
+def mcp23s17Setup(*args):
+  return _wiringpi2.mcp23s17Setup(*args)
+mcp23s17Setup = _wiringpi2.mcp23s17Setup
+
+def mcp3002Setup(*args):
+  return _wiringpi2.mcp3002Setup(*args)
+mcp3002Setup = _wiringpi2.mcp3002Setup
+
+def mcp3004Setup(*args):
+  return _wiringpi2.mcp3004Setup(*args)
+mcp3004Setup = _wiringpi2.mcp3004Setup
+
+def mcp3422Setup(*args):
+  return _wiringpi2.mcp3422Setup(*args)
+mcp3422Setup = _wiringpi2.mcp3422Setup
+
+def mcp4802Setup(*args):
+  return _wiringpi2.mcp4802Setup(*args)
+mcp4802Setup = _wiringpi2.mcp4802Setup
+
+def pcf8574Setup(*args):
+  return _wiringpi2.pcf8574Setup(*args)
+pcf8574Setup = _wiringpi2.pcf8574Setup
+
+def pcf8591Setup(*args):
+  return _wiringpi2.pcf8591Setup(*args)
+pcf8591Setup = _wiringpi2.pcf8591Setup
+
+def sn3218Setup(*args):
+  return _wiringpi2.sn3218Setup(*args)
+sn3218Setup = _wiringpi2.sn3218Setup
+
+def softPwmCreate(*args):
+  return _wiringpi2.softPwmCreate(*args)
+softPwmCreate = _wiringpi2.softPwmCreate
+
+def softPwmWrite(*args):
+  return _wiringpi2.softPwmWrite(*args)
+softPwmWrite = _wiringpi2.softPwmWrite
+
+def softPwmStop(*args):
+  return _wiringpi2.softPwmStop(*args)
+softPwmStop = _wiringpi2.softPwmStop
+
+def softServoWrite(*args):
+  return _wiringpi2.softServoWrite(*args)
+softServoWrite = _wiringpi2.softServoWrite
+
+def softServoSetup(*args):
+  return _wiringpi2.softServoSetup(*args)
+softServoSetup = _wiringpi2.softServoSetup
+
+def softToneCreate(*args):
+  return _wiringpi2.softToneCreate(*args)
+softToneCreate = _wiringpi2.softToneCreate
+
+def softToneStop(*args):
+  return _wiringpi2.softToneStop(*args)
+softToneStop = _wiringpi2.softToneStop
+
+def softToneWrite(*args):
+  return _wiringpi2.softToneWrite(*args)
+softToneWrite = _wiringpi2.softToneWrite
+
+def wiringPiSPIGetFd(*args):
+  return _wiringpi2.wiringPiSPIGetFd(*args)
+wiringPiSPIGetFd = _wiringpi2.wiringPiSPIGetFd
+
+def wiringPiSPIDataRW(*args):
+  return _wiringpi2.wiringPiSPIDataRW(*args)
+wiringPiSPIDataRW = _wiringpi2.wiringPiSPIDataRW
+
+def wiringPiSPISetup(*args):
+  return _wiringpi2.wiringPiSPISetup(*args)
+wiringPiSPISetup = _wiringpi2.wiringPiSPISetup
+
+def wiringPiI2CRead(*args):
+  return _wiringpi2.wiringPiI2CRead(*args)
+wiringPiI2CRead = _wiringpi2.wiringPiI2CRead
+
+def wiringPiI2CReadReg8(*args):
+  return _wiringpi2.wiringPiI2CReadReg8(*args)
+wiringPiI2CReadReg8 = _wiringpi2.wiringPiI2CReadReg8
+
+def wiringPiI2CReadReg16(*args):
+  return _wiringpi2.wiringPiI2CReadReg16(*args)
+wiringPiI2CReadReg16 = _wiringpi2.wiringPiI2CReadReg16
+
+def wiringPiI2CWrite(*args):
+  return _wiringpi2.wiringPiI2CWrite(*args)
+wiringPiI2CWrite = _wiringpi2.wiringPiI2CWrite
+
+def wiringPiI2CWriteReg8(*args):
+  return _wiringpi2.wiringPiI2CWriteReg8(*args)
+wiringPiI2CWriteReg8 = _wiringpi2.wiringPiI2CWriteReg8
+
+def wiringPiI2CWriteReg16(*args):
+  return _wiringpi2.wiringPiI2CWriteReg16(*args)
+wiringPiI2CWriteReg16 = _wiringpi2.wiringPiI2CWriteReg16
+
+def wiringPiI2CSetupInterface(*args):
+  return _wiringpi2.wiringPiI2CSetupInterface(*args)
+wiringPiI2CSetupInterface = _wiringpi2.wiringPiI2CSetupInterface
+
+def wiringPiI2CSetup(*args):
+  return _wiringpi2.wiringPiI2CSetup(*args)
+wiringPiI2CSetup = _wiringpi2.wiringPiI2CSetup
+
+def serialOpen(*args):
+  return _wiringpi2.serialOpen(*args)
+serialOpen = _wiringpi2.serialOpen
+
+def serialClose(*args):
+  return _wiringpi2.serialClose(*args)
+serialClose = _wiringpi2.serialClose
+
+def serialFlush(*args):
+  return _wiringpi2.serialFlush(*args)
+serialFlush = _wiringpi2.serialFlush
+
+def serialPutchar(*args):
+  return _wiringpi2.serialPutchar(*args)
+serialPutchar = _wiringpi2.serialPutchar
+
+def serialPuts(*args):
+  return _wiringpi2.serialPuts(*args)
+serialPuts = _wiringpi2.serialPuts
+
+def serialPrintf(*args):
+  return _wiringpi2.serialPrintf(*args)
+serialPrintf = _wiringpi2.serialPrintf
+
+def serialDataAvail(*args):
+  return _wiringpi2.serialDataAvail(*args)
+serialDataAvail = _wiringpi2.serialDataAvail
+
+def serialGetchar(*args):
+  return _wiringpi2.serialGetchar(*args)
+serialGetchar = _wiringpi2.serialGetchar
+
+def shiftIn(*args):
+  return _wiringpi2.shiftIn(*args)
+shiftIn = _wiringpi2.shiftIn
+
+def shiftOut(*args):
+  return _wiringpi2.shiftOut(*args)
+shiftOut = _wiringpi2.shiftOut
 class nes(object):
   def setupNesJoystick(self,*args):
     return setupNesJoystick(*args)
@@ -674,7 +734,7 @@ class GPIO(object):
   def softPwmCreate(self,*args):
     return softPwmCreate(*args)
   def softPwmWrite(self,*args):
-    return softPwmWrite(*args)
+    return sofPwmWrite(*args)
 
   def softToneCreate(self,*args):
     return softToneCreate(*args)
@@ -708,5 +768,4 @@ class GPIO(object):
 
 # This file is compatible with both classic and new-style classes.
 
-cvar = _wiringpi2.cvar
 

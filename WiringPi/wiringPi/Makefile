@@ -35,7 +35,8 @@ DYNAMIC=libwiringPi.so.$(VERSION)
 DEBUG	= -O2
 CC	= gcc
 INCLUDE	= -I.
-CFLAGS	= $(DEBUG) -Wformat=2 -Wall $(INCLUDE) -Winline -pipe -fPIC
+DEFS	= -D_GNU_SOURCE
+CFLAGS	= $(DEBUG) $(DEFS) -Wformat=2 -Wall -Winline $(INCLUDE) -pipe -fPIC
 
 LIBS    =
 
@@ -51,8 +52,10 @@ SRC	=	wiringPi.c						\
 		mcp23s08.c mcp23s17.c					\
 		sr595.c							\
 		pcf8574.c pcf8591.c					\
-		mcp3002.c mcp4802.c mcp3422.c				\
-		drc.c
+		mcp3002.c mcp3004.c mcp4802.c mcp3422.c			\
+		max31855.c max5322.c					\
+		sn3218.c						\
+		drcSerial.c
 
 OBJ	=	$(SRC:.c=.o)
 
@@ -96,17 +99,22 @@ install-headers:
 	@install -m 0644 softTone.h		$(DESTDIR)$(PREFIX)/include
 	@install -m 0644 wiringPiSPI.h		$(DESTDIR)$(PREFIX)/include
 	@install -m 0644 wiringPiI2C.h		$(DESTDIR)$(PREFIX)/include
+	@install -m 0644 drcSerial.h		$(DESTDIR)$(PREFIX)/include
 	@install -m 0644 mcp23008.h		$(DESTDIR)$(PREFIX)/include
 	@install -m 0644 mcp23016.h		$(DESTDIR)$(PREFIX)/include
 	@install -m 0644 mcp23017.h		$(DESTDIR)$(PREFIX)/include
 	@install -m 0644 mcp23s08.h		$(DESTDIR)$(PREFIX)/include
 	@install -m 0644 mcp23s17.h		$(DESTDIR)$(PREFIX)/include
+	@install -m 0644 max31855.h		$(DESTDIR)$(PREFIX)/include
+	@install -m 0644 max5322.h		$(DESTDIR)$(PREFIX)/include
 	@install -m 0644 mcp3002.h		$(DESTDIR)$(PREFIX)/include
+	@install -m 0644 mcp3004.h		$(DESTDIR)$(PREFIX)/include
 	@install -m 0644 mcp4802.h		$(DESTDIR)$(PREFIX)/include
 	@install -m 0644 mcp3422.h		$(DESTDIR)$(PREFIX)/include
 	@install -m 0644 sr595.h		$(DESTDIR)$(PREFIX)/include
 	@install -m 0644 pcf8574.h		$(DESTDIR)$(PREFIX)/include
 	@install -m 0644 pcf8591.h		$(DESTDIR)$(PREFIX)/include
+	@install -m 0644 sn3218.h		$(DESTDIR)$(PREFIX)/include
 
 .PHONEY:	install
 install:	$(DYNAMIC) install-headers
@@ -132,17 +140,22 @@ uninstall:
 	@rm -f $(DESTDIR)$(PREFIX)/include/softTone.h
 	@rm -f $(DESTDIR)$(PREFIX)/include/wiringPiSPI.h
 	@rm -f $(DESTDIR)$(PREFIX)/include/wiringPiI2C.h
+	@rm -f $(DESTDIR)$(PREFIX)/include/drcSerial.h
 	@rm -f $(DESTDIR)$(PREFIX)/include/mcp23008.h
 	@rm -f $(DESTDIR)$(PREFIX)/include/mcp23016.h
 	@rm -f $(DESTDIR)$(PREFIX)/include/mcp23017.h
 	@rm -f $(DESTDIR)$(PREFIX)/include/mcp23s08.h
 	@rm -f $(DESTDIR)$(PREFIX)/include/mcp23s17.h
+	@rm -f $(DESTDIR)$(PREFIX)/include/max31855.h
+	@rm -f $(DESTDIR)$(PREFIX)/include/max5322.h
 	@rm -f $(DESTDIR)$(PREFIX)/include/mcp3002.h
+	@rm -f $(DESTDIR)$(PREFIX)/include/mcp3004.h
 	@rm -f $(DESTDIR)$(PREFIX)/include/mcp4802.h
 	@rm -f $(DESTDIR)$(PREFIX)/include/mcp3422.h
 	@rm -f $(DESTDIR)$(PREFIX)/include/sr595.h
 	@rm -f $(DESTDIR)$(PREFIX)/include/pcf8574.h
 	@rm -f $(DESTDIR)$(PREFIX)/include/pcf8591.h
+	@rm -f $(DESTDIR)$(PREFIX)/include/sn3218.h
 	@rm -f $(DESTDIR)$(PREFIX)/lib/libwiringPi.*
 	@ldconfig
 
@@ -153,7 +166,7 @@ depend:
 
 # DO NOT DELETE
 
-wiringPi.o: wiringPi.h
+wiringPi.o: softPwm.h softTone.h wiringPi.h
 wiringSerial.o: wiringSerial.h
 wiringShift.o: wiringPi.h wiringShift.h
 piHiPri.o: wiringPi.h
@@ -171,6 +184,10 @@ sr595.o: wiringPi.h sr595.h
 pcf8574.o: wiringPi.h wiringPiI2C.h pcf8574.h
 pcf8591.o: wiringPi.h wiringPiI2C.h pcf8591.h
 mcp3002.o: wiringPi.h wiringPiSPI.h mcp3002.h
+mcp3004.o: wiringPi.h wiringPiSPI.h mcp3004.h
 mcp4802.o: wiringPi.h wiringPiSPI.h mcp4802.h
 mcp3422.o: wiringPi.h wiringPiI2C.h mcp3422.h
-drc.o: wiringPi.h wiringSerial.h drc.h
+max31855.o: wiringPi.h wiringPiSPI.h max31855.h
+max5322.o: wiringPi.h wiringPiSPI.h max5322.h
+sn3218.o: wiringPi.h wiringPiI2C.h sn3218.h
+drcSerial.o: wiringPi.h wiringSerial.h drcSerial.h

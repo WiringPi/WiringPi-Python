@@ -1,8 +1,7 @@
 /*
- * rht03.c:
- *	Driver for the MaxDetect series sensors
- *
- * Copyright (c) 2012-2013 Gordon Henderson. <projects@drogon.net>
+ * pins.c:
+ *	Just display a handy Pi pinnout diagram.
+ *	Copyright (c) 2012-2013 Gordon Henderson
  ***********************************************************************
  * This file is part of wiringPi:
  *	https://projects.drogon.net/raspberry-pi/wiringpi/
@@ -22,48 +21,13 @@
  ***********************************************************************
  */
 
+
 #include <stdio.h>
 
-#include <wiringPi.h>
-#include <maxdetect.h>
-
-#define	RHT03_PIN	0
-
-/*
- ***********************************************************************
- * The main program
- ***********************************************************************
- */
-
-int main (void)
+void doPins (void)
 {
-  int temp, rh ;
-  int newTemp, newRh ;
-
-  temp = rh = newTemp = newRh = 0 ;
-
-  wiringPiSetup () ;
-  piHiPri       (55) ;
-
-  for (;;)
-  {
-    delay (100) ;
-
-    if (!readRHT03 (RHT03_PIN, &newTemp, &newRh))
-      continue ;
-
-    if ((temp != newTemp) || (rh != newRh))
-    {
-      temp = newTemp ;
-      rh   = newRh ;
-      if ((temp & 0x8000) != 0)	// Negative
-      {
-	temp &= 0x7FFF ;
-	temp = -temp ;
-      }
-      printf ("Temp: %5.1f, RH: %5.1f%%\n", temp / 10.0, rh / 10.0) ;
-    }
-  }
-
-  return 0 ;
+  printf ("The pins command has been deprecated - sorry. Please use the\n") ;
+  printf ("  gpio readall\n") ;
+  printf ("command to get a list of the pinnouts for your Pi.\n") ;
 }
+

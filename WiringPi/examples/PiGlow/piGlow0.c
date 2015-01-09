@@ -1,8 +1,11 @@
 /*
- * rht03.c:
- *	Driver for the MaxDetect series sensors
+ * piglow.c:
+ *	Very simple demonstration of the PiGlow board.
+ *	This uses the SN3218 directly - soon there will be a new PiGlow
+ *	devLib device which will handle the PiGlow board on a more easy
+ *	to use manner...
  *
- * Copyright (c) 2012-2013 Gordon Henderson. <projects@drogon.net>
+ * Copyright (c) 2013 Gordon Henderson.
  ***********************************************************************
  * This file is part of wiringPi:
  *	https://projects.drogon.net/raspberry-pi/wiringpi/
@@ -22,48 +25,27 @@
  ***********************************************************************
  */
 
-#include <stdio.h>
-
 #include <wiringPi.h>
-#include <maxdetect.h>
+#include <sn3218.h>
 
-#define	RHT03_PIN	0
-
-/*
- ***********************************************************************
- * The main program
- ***********************************************************************
- */
+#define	LED_BASE	533
 
 int main (void)
 {
-  int temp, rh ;
-  int newTemp, newRh ;
+  int i, j ;
 
-  temp = rh = newTemp = newRh = 0 ;
+  wiringPiSetupSys () ;
 
-  wiringPiSetup () ;
-  piHiPri       (55) ;
+  sn3218Setup (LED_BASE) ;
 
   for (;;)
   {
-    delay (100) ;
+    for (i = 0 ; i < 256 ; ++i)
+      for (j = 0 ; j < 18 ; ++j)
+	analogWrite (LED_BASE + j, i) ;
 
-    if (!readRHT03 (RHT03_PIN, &newTemp, &newRh))
-      continue ;
-
-    if ((temp != newTemp) || (rh != newRh))
-    {
-      temp = newTemp ;
-      rh   = newRh ;
-      if ((temp & 0x8000) != 0)	// Negative
-      {
-	temp &= 0x7FFF ;
-	temp = -temp ;
-      }
-      printf ("Temp: %5.1f, RH: %5.1f%%\n", temp / 10.0, rh / 10.0) ;
-    }
+    for (i = 255 ; i >= 0 ; --i)
+      for (j = 0 ; j < 18 ; ++j)
+	analogWrite (LED_BASE + j, i) ;
   }
-
-  return 0 ;
 }

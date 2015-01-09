@@ -1,6 +1,6 @@
 /*
- * drc.h:
- *	Extend wiringPi with the DRC control protocll to Arduino
+ * drcSerial.h:
+ *	Extend wiringPi with the DRC Serial protocol (e.g. to Arduino)
  *	Copyright (c) 2013 Gordon Henderson
  ***********************************************************************
  * This file is part of wiringPi:
@@ -26,8 +26,7 @@
 extern "C" {
 #endif
 
-int drcSetup (const int pinBase, const int numPins, const char *device) ;
-
+extern int drcSetupSerial (const int pinBase, const int numPins, const char *device, const int baud) ;
 
 #ifdef __cplusplus
 }

@@ -1,6 +1,6 @@
 /*
- * drc.c:
- *	Extend wiringPi with the DRC control protocll to Arduino
+ * drcSerial.c:
+ *	Extend wiringPi with the DRC Serial protocol (e.g. to Arduino)
  *	Copyright (c) 2013 Gordon Henderson
  ***********************************************************************
  * This file is part of wiringPi:
@@ -30,7 +30,7 @@
 #include "wiringPi.h"
 #include "wiringSerial.h"
 
-#include "drc.h"
+#include "drcSerial.h"
 
 #ifndef	TRUE
 #  define	TRUE	(1==1)
@@ -69,7 +69,7 @@ static void myPullUpDnControl (struct wiringPiNodeStruct *node, int pin, int mod
 // Force pin into input mode
 
   serialPutchar (node->fd, 'i' ) ;
-  serialPutchar (node->fd, pin) ;
+  serialPutchar (node->fd, pin - node->pinBase) ;
 
   /**/ if (mode == PUD_UP)
   {
@@ -148,14 +148,14 @@ static int myDigitalRead (struct wiringPiNodeStruct *node, int pin)
  *********************************************************************************
  */
 
-int drcSetup (const int pinBase, const int numPins, const char *device)
+int drcSetupSerial (const int pinBase, const int numPins, const char *device, const int baud)
 {
   int fd ;
   int ok, tries ;
   time_t then ;
   struct wiringPiNodeStruct *node ;
 
-  if ((fd = serialOpen (device, 115200)) < 0)
+  if ((fd = serialOpen (device, baud)) < 0)
     return wiringPiFailure (WPI_ALMOST, "Unable to open DRC device (%s): %s", device, strerror (errno)) ;
 
   delay (10) ;	// May need longer if it's an Uno that reboots on the open...
@@ -166,9 +166,9 @@ int drcSetup (const int pinBase, const int numPins, const char *device)
     (void)serialGetchar (fd) ;
 
   ok = FALSE ;
-  for (tries = 1 ; tries < 5 ; ++tries)
+  for (tries = 1 ; (tries < 5) && (!ok) ; ++tries)
   {
-    serialPutchar (fd, '@') ;
+    serialPutchar (fd, '@') ;		// Ping
     then = time (NULL) + 2 ;
     while (time (NULL) < then)
       if (serialDataAvail (fd))
@@ -179,14 +179,12 @@ int drcSetup (const int pinBase, const int numPins, const char *device)
           break ;
         }
       }
-    if (ok)
-      break ;
   }
 
   if (!ok)
   {
     serialClose (fd) ;
-    return wiringPiFailure (WPI_FATAL, "Unable to communidate with DRC device") ;
+    return wiringPiFailure (WPI_FATAL, "Unable to communicate with DRC serial device") ;
   }
 
   node = wiringPiNewNode (pinBase, numPins) ;

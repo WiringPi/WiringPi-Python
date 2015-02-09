@@ -35,6 +35,7 @@ Description incoming!
 **Usage:**
 
 	import wiringpi2
+
 	wiringpi2.wiringPiSetup() # For sequential pin numbering, one of these MUST be called before using IO functions
 	OR
 	wiringpi2.wiringPiSetupSys() # For /sys/class/gpio with GPIO pin numbering
@@ -49,9 +50,9 @@ Setting up IO expanders (This example was tested on a quick2wire board with one 
 
 **General IO:**
 
-	wiringpi2.pinMode(1,1) # Set pin 1 to output
-	wiringpi2.digitalWrite(1,1) # Write 1 HIGH to pin 1
-	wiringpi2.digitalRead(1) # Read pin 1
+	wiringpi2.pinMode(6,1) # Set pin 6 to 1 ( OUTPUT )
+	wiringpi2.digitalWrite(6,1) # Write 1 ( HIGH ) to pin 6
+	wiringpi2.digitalRead(6) # Read pin 6
 
 **Setting up a peripheral:**
 WiringPi2 supports expanding your range of available "pins" by setting up a port expander. The implementation details of

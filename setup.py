@@ -42,6 +42,7 @@ _wiringpi2 = Extension(
         'WiringPi/wiringPi/wiringShift.c',
         'wiringpi_wrap.c'
     ],
+    include_dirs=["WiringPi/wiringPi"],
 )
 
 setup(

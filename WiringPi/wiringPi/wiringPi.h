@@ -75,6 +75,8 @@
 #define	PI_MODEL_B		2
 #define	PI_MODEL_BP		3
 #define	PI_MODEL_CM		4
+#define	PI_MODEL_AP		5
+#define	PI_MODEL_2		6
 
 #define	PI_VERSION_UNKNOWN	0
 #define	PI_VERSION_1		1
@@ -86,10 +88,11 @@
 #define	PI_MAKER_EGOMAN		1
 #define	PI_MAKER_SONY		2
 #define	PI_MAKER_QISDA		3
+#define	PI_MAKER_MBEST		4
 
-extern const char *piModelNames    [5] ;
+extern const char *piModelNames    [7] ;
 extern const char *piRevisionNames [5] ;
-extern const char *piMakerNames    [4] ;
+extern const char *piMakerNames    [5] ;
 
 
 //	Intended for the GPIO program Use at your own risk.
@@ -146,9 +149,6 @@ extern "C" {
 #endif
 
 // Data
-
-//extern const char *piModelNames [] ;
-//extern const char *piRevisionNames[] ;
 
 // Internal
 

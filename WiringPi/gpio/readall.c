@@ -1,7 +1,7 @@
 /*
  * readall.c:
  *	The readall functions - getting a bit big, so split them out.
- *	Copyright (c) 2012-2013 Gordon Henderson
+ *	Copyright (c) 2012-2015 Gordon Henderson
  ***********************************************************************
  * This file is part of wiringPi:
  *	https://projects.drogon.net/raspberry-pi/wiringpi/
@@ -278,23 +278,36 @@ void abReadall (int model, int rev)
 
 
 /*
- * bPlusReadall:
- *	Read all the pins on the model B+
+ * piPlusReadall:
+ *	Read all the pins on the model A+ or the B+
  *********************************************************************************
  */
 
-void bPlusReadall (void)
+static void plus2header (int model)
+{
+  /**/ if (model == PI_MODEL_AP)
+    printf (" +-----+-----+---------+------+---+--A Plus--+---+------+---------+-----+-----+\n") ;
+  else if (model == PI_MODEL_BP)
+    printf (" +-----+-----+---------+------+---+--B Plus--+---+------+---------+-----+-----+\n") ;
+  else
+    printf (" +-----+-----+---------+------+---+---Pi 2---+---+------+---------+-----+-----+\n") ;
+}
+
+
+void piPlusReadall (int model)
 {
   int pin ;
 
-  printf (" +-----+-----+---------+------+---+--B Plus--+---+------+---------+-----+-----+\n") ;
+  plus2header (model) ;
+
   printf (" | BCM | wPi |   Name  | Mode | V | Physical | V | Mode | Name    | wPi | BCM |\n") ;
   printf (" +-----+-----+---------+------+---+----++----+---+------+---------+-----+-----+\n") ;
   for (pin = 1 ; pin <= 40 ; pin += 2)
     readallPhys (pin) ;
   printf (" +-----+-----+---------+------+---+----++----+---+------+---------+-----+-----+\n") ;
   printf (" | BCM | wPi |   Name  | Mode | V | Physical | V | Mode | Name    | wPi | BCM |\n") ;
-  printf (" +-----+-----+---------+------+---+--B Plus--+---+------+---------+-----+-----+\n") ;
+
+  plus2header (model) ;
 }
 
 
@@ -312,8 +325,8 @@ void doReadall (void)
 
   /**/ if ((model == PI_MODEL_A) || (model == PI_MODEL_B))
     abReadall (model, rev) ;
-  else if (model == PI_MODEL_BP)
-    bPlusReadall () ;
+  else if ((model == PI_MODEL_BP) || (model == PI_MODEL_AP) || (model == PI_MODEL_2))
+    piPlusReadall (model) ;
   else if (model == PI_MODEL_CM)
     cmReadall () ;
   else

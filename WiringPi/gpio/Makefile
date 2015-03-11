@@ -4,7 +4,7 @@
 #	  A swiss-army knige of GPIO shenanigans.
 #	https://projects.drogon.net/wiring-pi
 #
-#	Copyright (c) 2012-2013 Gordon Henderson
+#	Copyright (c) 2012-2015 Gordon Henderson
 #################################################################################
 # This file is part of wiringPi:
 #	Wiring Compatable library for the Raspberry Pi
@@ -38,11 +38,14 @@ LIBS    = -lwiringPi -lwiringPiDev -lpthread -lm
 # May not need to  alter anything below this line
 ###############################################################################
 
-SRC	=	gpio.c extensions.c readall.c pins.c
+SRC	=	gpio.c readall.c pins.c
 
 OBJ	=	$(SRC:.c=.o)
 
 all:		gpio
+
+version.h:	../VERSION
+	./newVersion
 
 gpio:	$(OBJ)
 	@echo [Link]
@@ -63,13 +66,19 @@ tags:	$(SRC)
 	@ctags $(SRC)
 
 .PHONY:	install
-install:
+install: gpio
 	@echo "[Install]"
 	@cp gpio		$(DESTDIR)$(PREFIX)/bin
 	@chown root.root	$(DESTDIR)$(PREFIX)/bin/gpio
 	@chmod 4755		$(DESTDIR)$(PREFIX)/bin/gpio
 	@mkdir -p		$(DESTDIR)$(PREFIX)/man/man1
 	@cp gpio.1		$(DESTDIR)$(PREFIX)/man/man1
+
+.PHONY:	install-deb
+install-deb:	gpio
+	@echo "[Install: deb]"
+	@install -m 0755 -d							~/wiringPi/debian/wiringPi/usr/bin
+	@install -m 0755 gpio							~/wiringPi/debian/wiringPi/usr/bin
 
 .PHONY:	uninstall
 uninstall:
@@ -82,6 +91,3 @@ depend:
 	makedepend -Y $(SRC)
 
 # DO NOT DELETE
-
-gpio.o: extensions.h
-extensions.o: extensions.h

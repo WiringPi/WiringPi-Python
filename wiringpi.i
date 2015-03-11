@@ -193,6 +193,16 @@ extern void softToneStop   (int pin) ;
 extern void softToneWrite  (int pin, int freq) ;
 
 // SPI
+
+%typemap(in) (unsigned char *data, int len) {
+      $1 = (unsigned char *) PyString_AsString($input);
+      $2 = PyString_Size($input);
+};
+
+%typemap(argout) (unsigned char *data) {
+      $result = SWIG_Python_AppendOutput($result, PyString_FromStringAndSize((char *) $1, result));
+};
+
 int wiringPiSPIGetFd  (int channel) ;
 int wiringPiSPIDataRW (int channel, unsigned char *data, int len) ;
 int wiringPiSPISetup  (int channel, int speed) ;

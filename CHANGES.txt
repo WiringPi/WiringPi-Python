@@ -9,3 +9,5 @@ v1.0.7 -- Added LCD functionality
 v1.0.8 -- Updated manifest to include .rst and fix build error
 v1.0.9 -- Erroneous non-fix due to stupidity
 v1.0.10 -- Added I2CSetup and new I2C class
+v1.1.0 -- Synced to WiringPi as of 8th March 2015
+v1.1.1 -- Included devLib folder for headers

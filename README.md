@@ -14,20 +14,23 @@ You **must** have python-dev and python-setuptools installed
 If you manually rebuild the bindings with swig -python wiringpi.i
 
 YOU MUST FIRST INSTALL WIRINGPI2!!
-
+```bash
 git clone git://git.drogon.net/wiringPi
 cd wiringPi
 sudo ./build
+```
 
 **Get/setup repo:**
+```bash
 git clone https://github.com/Gadgetoid/WiringPi2-Python.git
 cd WiringPi2-Python
+```
 
 **Build & install with:**
-sudo python setup.py install
+`sudo python setup.py install`
 
-Or Python 3
-sudo python3 setup.py install
+Or Python 3:
+`sudo python3 setup.py install`
 
 **Class-based Usage:**
 Description incoming!
@@ -35,12 +38,13 @@ Description incoming!
 **Usage:**
 
 	import wiringpi2
-
+	
 	wiringpi2.wiringPiSetup() # For sequential pin numbering, one of these MUST be called before using IO functions
-	OR
+	# OR
 	wiringpi2.wiringPiSetupSys() # For /sys/class/gpio with GPIO pin numbering
-	OR
+	# OR
 	wiringpi2.wiringPiSetupGpio() # For GPIO pin numbering
+
 
 Setting up IO expanders (This example was tested on a quick2wire board with one digital IO expansion board connected via I2C):
 

@@ -9,6 +9,7 @@
  * ----------------------------------------------------------------------------- */
 
 #define SWIGPYTHON
+#define SWIG_PYTHON_THREADS
 #define SWIG_PYTHON_DIRECTOR_NO_VTABLE
 
 /* -----------------------------------------------------------------------------
@@ -2930,12 +2931,11 @@ SWIG_Python_NonDynamicSetAttr(PyObject *obj, PyObject *name, PyObject *value) {
 
 #define SWIGTYPE_p_char swig_types[0]
 #define SWIGTYPE_p_f_p_void__p_void swig_types[1]
-#define SWIGTYPE_p_f_void__void swig_types[2]
-#define SWIGTYPE_p_int swig_types[3]
-#define SWIGTYPE_p_unsigned_char swig_types[4]
-#define SWIGTYPE_p_wiringPiNodeStruct swig_types[5]
-static swig_type_info *swig_types[7];
-static swig_module_info swig_module = {swig_types, 6, 0, 0, 0, 0};
+#define SWIGTYPE_p_int swig_types[2]
+#define SWIGTYPE_p_unsigned_char swig_types[3]
+#define SWIGTYPE_p_wiringPiNodeStruct swig_types[4]
+static swig_type_info *swig_types[6];
+static swig_module_info swig_module = {swig_types, 5, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -3003,6 +3003,185 @@ static swig_module_info swig_module = {swig_types, 6, 0, 0, 0, 0};
 #include "WiringPi/devLib/piFace.h"
 #include "WiringPi/devLib/piGlow.h"
 #include "WiringPi/devLib/piNes.h"
+
+
+
+// we need to have our own callbacks array
+PyObject* event_callback[64] = {0,};
+
+void _wiringPiISR_callback(int pinNumber) {
+  PyObject *result;
+
+  if (event_callback[pinNumber]) {
+      // this will acquire the GIL
+      SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+
+      result = PyObject_CallFunction(event_callback[pinNumber], NULL);
+      if (result == NULL && PyErr_Occurred()) {
+          PyErr_Print();
+          PyErr_Clear();
+      }
+      Py_XDECREF(result);
+
+      // release the GIL
+      SWIG_PYTHON_THREAD_END_BLOCK;
+  }
+}
+
+
+/* This is embarrasing, WiringPi does not support supplying args to the callback
+... so we have to create callback function for each of the pins :( */
+void _wiringPiISR_callback_pin0(void) { _wiringPiISR_callback(0); }
+void _wiringPiISR_callback_pin1(void) { _wiringPiISR_callback(1); }
+void _wiringPiISR_callback_pin2(void) { _wiringPiISR_callback(2); }
+void _wiringPiISR_callback_pin3(void) { _wiringPiISR_callback(3); }
+void _wiringPiISR_callback_pin4(void) { _wiringPiISR_callback(4); }
+void _wiringPiISR_callback_pin5(void) { _wiringPiISR_callback(5); }
+void _wiringPiISR_callback_pin6(void) { _wiringPiISR_callback(6); }
+void _wiringPiISR_callback_pin7(void) { _wiringPiISR_callback(7); }
+void _wiringPiISR_callback_pin8(void) { _wiringPiISR_callback(8); }
+void _wiringPiISR_callback_pin9(void) { _wiringPiISR_callback(9); }
+void _wiringPiISR_callback_pin10(void) { _wiringPiISR_callback(10); }
+void _wiringPiISR_callback_pin11(void) { _wiringPiISR_callback(11); }
+void _wiringPiISR_callback_pin12(void) { _wiringPiISR_callback(12); }
+void _wiringPiISR_callback_pin13(void) { _wiringPiISR_callback(13); }
+void _wiringPiISR_callback_pin14(void) { _wiringPiISR_callback(14); }
+void _wiringPiISR_callback_pin15(void) { _wiringPiISR_callback(15); }
+void _wiringPiISR_callback_pin16(void) { _wiringPiISR_callback(16); }
+void _wiringPiISR_callback_pin17(void) { _wiringPiISR_callback(17); }
+void _wiringPiISR_callback_pin18(void) { _wiringPiISR_callback(18); }
+void _wiringPiISR_callback_pin19(void) { _wiringPiISR_callback(19); }
+void _wiringPiISR_callback_pin20(void) { _wiringPiISR_callback(20); }
+void _wiringPiISR_callback_pin21(void) { _wiringPiISR_callback(21); }
+void _wiringPiISR_callback_pin22(void) { _wiringPiISR_callback(22); }
+void _wiringPiISR_callback_pin23(void) { _wiringPiISR_callback(23); }
+void _wiringPiISR_callback_pin24(void) { _wiringPiISR_callback(24); }
+void _wiringPiISR_callback_pin25(void) { _wiringPiISR_callback(25); }
+void _wiringPiISR_callback_pin26(void) { _wiringPiISR_callback(26); }
+void _wiringPiISR_callback_pin27(void) { _wiringPiISR_callback(27); }
+void _wiringPiISR_callback_pin28(void) { _wiringPiISR_callback(28); }
+void _wiringPiISR_callback_pin29(void) { _wiringPiISR_callback(29); }
+void _wiringPiISR_callback_pin30(void) { _wiringPiISR_callback(30); }
+void _wiringPiISR_callback_pin31(void) { _wiringPiISR_callback(31); }
+void _wiringPiISR_callback_pin32(void) { _wiringPiISR_callback(32); }
+void _wiringPiISR_callback_pin33(void) { _wiringPiISR_callback(33); }
+void _wiringPiISR_callback_pin34(void) { _wiringPiISR_callback(34); }
+void _wiringPiISR_callback_pin35(void) { _wiringPiISR_callback(35); }
+void _wiringPiISR_callback_pin36(void) { _wiringPiISR_callback(36); }
+void _wiringPiISR_callback_pin37(void) { _wiringPiISR_callback(37); }
+void _wiringPiISR_callback_pin38(void) { _wiringPiISR_callback(38); }
+void _wiringPiISR_callback_pin39(void) { _wiringPiISR_callback(39); }
+void _wiringPiISR_callback_pin40(void) { _wiringPiISR_callback(40); }
+void _wiringPiISR_callback_pin41(void) { _wiringPiISR_callback(41); }
+void _wiringPiISR_callback_pin42(void) { _wiringPiISR_callback(42); }
+void _wiringPiISR_callback_pin43(void) { _wiringPiISR_callback(43); }
+void _wiringPiISR_callback_pin44(void) { _wiringPiISR_callback(44); }
+void _wiringPiISR_callback_pin45(void) { _wiringPiISR_callback(45); }
+void _wiringPiISR_callback_pin46(void) { _wiringPiISR_callback(46); }
+void _wiringPiISR_callback_pin47(void) { _wiringPiISR_callback(47); }
+void _wiringPiISR_callback_pin48(void) { _wiringPiISR_callback(48); }
+void _wiringPiISR_callback_pin49(void) { _wiringPiISR_callback(49); }
+void _wiringPiISR_callback_pin50(void) { _wiringPiISR_callback(50); }
+void _wiringPiISR_callback_pin51(void) { _wiringPiISR_callback(51); }
+void _wiringPiISR_callback_pin52(void) { _wiringPiISR_callback(52); }
+void _wiringPiISR_callback_pin53(void) { _wiringPiISR_callback(53); }
+void _wiringPiISR_callback_pin54(void) { _wiringPiISR_callback(54); }
+void _wiringPiISR_callback_pin55(void) { _wiringPiISR_callback(55); }
+void _wiringPiISR_callback_pin56(void) { _wiringPiISR_callback(56); }
+void _wiringPiISR_callback_pin57(void) { _wiringPiISR_callback(57); }
+void _wiringPiISR_callback_pin58(void) { _wiringPiISR_callback(58); }
+void _wiringPiISR_callback_pin59(void) { _wiringPiISR_callback(59); }
+void _wiringPiISR_callback_pin60(void) { _wiringPiISR_callback(60); }
+void _wiringPiISR_callback_pin61(void) { _wiringPiISR_callback(61); }
+void _wiringPiISR_callback_pin62(void) { _wiringPiISR_callback(62); }
+void _wiringPiISR_callback_pin63(void) { _wiringPiISR_callback(63); }
+
+/* This function adds a new Python function object as a callback object */
+
+static void wiringPiISRWrapper(int pin, int mode, PyObject *PyFunc) {
+
+  // remove the old callback if any
+  if (event_callback[pin]) {
+    Py_XDECREF(event_callback[pin]);
+  }
+
+  // put new callback function
+  event_callback[pin] = PyFunc;
+  Py_INCREF(PyFunc);
+
+  // and now the ugly switch
+  void (*func)(void);
+  switch(pin) {
+    case 0: func = &_wiringPiISR_callback_pin0; break;
+    case 1: func = &_wiringPiISR_callback_pin1; break;
+    case 2: func = &_wiringPiISR_callback_pin2; break;
+    case 3: func = &_wiringPiISR_callback_pin3; break;
+    case 4: func = &_wiringPiISR_callback_pin4; break;
+    case 5: func = &_wiringPiISR_callback_pin5; break;
+    case 6: func = &_wiringPiISR_callback_pin6; break;
+    case 7: func = &_wiringPiISR_callback_pin7; break;
+    case 8: func = &_wiringPiISR_callback_pin8; break;
+    case 9: func = &_wiringPiISR_callback_pin9; break;
+    case 10: func = &_wiringPiISR_callback_pin10; break;
+    case 11: func = &_wiringPiISR_callback_pin11; break;
+    case 12: func = &_wiringPiISR_callback_pin12; break;
+    case 13: func = &_wiringPiISR_callback_pin13; break;
+    case 14: func = &_wiringPiISR_callback_pin14; break;
+    case 15: func = &_wiringPiISR_callback_pin15; break;
+    case 16: func = &_wiringPiISR_callback_pin16; break;
+    case 17: func = &_wiringPiISR_callback_pin17; break;
+    case 18: func = &_wiringPiISR_callback_pin18; break;
+    case 19: func = &_wiringPiISR_callback_pin19; break;
+    case 20: func = &_wiringPiISR_callback_pin20; break;
+    case 21: func = &_wiringPiISR_callback_pin21; break;
+    case 22: func = &_wiringPiISR_callback_pin22; break;
+    case 23: func = &_wiringPiISR_callback_pin23; break;
+    case 24: func = &_wiringPiISR_callback_pin24; break;
+    case 25: func = &_wiringPiISR_callback_pin25; break;
+    case 26: func = &_wiringPiISR_callback_pin26; break;
+    case 27: func = &_wiringPiISR_callback_pin27; break;
+    case 28: func = &_wiringPiISR_callback_pin28; break;
+    case 29: func = &_wiringPiISR_callback_pin29; break;
+    case 30: func = &_wiringPiISR_callback_pin30; break;
+    case 31: func = &_wiringPiISR_callback_pin31; break;
+    case 32: func = &_wiringPiISR_callback_pin32; break;
+    case 33: func = &_wiringPiISR_callback_pin33; break;
+    case 34: func = &_wiringPiISR_callback_pin34; break;
+    case 35: func = &_wiringPiISR_callback_pin35; break;
+    case 36: func = &_wiringPiISR_callback_pin36; break;
+    case 37: func = &_wiringPiISR_callback_pin37; break;
+    case 38: func = &_wiringPiISR_callback_pin38; break;
+    case 39: func = &_wiringPiISR_callback_pin39; break;
+    case 40: func = &_wiringPiISR_callback_pin40; break;
+    case 41: func = &_wiringPiISR_callback_pin41; break;
+    case 42: func = &_wiringPiISR_callback_pin42; break;
+    case 43: func = &_wiringPiISR_callback_pin43; break;
+    case 44: func = &_wiringPiISR_callback_pin44; break;
+    case 45: func = &_wiringPiISR_callback_pin45; break;
+    case 46: func = &_wiringPiISR_callback_pin46; break;
+    case 47: func = &_wiringPiISR_callback_pin47; break;
+    case 48: func = &_wiringPiISR_callback_pin48; break;
+    case 49: func = &_wiringPiISR_callback_pin49; break;
+    case 50: func = &_wiringPiISR_callback_pin50; break;
+    case 51: func = &_wiringPiISR_callback_pin51; break;
+    case 52: func = &_wiringPiISR_callback_pin52; break;
+    case 53: func = &_wiringPiISR_callback_pin53; break;
+    case 54: func = &_wiringPiISR_callback_pin54; break;
+    case 55: func = &_wiringPiISR_callback_pin55; break;
+    case 56: func = &_wiringPiISR_callback_pin56; break;
+    case 57: func = &_wiringPiISR_callback_pin57; break;
+    case 58: func = &_wiringPiISR_callback_pin58; break;
+    case 59: func = &_wiringPiISR_callback_pin59; break;
+    case 60: func = &_wiringPiISR_callback_pin60; break;
+    case 61: func = &_wiringPiISR_callback_pin61; break;
+    case 62: func = &_wiringPiISR_callback_pin62; break;
+    case 63: func = &_wiringPiISR_callback_pin63; break;
+  }
+
+  // register our dedicated function in WiringPi
+  wiringPiISR(pin, mode, func);
+}
+
 
 
 #include <limits.h>
@@ -3377,7 +3556,11 @@ SWIGINTERN PyObject *_wrap_wiringPiFailure__varargs__(PyObject *SWIGUNUSEDPARM(s
     SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "wiringPiFailure" "', argument " "2"" of type '" "char const *""'");
   }
   arg2 = (char *)(buf2);
-  result = (int)wiringPiFailure(arg1,(char const *)arg2,arg3);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)wiringPiFailure(arg1,(char const *)arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
   return resultobj;
@@ -3415,7 +3598,11 @@ SWIGINTERN PyObject *_wrap_wiringPiFindNode(PyObject *SWIGUNUSEDPARM(self), PyOb
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "wiringPiFindNode" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (struct wiringPiNodeStruct *)wiringPiFindNode(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (struct wiringPiNodeStruct *)wiringPiFindNode(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_wiringPiNodeStruct, 0 |  0 );
   return resultobj;
 fail:
@@ -3446,7 +3633,11 @@ SWIGINTERN PyObject *_wrap_wiringPiNewNode(PyObject *SWIGUNUSEDPARM(self), PyObj
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "wiringPiNewNode" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  result = (struct wiringPiNodeStruct *)wiringPiNewNode(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (struct wiringPiNodeStruct *)wiringPiNewNode(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_wiringPiNodeStruct, 0 |  0 );
   return resultobj;
 fail:
@@ -3459,7 +3650,11 @@ SWIGINTERN PyObject *_wrap_wiringPiSetup(PyObject *SWIGUNUSEDPARM(self), PyObjec
   int result;
   
   if (!PyArg_ParseTuple(args,(char *)":wiringPiSetup")) SWIG_fail;
-  result = (int)wiringPiSetup();
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)wiringPiSetup();
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -3472,7 +3667,11 @@ SWIGINTERN PyObject *_wrap_wiringPiSetupSys(PyObject *SWIGUNUSEDPARM(self), PyOb
   int result;
   
   if (!PyArg_ParseTuple(args,(char *)":wiringPiSetupSys")) SWIG_fail;
-  result = (int)wiringPiSetupSys();
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)wiringPiSetupSys();
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -3485,7 +3684,11 @@ SWIGINTERN PyObject *_wrap_wiringPiSetupGpio(PyObject *SWIGUNUSEDPARM(self), PyO
   int result;
   
   if (!PyArg_ParseTuple(args,(char *)":wiringPiSetupGpio")) SWIG_fail;
-  result = (int)wiringPiSetupGpio();
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)wiringPiSetupGpio();
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -3498,7 +3701,11 @@ SWIGINTERN PyObject *_wrap_wiringPiSetupPhys(PyObject *SWIGUNUSEDPARM(self), PyO
   int result;
   
   if (!PyArg_ParseTuple(args,(char *)":wiringPiSetupPhys")) SWIG_fail;
-  result = (int)wiringPiSetupPhys();
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)wiringPiSetupPhys();
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -3528,7 +3735,11 @@ SWIGINTERN PyObject *_wrap_pinModeAlt(PyObject *SWIGUNUSEDPARM(self), PyObject *
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "pinModeAlt" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  pinModeAlt(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    pinModeAlt(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -3558,7 +3769,11 @@ SWIGINTERN PyObject *_wrap_pinMode(PyObject *SWIGUNUSEDPARM(self), PyObject *arg
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "pinMode" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  pinMode(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    pinMode(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -3588,7 +3803,11 @@ SWIGINTERN PyObject *_wrap_pullUpDnControl(PyObject *SWIGUNUSEDPARM(self), PyObj
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "pullUpDnControl" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  pullUpDnControl(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    pullUpDnControl(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -3610,7 +3829,11 @@ SWIGINTERN PyObject *_wrap_digitalRead(PyObject *SWIGUNUSEDPARM(self), PyObject 
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "digitalRead" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (int)digitalRead(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)digitalRead(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -3640,7 +3863,11 @@ SWIGINTERN PyObject *_wrap_digitalWrite(PyObject *SWIGUNUSEDPARM(self), PyObject
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "digitalWrite" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  digitalWrite(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    digitalWrite(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -3670,7 +3897,11 @@ SWIGINTERN PyObject *_wrap_pwmWrite(PyObject *SWIGUNUSEDPARM(self), PyObject *ar
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "pwmWrite" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  pwmWrite(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    pwmWrite(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -3692,7 +3923,11 @@ SWIGINTERN PyObject *_wrap_analogRead(PyObject *SWIGUNUSEDPARM(self), PyObject *
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "analogRead" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (int)analogRead(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)analogRead(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -3722,7 +3957,11 @@ SWIGINTERN PyObject *_wrap_analogWrite(PyObject *SWIGUNUSEDPARM(self), PyObject 
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "analogWrite" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  analogWrite(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    analogWrite(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -3735,7 +3974,11 @@ SWIGINTERN PyObject *_wrap_piBoardRev(PyObject *SWIGUNUSEDPARM(self), PyObject *
   int result;
   
   if (!PyArg_ParseTuple(args,(char *)":piBoardRev")) SWIG_fail;
-  result = (int)piBoardRev();
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)piBoardRev();
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -3792,7 +4035,11 @@ SWIGINTERN PyObject *_wrap_piBoardId(PyObject *SWIGUNUSEDPARM(self), PyObject *a
     SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "piBoardId" "', argument " "5"" of type '" "int *""'"); 
   }
   arg5 = (int *)(argp5);
-  piBoardId(arg1,arg2,arg3,arg4,arg5);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    piBoardId(arg1,arg2,arg3,arg4,arg5);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -3814,7 +4061,11 @@ SWIGINTERN PyObject *_wrap_wpiPinToGpio(PyObject *SWIGUNUSEDPARM(self), PyObject
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "wpiPinToGpio" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (int)wpiPinToGpio(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)wpiPinToGpio(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -3836,7 +4087,11 @@ SWIGINTERN PyObject *_wrap_physPinToGpio(PyObject *SWIGUNUSEDPARM(self), PyObjec
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "physPinToGpio" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (int)physPinToGpio(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)physPinToGpio(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -3866,7 +4121,11 @@ SWIGINTERN PyObject *_wrap_setPadDrive(PyObject *SWIGUNUSEDPARM(self), PyObject 
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "setPadDrive" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  setPadDrive(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    setPadDrive(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -3888,7 +4147,11 @@ SWIGINTERN PyObject *_wrap_getAlt(PyObject *SWIGUNUSEDPARM(self), PyObject *args
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "getAlt" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (int)getAlt(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)getAlt(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -3918,7 +4181,11 @@ SWIGINTERN PyObject *_wrap_pwmToneWrite(PyObject *SWIGUNUSEDPARM(self), PyObject
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "pwmToneWrite" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  pwmToneWrite(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    pwmToneWrite(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -3939,7 +4206,11 @@ SWIGINTERN PyObject *_wrap_digitalWriteByte(PyObject *SWIGUNUSEDPARM(self), PyOb
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "digitalWriteByte" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  digitalWriteByte(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    digitalWriteByte(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -3960,7 +4231,11 @@ SWIGINTERN PyObject *_wrap_pwmSetMode(PyObject *SWIGUNUSEDPARM(self), PyObject *
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "pwmSetMode" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  pwmSetMode(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    pwmSetMode(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -3981,7 +4256,11 @@ SWIGINTERN PyObject *_wrap_pwmSetRange(PyObject *SWIGUNUSEDPARM(self), PyObject 
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "pwmSetRange" "', argument " "1"" of type '" "unsigned int""'");
   } 
   arg1 = (unsigned int)(val1);
-  pwmSetRange(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    pwmSetRange(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4002,7 +4281,11 @@ SWIGINTERN PyObject *_wrap_pwmSetClock(PyObject *SWIGUNUSEDPARM(self), PyObject 
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "pwmSetClock" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  pwmSetClock(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    pwmSetClock(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4032,7 +4315,11 @@ SWIGINTERN PyObject *_wrap_gpioClockSet(PyObject *SWIGUNUSEDPARM(self), PyObject
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "gpioClockSet" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  gpioClockSet(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    gpioClockSet(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4063,7 +4350,11 @@ SWIGINTERN PyObject *_wrap_waitForInterrupt(PyObject *SWIGUNUSEDPARM(self), PyOb
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "waitForInterrupt" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  result = (int)waitForInterrupt(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)waitForInterrupt(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -4075,7 +4366,7 @@ SWIGINTERN PyObject *_wrap_wiringPiISR(PyObject *SWIGUNUSEDPARM(self), PyObject 
   PyObject *resultobj = 0;
   int arg1 ;
   int arg2 ;
-  void (*arg3)(void) = (void (*)(void)) 0 ;
+  PyObject *arg3 = (PyObject *) 0 ;
   int val1 ;
   int ecode1 = 0 ;
   int val2 ;
@@ -4083,7 +4374,6 @@ SWIGINTERN PyObject *_wrap_wiringPiISR(PyObject *SWIGUNUSEDPARM(self), PyObject 
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
-  int result;
   
   if (!PyArg_ParseTuple(args,(char *)"OOO:wiringPiISR",&obj0,&obj1,&obj2)) SWIG_fail;
   ecode1 = SWIG_AsVal_int(obj0, &val1);
@@ -4096,14 +4386,13 @@ SWIGINTERN PyObject *_wrap_wiringPiISR(PyObject *SWIGUNUSEDPARM(self), PyObject 
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "wiringPiISR" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
+  arg3 = obj2;
   {
-    int res = SWIG_ConvertFunctionPtr(obj2, (void**)(&arg3), SWIGTYPE_p_f_void__void);
-    if (!SWIG_IsOK(res)) {
-      SWIG_exception_fail(SWIG_ArgError(res), "in method '" "wiringPiISR" "', argument " "3"" of type '" "void (*)(void)""'"); 
-    }
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    wiringPiISRWrapper(arg1,arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
   }
-  result = (int)wiringPiISR(arg1,arg2,arg3);
-  resultobj = SWIG_From_int((int)(result));
+  resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
   return NULL;
@@ -4123,7 +4412,11 @@ SWIGINTERN PyObject *_wrap_piThreadCreate(PyObject *SWIGUNUSEDPARM(self), PyObje
       SWIG_exception_fail(SWIG_ArgError(res), "in method '" "piThreadCreate" "', argument " "1"" of type '" "void *(*)(void *)""'"); 
     }
   }
-  result = (int)piThreadCreate(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)piThreadCreate(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -4144,7 +4437,11 @@ SWIGINTERN PyObject *_wrap_piLock(PyObject *SWIGUNUSEDPARM(self), PyObject *args
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "piLock" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  piLock(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    piLock(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4165,7 +4462,11 @@ SWIGINTERN PyObject *_wrap_piUnlock(PyObject *SWIGUNUSEDPARM(self), PyObject *ar
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "piUnlock" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  piUnlock(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    piUnlock(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4187,7 +4488,11 @@ SWIGINTERN PyObject *_wrap_piHiPri(PyObject *SWIGUNUSEDPARM(self), PyObject *arg
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "piHiPri" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (int)piHiPri(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)piHiPri(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -4208,7 +4513,11 @@ SWIGINTERN PyObject *_wrap_delay(PyObject *SWIGUNUSEDPARM(self), PyObject *args)
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "delay" "', argument " "1"" of type '" "unsigned int""'");
   } 
   arg1 = (unsigned int)(val1);
-  delay(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    delay(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4229,7 +4538,11 @@ SWIGINTERN PyObject *_wrap_delayMicroseconds(PyObject *SWIGUNUSEDPARM(self), PyO
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "delayMicroseconds" "', argument " "1"" of type '" "unsigned int""'");
   } 
   arg1 = (unsigned int)(val1);
-  delayMicroseconds(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    delayMicroseconds(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4242,7 +4555,11 @@ SWIGINTERN PyObject *_wrap_millis(PyObject *SWIGUNUSEDPARM(self), PyObject *args
   unsigned int result;
   
   if (!PyArg_ParseTuple(args,(char *)":millis")) SWIG_fail;
-  result = (unsigned int)millis();
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (unsigned int)millis();
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_unsigned_SS_int((unsigned int)(result));
   return resultobj;
 fail:
@@ -4255,7 +4572,11 @@ SWIGINTERN PyObject *_wrap_micros(PyObject *SWIGUNUSEDPARM(self), PyObject *args
   unsigned int result;
   
   if (!PyArg_ParseTuple(args,(char *)":micros")) SWIG_fail;
-  result = (unsigned int)micros();
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (unsigned int)micros();
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_unsigned_SS_int((unsigned int)(result));
   return resultobj;
 fail:
@@ -4277,7 +4598,11 @@ SWIGINTERN PyObject *_wrap_ds1302rtcRead(PyObject *SWIGUNUSEDPARM(self), PyObjec
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "ds1302rtcRead" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (unsigned int)ds1302rtcRead(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (unsigned int)ds1302rtcRead(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_unsigned_SS_int((unsigned int)(result));
   return resultobj;
 fail:
@@ -4307,7 +4632,11 @@ SWIGINTERN PyObject *_wrap_ds1302rtcWrite(PyObject *SWIGUNUSEDPARM(self), PyObje
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ds1302rtcWrite" "', argument " "2"" of type '" "unsigned int""'");
   } 
   arg2 = (unsigned int)(val2);
-  ds1302rtcWrite(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    ds1302rtcWrite(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4329,7 +4658,11 @@ SWIGINTERN PyObject *_wrap_ds1302ramRead(PyObject *SWIGUNUSEDPARM(self), PyObjec
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "ds1302ramRead" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (unsigned int)ds1302ramRead(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (unsigned int)ds1302ramRead(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_unsigned_SS_int((unsigned int)(result));
   return resultobj;
 fail:
@@ -4359,7 +4692,11 @@ SWIGINTERN PyObject *_wrap_ds1302ramWrite(PyObject *SWIGUNUSEDPARM(self), PyObje
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ds1302ramWrite" "', argument " "2"" of type '" "unsigned int""'");
   } 
   arg2 = (unsigned int)(val2);
-  ds1302ramWrite(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    ds1302ramWrite(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4380,7 +4717,11 @@ SWIGINTERN PyObject *_wrap_ds1302clockRead(PyObject *SWIGUNUSEDPARM(self), PyObj
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ds1302clockRead" "', argument " "1"" of type '" "int [8]""'"); 
   } 
   arg1 = (int *)(argp1);
-  ds1302clockRead(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    ds1302clockRead(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4401,7 +4742,11 @@ SWIGINTERN PyObject *_wrap_ds1302clockWrite(PyObject *SWIGUNUSEDPARM(self), PyOb
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ds1302clockWrite" "', argument " "1"" of type '" "int const [8]""'"); 
   } 
   arg1 = (int *)(argp1);
-  ds1302clockWrite((int const (*))arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    ds1302clockWrite((int const (*))arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4431,7 +4776,11 @@ SWIGINTERN PyObject *_wrap_ds1302trickleCharge(PyObject *SWIGUNUSEDPARM(self), P
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ds1302trickleCharge" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  ds1302trickleCharge(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    ds1302trickleCharge(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4470,7 +4819,11 @@ SWIGINTERN PyObject *_wrap_ds1302setup(PyObject *SWIGUNUSEDPARM(self), PyObject 
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "ds1302setup" "', argument " "3"" of type '" "int""'");
   } 
   arg3 = (int)(val3);
-  ds1302setup(arg1,arg2,arg3);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    ds1302setup(arg1,arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4500,7 +4853,11 @@ SWIGINTERN PyObject *_wrap_gertboardAnalogWrite(PyObject *SWIGUNUSEDPARM(self), 
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "gertboardAnalogWrite" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  gertboardAnalogWrite(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    gertboardAnalogWrite(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4522,7 +4879,11 @@ SWIGINTERN PyObject *_wrap_gertboardAnalogRead(PyObject *SWIGUNUSEDPARM(self), P
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "gertboardAnalogRead" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (int)gertboardAnalogRead(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)gertboardAnalogRead(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -4535,7 +4896,11 @@ SWIGINTERN PyObject *_wrap_gertboardSPISetup(PyObject *SWIGUNUSEDPARM(self), PyO
   int result;
   
   if (!PyArg_ParseTuple(args,(char *)":gertboardSPISetup")) SWIG_fail;
-  result = (int)gertboardSPISetup();
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)gertboardSPISetup();
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -4557,7 +4922,11 @@ SWIGINTERN PyObject *_wrap_gertboardAnalogSetup(PyObject *SWIGUNUSEDPARM(self), 
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "gertboardAnalogSetup" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (int)gertboardAnalogSetup(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)gertboardAnalogSetup(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -4587,7 +4956,11 @@ SWIGINTERN PyObject *_wrap_lcd128x64setOrigin(PyObject *SWIGUNUSEDPARM(self), Py
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "lcd128x64setOrigin" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  lcd128x64setOrigin(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcd128x64setOrigin(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4608,7 +4981,11 @@ SWIGINTERN PyObject *_wrap_lcd128x64setOrientation(PyObject *SWIGUNUSEDPARM(self
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "lcd128x64setOrientation" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  lcd128x64setOrientation(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcd128x64setOrientation(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4638,7 +5015,11 @@ SWIGINTERN PyObject *_wrap_lcd128x64orientCoordinates(PyObject *SWIGUNUSEDPARM(s
     SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "lcd128x64orientCoordinates" "', argument " "2"" of type '" "int *""'"); 
   }
   arg2 = (int *)(argp2);
-  lcd128x64orientCoordinates(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcd128x64orientCoordinates(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4668,7 +5049,11 @@ SWIGINTERN PyObject *_wrap_lcd128x64getScreenSize(PyObject *SWIGUNUSEDPARM(self)
     SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "lcd128x64getScreenSize" "', argument " "2"" of type '" "int *""'"); 
   }
   arg2 = (int *)(argp2);
-  lcd128x64getScreenSize(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcd128x64getScreenSize(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4707,7 +5092,11 @@ SWIGINTERN PyObject *_wrap_lcd128x64point(PyObject *SWIGUNUSEDPARM(self), PyObje
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "lcd128x64point" "', argument " "3"" of type '" "int""'");
   } 
   arg3 = (int)(val3);
-  lcd128x64point(arg1,arg2,arg3);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcd128x64point(arg1,arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4764,7 +5153,11 @@ SWIGINTERN PyObject *_wrap_lcd128x64line(PyObject *SWIGUNUSEDPARM(self), PyObjec
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "lcd128x64line" "', argument " "5"" of type '" "int""'");
   } 
   arg5 = (int)(val5);
-  lcd128x64line(arg1,arg2,arg3,arg4,arg5);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcd128x64line(arg1,arg2,arg3,arg4,arg5);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4803,7 +5196,11 @@ SWIGINTERN PyObject *_wrap_lcd128x64lineTo(PyObject *SWIGUNUSEDPARM(self), PyObj
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "lcd128x64lineTo" "', argument " "3"" of type '" "int""'");
   } 
   arg3 = (int)(val3);
-  lcd128x64lineTo(arg1,arg2,arg3);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcd128x64lineTo(arg1,arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4869,7 +5266,11 @@ SWIGINTERN PyObject *_wrap_lcd128x64rectangle(PyObject *SWIGUNUSEDPARM(self), Py
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "lcd128x64rectangle" "', argument " "6"" of type '" "int""'");
   } 
   arg6 = (int)(val6);
-  lcd128x64rectangle(arg1,arg2,arg3,arg4,arg5,arg6);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcd128x64rectangle(arg1,arg2,arg3,arg4,arg5,arg6);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4926,7 +5327,11 @@ SWIGINTERN PyObject *_wrap_lcd128x64circle(PyObject *SWIGUNUSEDPARM(self), PyObj
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "lcd128x64circle" "', argument " "5"" of type '" "int""'");
   } 
   arg5 = (int)(val5);
-  lcd128x64circle(arg1,arg2,arg3,arg4,arg5);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcd128x64circle(arg1,arg2,arg3,arg4,arg5);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4992,7 +5397,11 @@ SWIGINTERN PyObject *_wrap_lcd128x64ellipse(PyObject *SWIGUNUSEDPARM(self), PyOb
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "lcd128x64ellipse" "', argument " "6"" of type '" "int""'");
   } 
   arg6 = (int)(val6);
-  lcd128x64ellipse(arg1,arg2,arg3,arg4,arg5,arg6);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcd128x64ellipse(arg1,arg2,arg3,arg4,arg5,arg6);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5049,7 +5458,11 @@ SWIGINTERN PyObject *_wrap_lcd128x64putchar(PyObject *SWIGUNUSEDPARM(self), PyOb
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "lcd128x64putchar" "', argument " "5"" of type '" "int""'");
   } 
   arg5 = (int)(val5);
-  lcd128x64putchar(arg1,arg2,arg3,arg4,arg5);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcd128x64putchar(arg1,arg2,arg3,arg4,arg5);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5107,7 +5520,11 @@ SWIGINTERN PyObject *_wrap_lcd128x64puts(PyObject *SWIGUNUSEDPARM(self), PyObjec
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "lcd128x64puts" "', argument " "5"" of type '" "int""'");
   } 
   arg5 = (int)(val5);
-  lcd128x64puts(arg1,arg2,(char const *)arg3,arg4,arg5);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcd128x64puts(arg1,arg2,(char const *)arg3,arg4,arg5);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   if (alloc3 == SWIG_NEWOBJ) free((char*)buf3);
   return resultobj;
@@ -5121,7 +5538,11 @@ SWIGINTERN PyObject *_wrap_lcd128x64update(PyObject *SWIGUNUSEDPARM(self), PyObj
   PyObject *resultobj = 0;
   
   if (!PyArg_ParseTuple(args,(char *)":lcd128x64update")) SWIG_fail;
-  lcd128x64update();
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcd128x64update();
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5142,7 +5563,11 @@ SWIGINTERN PyObject *_wrap_lcd128x64clear(PyObject *SWIGUNUSEDPARM(self), PyObje
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "lcd128x64clear" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  lcd128x64clear(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcd128x64clear(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5155,7 +5580,11 @@ SWIGINTERN PyObject *_wrap_lcd128x64setup(PyObject *SWIGUNUSEDPARM(self), PyObje
   int result;
   
   if (!PyArg_ParseTuple(args,(char *)":lcd128x64setup")) SWIG_fail;
-  result = (int)lcd128x64setup();
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)lcd128x64setup();
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -5176,7 +5605,11 @@ SWIGINTERN PyObject *_wrap_lcdHome(PyObject *SWIGUNUSEDPARM(self), PyObject *arg
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "lcdHome" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  lcdHome(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcdHome(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5197,7 +5630,11 @@ SWIGINTERN PyObject *_wrap_lcdClear(PyObject *SWIGUNUSEDPARM(self), PyObject *ar
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "lcdClear" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  lcdClear(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcdClear(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5227,7 +5664,11 @@ SWIGINTERN PyObject *_wrap_lcdDisplay(PyObject *SWIGUNUSEDPARM(self), PyObject *
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "lcdDisplay" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  lcdDisplay(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcdDisplay(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5257,7 +5698,11 @@ SWIGINTERN PyObject *_wrap_lcdCursor(PyObject *SWIGUNUSEDPARM(self), PyObject *a
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "lcdCursor" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  lcdCursor(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcdCursor(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5287,7 +5732,11 @@ SWIGINTERN PyObject *_wrap_lcdCursorBlink(PyObject *SWIGUNUSEDPARM(self), PyObje
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "lcdCursorBlink" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  lcdCursorBlink(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcdCursorBlink(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5317,7 +5766,11 @@ SWIGINTERN PyObject *_wrap_lcdSendCommand(PyObject *SWIGUNUSEDPARM(self), PyObje
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "lcdSendCommand" "', argument " "2"" of type '" "unsigned char""'");
   } 
   arg2 = (unsigned char)(val2);
-  lcdSendCommand(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcdSendCommand(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5356,7 +5809,11 @@ SWIGINTERN PyObject *_wrap_lcdPosition(PyObject *SWIGUNUSEDPARM(self), PyObject 
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "lcdPosition" "', argument " "3"" of type '" "int""'");
   } 
   arg3 = (int)(val3);
-  lcdPosition(arg1,arg2,arg3);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcdPosition(arg1,arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5395,7 +5852,11 @@ SWIGINTERN PyObject *_wrap_lcdCharDef(PyObject *SWIGUNUSEDPARM(self), PyObject *
     SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "lcdCharDef" "', argument " "3"" of type '" "unsigned char [8]""'"); 
   } 
   arg3 = (unsigned char *)(argp3);
-  lcdCharDef(arg1,arg2,arg3);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcdCharDef(arg1,arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5425,7 +5886,11 @@ SWIGINTERN PyObject *_wrap_lcdPutchar(PyObject *SWIGUNUSEDPARM(self), PyObject *
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "lcdPutchar" "', argument " "2"" of type '" "unsigned char""'");
   } 
   arg2 = (unsigned char)(val2);
-  lcdPutchar(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcdPutchar(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5456,7 +5921,11 @@ SWIGINTERN PyObject *_wrap_lcdPuts(PyObject *SWIGUNUSEDPARM(self), PyObject *arg
     SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "lcdPuts" "', argument " "2"" of type '" "char const *""'");
   }
   arg2 = (char *)(buf2);
-  lcdPuts(arg1,(char const *)arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcdPuts(arg1,(char const *)arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
   return resultobj;
@@ -5490,7 +5959,11 @@ SWIGINTERN PyObject *_wrap_lcdPrintf__varargs__(PyObject *SWIGUNUSEDPARM(self), 
     SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "lcdPrintf" "', argument " "2"" of type '" "char const *""'");
   }
   arg2 = (char *)(buf2);
-  lcdPrintf(arg1,(char const *)arg2,arg3);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    lcdPrintf(arg1,(char const *)arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
   return resultobj;
@@ -5636,7 +6109,11 @@ SWIGINTERN PyObject *_wrap_lcdInit(PyObject *SWIGUNUSEDPARM(self), PyObject *arg
     SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "lcdInit" "', argument " "13"" of type '" "int""'");
   } 
   arg13 = (int)(val13);
-  result = (int)lcdInit(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)lcdInit(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -5658,7 +6135,11 @@ SWIGINTERN PyObject *_wrap_piFaceSetup(PyObject *SWIGUNUSEDPARM(self), PyObject 
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "piFaceSetup" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (int)piFaceSetup(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)piFaceSetup(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -5697,7 +6178,11 @@ SWIGINTERN PyObject *_wrap_piGlow1(PyObject *SWIGUNUSEDPARM(self), PyObject *arg
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "piGlow1" "', argument " "3"" of type '" "int""'");
   } 
   arg3 = (int)(val3);
-  piGlow1(arg1,arg2,arg3);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    piGlow1(arg1,arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5727,7 +6212,11 @@ SWIGINTERN PyObject *_wrap_piGlowLeg(PyObject *SWIGUNUSEDPARM(self), PyObject *a
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "piGlowLeg" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  piGlowLeg(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    piGlowLeg(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5757,7 +6246,11 @@ SWIGINTERN PyObject *_wrap_piGlowRing(PyObject *SWIGUNUSEDPARM(self), PyObject *
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "piGlowRing" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  piGlowRing(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    piGlowRing(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5778,7 +6271,11 @@ SWIGINTERN PyObject *_wrap_piGlowSetup(PyObject *SWIGUNUSEDPARM(self), PyObject 
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "piGlowSetup" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  piGlowSetup(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    piGlowSetup(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -5818,7 +6315,11 @@ SWIGINTERN PyObject *_wrap_setupNesJoystick(PyObject *SWIGUNUSEDPARM(self), PyOb
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "setupNesJoystick" "', argument " "3"" of type '" "int""'");
   } 
   arg3 = (int)(val3);
-  result = (int)setupNesJoystick(arg1,arg2,arg3);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)setupNesJoystick(arg1,arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -5840,7 +6341,11 @@ SWIGINTERN PyObject *_wrap_readNesJoystick(PyObject *SWIGUNUSEDPARM(self), PyObj
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "readNesJoystick" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (unsigned int)readNesJoystick(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (unsigned int)readNesJoystick(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_unsigned_SS_int((unsigned int)(result));
   return resultobj;
 fail:
@@ -5898,7 +6403,11 @@ SWIGINTERN PyObject *_wrap_sr595Setup(PyObject *SWIGUNUSEDPARM(self), PyObject *
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "sr595Setup" "', argument " "5"" of type '" "int""'");
   } 
   arg5 = (int)(val5);
-  result = (int)sr595Setup(arg1,arg2,arg3,arg4,arg5);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)sr595Setup(arg1,arg2,arg3,arg4,arg5);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -5948,7 +6457,11 @@ SWIGINTERN PyObject *_wrap_drcSetupSerial(PyObject *SWIGUNUSEDPARM(self), PyObje
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "drcSetupSerial" "', argument " "4"" of type '" "int""'");
   } 
   arg4 = (int)(val4);
-  result = (int)drcSetupSerial(arg1,arg2,(char const *)arg3,arg4);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)drcSetupSerial(arg1,arg2,(char const *)arg3,arg4);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   if (alloc3 == SWIG_NEWOBJ) free((char*)buf3);
   return resultobj;
@@ -5981,7 +6494,11 @@ SWIGINTERN PyObject *_wrap_max31855Setup(PyObject *SWIGUNUSEDPARM(self), PyObjec
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "max31855Setup" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  result = (int)max31855Setup(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)max31855Setup(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6012,7 +6529,11 @@ SWIGINTERN PyObject *_wrap_max5322Setup(PyObject *SWIGUNUSEDPARM(self), PyObject
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "max5322Setup" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  result = (int)max5322Setup(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)max5322Setup(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6043,7 +6564,11 @@ SWIGINTERN PyObject *_wrap_mcp23008Setup(PyObject *SWIGUNUSEDPARM(self), PyObjec
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "mcp23008Setup" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  result = (int)mcp23008Setup(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)mcp23008Setup(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6074,7 +6599,11 @@ SWIGINTERN PyObject *_wrap_mcp23016Setup(PyObject *SWIGUNUSEDPARM(self), PyObjec
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "mcp23016Setup" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  result = (int)mcp23016Setup(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)mcp23016Setup(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6105,7 +6634,11 @@ SWIGINTERN PyObject *_wrap_mcp23017Setup(PyObject *SWIGUNUSEDPARM(self), PyObjec
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "mcp23017Setup" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  result = (int)mcp23017Setup(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)mcp23017Setup(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6145,7 +6678,11 @@ SWIGINTERN PyObject *_wrap_mcp23s08Setup(PyObject *SWIGUNUSEDPARM(self), PyObjec
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "mcp23s08Setup" "', argument " "3"" of type '" "int""'");
   } 
   arg3 = (int)(val3);
-  result = (int)mcp23s08Setup(arg1,arg2,arg3);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)mcp23s08Setup(arg1,arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6185,7 +6722,11 @@ SWIGINTERN PyObject *_wrap_mcp23s17Setup(PyObject *SWIGUNUSEDPARM(self), PyObjec
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "mcp23s17Setup" "', argument " "3"" of type '" "int""'");
   } 
   arg3 = (int)(val3);
-  result = (int)mcp23s17Setup(arg1,arg2,arg3);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)mcp23s17Setup(arg1,arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6216,7 +6757,11 @@ SWIGINTERN PyObject *_wrap_mcp3002Setup(PyObject *SWIGUNUSEDPARM(self), PyObject
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "mcp3002Setup" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  result = (int)mcp3002Setup(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)mcp3002Setup(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6247,7 +6792,11 @@ SWIGINTERN PyObject *_wrap_mcp3004Setup(PyObject *SWIGUNUSEDPARM(self), PyObject
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "mcp3004Setup" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  result = (int)mcp3004Setup(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)mcp3004Setup(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6296,7 +6845,11 @@ SWIGINTERN PyObject *_wrap_mcp3422Setup(PyObject *SWIGUNUSEDPARM(self), PyObject
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "mcp3422Setup" "', argument " "4"" of type '" "int""'");
   } 
   arg4 = (int)(val4);
-  result = (int)mcp3422Setup(arg1,arg2,arg3,arg4);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)mcp3422Setup(arg1,arg2,arg3,arg4);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6327,7 +6880,11 @@ SWIGINTERN PyObject *_wrap_mcp4802Setup(PyObject *SWIGUNUSEDPARM(self), PyObject
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "mcp4802Setup" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  result = (int)mcp4802Setup(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)mcp4802Setup(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6358,7 +6915,11 @@ SWIGINTERN PyObject *_wrap_pcf8574Setup(PyObject *SWIGUNUSEDPARM(self), PyObject
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "pcf8574Setup" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  result = (int)pcf8574Setup(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)pcf8574Setup(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6389,7 +6950,11 @@ SWIGINTERN PyObject *_wrap_pcf8591Setup(PyObject *SWIGUNUSEDPARM(self), PyObject
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "pcf8591Setup" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  result = (int)pcf8591Setup(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)pcf8591Setup(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6411,7 +6976,11 @@ SWIGINTERN PyObject *_wrap_sn3218Setup(PyObject *SWIGUNUSEDPARM(self), PyObject 
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "sn3218Setup" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (int)sn3218Setup(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)sn3218Setup(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6451,7 +7020,11 @@ SWIGINTERN PyObject *_wrap_softPwmCreate(PyObject *SWIGUNUSEDPARM(self), PyObjec
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "softPwmCreate" "', argument " "3"" of type '" "int""'");
   } 
   arg3 = (int)(val3);
-  result = (int)softPwmCreate(arg1,arg2,arg3);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)softPwmCreate(arg1,arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6481,7 +7054,11 @@ SWIGINTERN PyObject *_wrap_softPwmWrite(PyObject *SWIGUNUSEDPARM(self), PyObject
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "softPwmWrite" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  softPwmWrite(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    softPwmWrite(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -6502,7 +7079,11 @@ SWIGINTERN PyObject *_wrap_softPwmStop(PyObject *SWIGUNUSEDPARM(self), PyObject 
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "softPwmStop" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  softPwmStop(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    softPwmStop(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -6532,7 +7113,11 @@ SWIGINTERN PyObject *_wrap_softServoWrite(PyObject *SWIGUNUSEDPARM(self), PyObje
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "softServoWrite" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  softServoWrite(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    softServoWrite(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -6617,7 +7202,11 @@ SWIGINTERN PyObject *_wrap_softServoSetup(PyObject *SWIGUNUSEDPARM(self), PyObje
     SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "softServoSetup" "', argument " "8"" of type '" "int""'");
   } 
   arg8 = (int)(val8);
-  result = (int)softServoSetup(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)softServoSetup(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6639,7 +7228,11 @@ SWIGINTERN PyObject *_wrap_softToneCreate(PyObject *SWIGUNUSEDPARM(self), PyObje
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "softToneCreate" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (int)softToneCreate(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)softToneCreate(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6660,7 +7253,11 @@ SWIGINTERN PyObject *_wrap_softToneStop(PyObject *SWIGUNUSEDPARM(self), PyObject
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "softToneStop" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  softToneStop(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    softToneStop(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -6690,7 +7287,11 @@ SWIGINTERN PyObject *_wrap_softToneWrite(PyObject *SWIGUNUSEDPARM(self), PyObjec
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "softToneWrite" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  softToneWrite(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    softToneWrite(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -6712,7 +7313,11 @@ SWIGINTERN PyObject *_wrap_wiringPiSPIGetFd(PyObject *SWIGUNUSEDPARM(self), PyOb
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "wiringPiSPIGetFd" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (int)wiringPiSPIGetFd(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)wiringPiSPIGetFd(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6741,7 +7346,11 @@ SWIGINTERN PyObject *_wrap_wiringPiSPIDataRW(PyObject *SWIGUNUSEDPARM(self), PyO
     arg2 = (unsigned char *) PyString_AsString(obj1);
     arg3 = PyString_Size(obj1);
   }
-  result = (int)wiringPiSPIDataRW(arg1,arg2,arg3);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)wiringPiSPIDataRW(arg1,arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6772,7 +7381,11 @@ SWIGINTERN PyObject *_wrap_wiringPiSPISetup(PyObject *SWIGUNUSEDPARM(self), PyOb
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "wiringPiSPISetup" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  result = (int)wiringPiSPISetup(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)wiringPiSPISetup(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6794,7 +7407,11 @@ SWIGINTERN PyObject *_wrap_wiringPiI2CRead(PyObject *SWIGUNUSEDPARM(self), PyObj
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "wiringPiI2CRead" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (int)wiringPiI2CRead(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)wiringPiI2CRead(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6825,7 +7442,11 @@ SWIGINTERN PyObject *_wrap_wiringPiI2CReadReg8(PyObject *SWIGUNUSEDPARM(self), P
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "wiringPiI2CReadReg8" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  result = (int)wiringPiI2CReadReg8(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)wiringPiI2CReadReg8(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6856,7 +7477,11 @@ SWIGINTERN PyObject *_wrap_wiringPiI2CReadReg16(PyObject *SWIGUNUSEDPARM(self), 
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "wiringPiI2CReadReg16" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  result = (int)wiringPiI2CReadReg16(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)wiringPiI2CReadReg16(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6887,7 +7512,11 @@ SWIGINTERN PyObject *_wrap_wiringPiI2CWrite(PyObject *SWIGUNUSEDPARM(self), PyOb
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "wiringPiI2CWrite" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  result = (int)wiringPiI2CWrite(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)wiringPiI2CWrite(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6927,7 +7556,11 @@ SWIGINTERN PyObject *_wrap_wiringPiI2CWriteReg8(PyObject *SWIGUNUSEDPARM(self), 
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "wiringPiI2CWriteReg8" "', argument " "3"" of type '" "int""'");
   } 
   arg3 = (int)(val3);
-  result = (int)wiringPiI2CWriteReg8(arg1,arg2,arg3);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)wiringPiI2CWriteReg8(arg1,arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6967,7 +7600,11 @@ SWIGINTERN PyObject *_wrap_wiringPiI2CWriteReg16(PyObject *SWIGUNUSEDPARM(self),
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "wiringPiI2CWriteReg16" "', argument " "3"" of type '" "int""'");
   } 
   arg3 = (int)(val3);
-  result = (int)wiringPiI2CWriteReg16(arg1,arg2,arg3);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)wiringPiI2CWriteReg16(arg1,arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -6999,7 +7636,11 @@ SWIGINTERN PyObject *_wrap_wiringPiI2CSetupInterface(PyObject *SWIGUNUSEDPARM(se
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "wiringPiI2CSetupInterface" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  result = (int)wiringPiI2CSetupInterface((char const *)arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)wiringPiI2CSetupInterface((char const *)arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
   return resultobj;
@@ -7023,7 +7664,11 @@ SWIGINTERN PyObject *_wrap_wiringPiI2CSetup(PyObject *SWIGUNUSEDPARM(self), PyOb
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "wiringPiI2CSetup" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (int)wiringPiI2CSetup(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)wiringPiI2CSetup(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -7055,7 +7700,11 @@ SWIGINTERN PyObject *_wrap_serialOpen(PyObject *SWIGUNUSEDPARM(self), PyObject *
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "serialOpen" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  result = (int)serialOpen((char const *)arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)serialOpen((char const *)arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   if (alloc1 == SWIG_NEWOBJ) free((char*)buf1);
   return resultobj;
@@ -7078,7 +7727,11 @@ SWIGINTERN PyObject *_wrap_serialClose(PyObject *SWIGUNUSEDPARM(self), PyObject 
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "serialClose" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  serialClose(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    serialClose(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -7099,7 +7752,11 @@ SWIGINTERN PyObject *_wrap_serialFlush(PyObject *SWIGUNUSEDPARM(self), PyObject 
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "serialFlush" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  serialFlush(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    serialFlush(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -7129,7 +7786,11 @@ SWIGINTERN PyObject *_wrap_serialPutchar(PyObject *SWIGUNUSEDPARM(self), PyObjec
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "serialPutchar" "', argument " "2"" of type '" "unsigned char""'");
   } 
   arg2 = (unsigned char)(val2);
-  serialPutchar(arg1,arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    serialPutchar(arg1,arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -7160,7 +7821,11 @@ SWIGINTERN PyObject *_wrap_serialPuts(PyObject *SWIGUNUSEDPARM(self), PyObject *
     SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "serialPuts" "', argument " "2"" of type '" "char const *""'");
   }
   arg2 = (char *)(buf2);
-  serialPuts(arg1,(char const *)arg2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    serialPuts(arg1,(char const *)arg2);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
   return resultobj;
@@ -7194,7 +7859,11 @@ SWIGINTERN PyObject *_wrap_serialPrintf__varargs__(PyObject *SWIGUNUSEDPARM(self
     SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "serialPrintf" "', argument " "2"" of type '" "char const *""'");
   }
   arg2 = (char *)(buf2);
-  serialPrintf(arg1,(char const *)arg2,arg3);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    serialPrintf(arg1,(char const *)arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   if (alloc2 == SWIG_NEWOBJ) free((char*)buf2);
   return resultobj;
@@ -7232,7 +7901,11 @@ SWIGINTERN PyObject *_wrap_serialDataAvail(PyObject *SWIGUNUSEDPARM(self), PyObj
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "serialDataAvail" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (int)serialDataAvail(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)serialDataAvail(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -7254,7 +7927,11 @@ SWIGINTERN PyObject *_wrap_serialGetchar(PyObject *SWIGUNUSEDPARM(self), PyObjec
     SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "serialGetchar" "', argument " "1"" of type '" "int""'");
   } 
   arg1 = (int)(val1);
-  result = (int)serialGetchar(arg1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (int)serialGetchar(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_int((int)(result));
   return resultobj;
 fail:
@@ -7294,7 +7971,11 @@ SWIGINTERN PyObject *_wrap_shiftIn(PyObject *SWIGUNUSEDPARM(self), PyObject *arg
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "shiftIn" "', argument " "3"" of type '" "uint8_t""'");
   } 
   arg3 = (uint8_t)(val3);
-  result = shiftIn(arg1,arg2,arg3);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = shiftIn(arg1,arg2,arg3);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_From_unsigned_SS_char((unsigned char)(result));
   return resultobj;
 fail:
@@ -7342,7 +8023,11 @@ SWIGINTERN PyObject *_wrap_shiftOut(PyObject *SWIGUNUSEDPARM(self), PyObject *ar
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "shiftOut" "', argument " "4"" of type '" "uint8_t""'");
   } 
   arg4 = (uint8_t)(val4);
-  shiftOut(arg1,arg2,arg3,arg4);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    shiftOut(arg1,arg2,arg3,arg4);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -7488,7 +8173,6 @@ static PyMethodDef SwigMethods[] = {
 
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_f_p_void__p_void = {"_p_f_p_void__p_void", "void *(*)(void *)", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_f_void__void = {"_p_f_void__void", "void (*)(void)", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_int = {"_p_int", "int *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_unsigned_char = {"_p_unsigned_char", "unsigned char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_wiringPiNodeStruct = {"_p_wiringPiNodeStruct", "struct wiringPiNodeStruct *", 0, 0, (void*)0, 0};
@@ -7496,7 +8180,6 @@ static swig_type_info _swigt__p_wiringPiNodeStruct = {"_p_wiringPiNodeStruct", "
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_char,
   &_swigt__p_f_p_void__p_void,
-  &_swigt__p_f_void__void,
   &_swigt__p_int,
   &_swigt__p_unsigned_char,
   &_swigt__p_wiringPiNodeStruct,
@@ -7504,7 +8187,6 @@ static swig_type_info *swig_type_initial[] = {
 
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_f_p_void__p_void[] = {  {&_swigt__p_f_p_void__p_void, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_f_void__void[] = {  {&_swigt__p_f_void__void, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_unsigned_char[] = {  {&_swigt__p_unsigned_char, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_wiringPiNodeStruct[] = {  {&_swigt__p_wiringPiNodeStruct, 0, 0, 0},{0, 0, 0, 0}};
@@ -7512,7 +8194,6 @@ static swig_cast_info _swigc__p_wiringPiNodeStruct[] = {  {&_swigt__p_wiringPiNo
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_char,
   _swigc__p_f_p_void__p_void,
-  _swigc__p_f_void__void,
   _swigc__p_int,
   _swigc__p_unsigned_char,
   _swigc__p_wiringPiNodeStruct,
@@ -8201,6 +8882,9 @@ SWIG_init(void) {
   
   SWIG_InstallConstants(d,swig_const_table);
   
+  
+  /* Initialize threading */
+  SWIG_PYTHON_INITIALIZE_THREADS;
 #if PY_VERSION_HEX >= 0x03000000
   return m;
 #else

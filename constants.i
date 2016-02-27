@@ -36,4 +36,4 @@
 %constant int INT_EDGE_SETUP = 0;
 %constant int INT_EDGE_FALLING = 1;
 %constant int INT_EDGE_RISING = 2;
-%constant int INT_EDGE_BOTH = 3
+%constant int INT_EDGE_BOTH = 3;

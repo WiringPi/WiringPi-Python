@@ -11,7 +11,7 @@ _wiringpi2 = Extension(
 
 setup(
     name = 'wiringpi2',
-    version = '1.1.1',
+    version = '1.2.1',
     author = "Philip Howard",
     author_email = "phil@gadgetoid.com",
     url = 'https://github.com/Gadgetoid/WiringPi2-Python/',

@@ -1,3 +1,4 @@
+%pythoncode %{
 # wiringPi modes
 
 WPI_MODE_PINS = 0;
@@ -37,3 +38,4 @@ INT_EDGE_SETUP = 0;
 INT_EDGE_FALLING = 1;
 INT_EDGE_RISING = 2;
 INT_EDGE_BOTH = 3;
+%}

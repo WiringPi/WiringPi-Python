@@ -1,16 +1,5 @@
 %module wiringpi2
 
-%typemap(in) (unsigned char *data, int len) {
-      $1 = (unsigned char *) PyString_AsString($input);
-      $2 = PyString_Size($input);
-};
-
-%typemap(argout) (unsigned char *data) {
-      $result = SWIG_Python_AppendOutput($result, PyString_FromStringAndSize((char *) $1, result));
-};
-
-%include "bindings.i"
-
 %{
 #include "WiringPi/wiringPi/wiringPi.h"
 #include "WiringPi/wiringPi/wiringPiI2C.h"
@@ -49,6 +38,15 @@
 #include "WiringPi/devLib/piGlow.h"
 #include "WiringPi/devLib/piNes.h"
 %}
+
+%typemap(in) (unsigned char *data, int len) {
+      $1 = (unsigned char *) PyString_AsString($input);
+      $2 = PyString_Size($input);
+};
+
+%typemap(argout) (unsigned char *data) {
+      $result = SWIG_Python_AppendOutput($result, PyString_FromStringAndSize((char *) $1, result));
+};
 
 %apply unsigned char { uint8_t };
 %typemap(in) (unsigned char *data, int len) {
@@ -244,6 +242,8 @@ static void wiringPiISRWrapper(int pin, int mode, PyObject *PyFunc) {
 }
 
 %}
+
+%include "bindings.i"
 
 // Interrupts
 // overlay normal function with our wrapper

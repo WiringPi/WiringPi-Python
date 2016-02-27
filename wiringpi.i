@@ -1,5 +1,7 @@
 %module wiringpi2
 
+%import "constants.i"
+
 %{
 #include "WiringPi/wiringPi/wiringPi.h"
 #include "WiringPi/wiringPi/wiringPiI2C.h"

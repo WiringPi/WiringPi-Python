@@ -34,7 +34,6 @@
 #include "WiringPi/devLib/lcd128x64.h"
 #include "WiringPi/devLib/lcd.h"
 #include "WiringPi/devLib/maxdetect.h"
-#include "WiringPi/devLib/piFace.h"
 #include "WiringPi/devLib/piGlow.h"
 #include "WiringPi/devLib/piNes.h"
 %}
@@ -238,6 +237,33 @@ static void wiringPiISRWrapper(int pin, int mode, PyObject *PyFunc) {
 %rename("wiringPiISR") wiringPiISRWrapper         (int pin, int mode, PyObject *PyFunc);
 static void wiringPiISRWrapper(int pin, int mode, PyObject *PyFunc);
 
+%typemap(in) unsigned char data [8] {
+  /* Check if is a list */
+  if (PyList_Check($input)) {
+	if(PyList_Size($input) != 8){
+    		PyErr_SetString(PyExc_TypeError,"must contain 8 items");
+    		return NULL;
+	}
+    int i = 0;
+    $1 = (unsigned char *) malloc(8);
+    for (i = 0; i < 8; i++) {
+      PyObject *o = PyList_GetItem($input,i);
+      if (PyInt_Check(o) && PyInt_AsLong(PyList_GetItem($input,i)) <= 255 && PyInt_AsLong(PyList_GetItem($input,i)) >= 0)
+		$1[i] = PyInt_AsLong(PyList_GetItem($input,i));
+      else {
+		PyErr_SetString(PyExc_TypeError,"list must contain integers 0-255");
+		return NULL;
+      }
+    }
+  } else {
+    PyErr_SetString(PyExc_TypeError,"not a list");
+    return NULL;
+  }
+};
+
+%typemap(freearg) unsigned char data [8] {
+  free((unsigned char *) $1);
+}
 
 %typemap(in) (unsigned char *data, int len) {
       $1 = (unsigned char *) PyString_AsString($input);

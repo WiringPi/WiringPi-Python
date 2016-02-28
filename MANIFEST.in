@@ -1,4 +1,7 @@
 graft WiringPi/wiringPi
 graft WiringPi/devLib
-include *.txt
-include *.rst
+include README.md
+include LICENSE.txt
+include setup.cfg
+include wiringpi2.py
+include wiringpi_wrap.c

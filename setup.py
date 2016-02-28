@@ -11,14 +11,14 @@ _wiringpi2 = Extension(
 
 setup(
     name = 'wiringpi2',
-    version = '1.2.1',
+    version = '1.2.2',
     author = "Philip Howard",
     author_email = "phil@gadgetoid.com",
     url = 'https://github.com/Gadgetoid/WiringPi2-Python/',
     description = """A python interface to WiringPi 2.0 library which allows for
     easily interfacing with the GPIO pins of the Raspberry Pi. Also supports
     i2c and SPI""",
-    long_description=open('README').read(),
+    long_description=open('README.md').read(),
     ext_modules = [ _wiringpi2 ],
     py_modules = ["wiringpi2"],
     install_requires=[],

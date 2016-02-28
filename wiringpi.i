@@ -1,6 +1,11 @@
 %module wiringpi2
 
 %{
+#if PY_MAJOR_VERSION >= 3
+#define PyInt_AS_LONG PyLong_AsLong
+#define PyString_FromStringAndSize PyBytes_FromStringAndSize
+#endif
+
 #include "WiringPi/wiringPi/wiringPi.h"
 #include "WiringPi/wiringPi/wiringPiI2C.h"
 #include "WiringPi/wiringPi/wiringPiSPI.h"

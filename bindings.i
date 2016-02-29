@@ -16,18 +16,19 @@ extern void digitalWrite        (int pin, int value) ;
 extern void pwmWrite            (int pin, int value) ;
 extern int  analogRead          (int pin) ;
 extern void analogWrite         (int pin, int value) ;
-extern int  piBoardRev          (void) ;
-extern void piBoardId           (int *model, int *rev, int *mem, int *maker, int *overVolted) ;
-extern int  wpiPinToGpio        (int wpiPin) ;
-extern int  physPinToGpio       (int physPin) ;
-extern void setPadDrive         (int group, int value) ;
-extern int  getAlt              (int pin) ;
-extern void pwmToneWrite        (int pin, int freq) ;
-extern void digitalWriteByte    (int value) ;
-extern void pwmSetMode          (int mode) ;
-extern void pwmSetRange         (unsigned int range) ;
-extern void pwmSetClock         (int divisor) ;
-extern void gpioClockSet        (int pin, int freq) ;
+extern          int  piBoardRev          (void) ;
+extern          void piBoardId           (int *model, int *rev, int *mem, int *maker, int *overVolted) ;
+extern          int  wpiPinToGpio        (int wpiPin) ;
+extern          int  physPinToGpio       (int physPin) ;
+extern          void setPadDrive         (int group, int value) ;
+extern          int  getAlt              (int pin) ;
+extern          void pwmToneWrite        (int pin, int freq) ;
+extern          void digitalWriteByte    (int value) ;
+extern unsigned int  digitalReadByte     (void) ;
+extern          void pwmSetMode          (int mode) ;
+extern          void pwmSetRange         (unsigned int range) ;
+extern          void pwmSetClock         (int divisor) ;
+extern          void gpioClockSet        (int pin, int freq) ;
 extern int  waitForInterrupt    (int pin, int mS) ;
 extern int  piThreadCreate      (void *(*fn)(void *)) ;
 extern void piLock              (int key) ;
@@ -68,11 +69,11 @@ extern int   serialGetchar   (const int fd) ;
 extern uint8_t shiftIn      (uint8_t dPin, uint8_t cPin, uint8_t order) ;
 extern void    shiftOut     (uint8_t dPin, uint8_t cPin, uint8_t order, uint8_t val) ;
 
-// Header file WiringPi/wiringPi/wpiExtensions.h
-extern int loadWPiExtension (char *progName, char *extensionData, int verbose) ;
-
 // Header file WiringPi/wiringPi/drcSerial.h
 extern int drcSetupSerial (const int pinBase, const int numPins, const char *device, const int baud) ;
+
+// Header file WiringPi/wiringPi/ads1115.h
+extern int ads1115Setup (int pinBase, int i2cAddress) ;
 
 // Header file WiringPi/wiringPi/max31855.h
 extern int max31855Setup (int pinBase, int spiChannel) ;
@@ -196,9 +197,6 @@ extern int  lcdInit (const int rows, const int cols, const int bits,
 int maxDetectRead (const int pin, unsigned char buffer [4]) ;
 int readRHT03 (const int pin, int *temp, int *rh) ;
 
-// Header file WiringPi/devLib/piFace.h
-extern int  piFaceSetup (const int pinBase) ;
-
 // Header file WiringPi/devLib/piGlow.h
 extern void piGlow1     (const int leg,  const int ring, const int intensity) ;
 extern void piGlowLeg   (const int leg,  const int intensity) ;
@@ -208,3 +206,17 @@ extern void piGlowSetup (int clear) ;
 // Header file WiringPi/devLib/piNes.h
 extern int          setupNesJoystick (int dPin, int cPin, int lPin) ;
 extern unsigned int  readNesJoystick (int joystick) ;
+
+// Header file WiringPi/devLib/scrollPhat.h
+extern void scrollPhatPoint      (int x, int y, int colour) ;
+extern void scrollPhatLine       (int x0, int y0, int x1, int y1, int colour) ;
+extern void scrollPhatLineTo     (int x, int y, int colour) ;
+extern void scrollPhatRectangle  (int x1, int y1, int x2, int y2, int colour, int filled) ;
+extern void scrollPhatUpdate     (void) ;
+extern void scrollPhatClear      (void) ;
+extern int  scrollPhatPutchar    (int c) ;
+extern void scrollPhatPuts       (const char *str) ;
+extern void scrollPhatPrintf     (const char *message, ...) ;
+extern void scrollPhatPrintSpeed (const int cps10) ;
+extern void scrollPhatIntensity  (const int percent) ;
+extern int  scrollPhatSetup      (void) ;

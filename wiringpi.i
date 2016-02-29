@@ -12,6 +12,7 @@
 #include "WiringPi/wiringPi/wiringSerial.h"
 #include "WiringPi/wiringPi/wiringShift.h"
 #include "WiringPi/wiringPi/drcSerial.h"
+#include "WiringPi/wiringPi/ads1115.h"
 #include "WiringPi/wiringPi/max31855.h"
 #include "WiringPi/wiringPi/max5322.h"
 #include "WiringPi/wiringPi/mcp23008.h"
@@ -41,6 +42,7 @@
 #include "WiringPi/devLib/maxdetect.h"
 #include "WiringPi/devLib/piGlow.h"
 #include "WiringPi/devLib/piNes.h"
+#include "WiringPi/devLib/scrollPhat.h"
 %}
 
 %apply unsigned char { uint8_t };

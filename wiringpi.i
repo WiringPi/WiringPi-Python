@@ -1,4 +1,4 @@
-%module wiringpi2
+%module wiringpi
 
 %{
 #if PY_MAJOR_VERSION >= 3
@@ -283,4 +283,4 @@ static void wiringPiISRWrapper(int pin, int mode, PyObject *PyFunc);
 
 %include "bindings.i"
 %include "constants.py"
-%include "wiringpi2-class.py"
+%include "wiringpi-class.py"

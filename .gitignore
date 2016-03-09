@@ -1,7 +1,7 @@
 build/
-wiringpi2.egg-info/
+*.egg-info/
 dist/
 __pycache__
 *.pyc
 wiringpi_wrap.c
-wiringpi2.py
+wiringpi.py

@@ -9,15 +9,15 @@ sources += ['wiringpi_wrap.c']
 
 sources.remove('WiringPi/devLib/piFaceOld.c')
 
-_wiringpi2 = Extension(
-    '_wiringpi2',
+_wiringpi = Extension(
+    '_wiringpi',
     include_dirs=['WiringPi/wiringPi','WiringPi/devLib'],
     sources=sources
 )
 
 setup(
-    name = 'wiringpi2',
-    version = '2.32.0',
+    name = 'wiringpi',
+    version = '2.32.1',
     author = "Philip Howard",
     author_email = "phil@gadgetoid.com",
     url = 'https://github.com/WiringPi/WiringPi-Python/',
@@ -25,8 +25,8 @@ setup(
     easily interfacing with the GPIO pins of the Raspberry Pi. Also supports
     i2c and SPI""",
     long_description=open('README.md').read(),
-    ext_modules = [ _wiringpi2 ],
-    py_modules = ["wiringpi2"],
+    ext_modules = [ _wiringpi ],
+    py_modules = ["wiringpi"],
     install_requires=[],
     headers=glob('WiringPi/wiringPi/*.h')+glob('WiringPi/devLib/*.h')
 )

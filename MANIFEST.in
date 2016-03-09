@@ -3,5 +3,5 @@ graft WiringPi/devLib
 include README.md
 include LICENSE.txt
 include setup.cfg
-include wiringpi2.py
+include wiringpi.py
 include wiringpi_wrap.c

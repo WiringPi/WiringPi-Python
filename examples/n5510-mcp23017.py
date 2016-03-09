@@ -1,5 +1,5 @@
 # Turns on each pin of an mcp23017 on address 0x20 ( quick2wire IO expander )
-import wiringpi2 as wiringpi
+import wiringpi
 
 PIN_BACKLIGHT = 67 # LED
 PIN_SCLK = 68 # Clock SCLK

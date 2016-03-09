@@ -1,4 +1,4 @@
-import wiringpi2 as wiringpi
+import wiringpi
 INPUT = 0
 OUTPUT = 1
 LOW = 0

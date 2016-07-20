@@ -5,9 +5,17 @@ WiringPi: An implementation of most of the Arduino Wiring
 
 WiringPi implements new functions for managing IO expanders.
 
-##Testing
-Build with gcc version 4.6.3 (Debian 4.6.3-14+rpi1)
-Built against Python 2.7.2, Python 3.2.3
+#Quick Build
+
+A quick and dirty build script is supplied to install WiringPi-Python for Python 2 and 3. Just:
+
+```
+git clone --recursive https://github.com/WiringPi/WiringPi-Python.git
+cd WiringPi-Python
+./build.sh
+```
+
+#Manual Build
 
 ##Get/setup repo
 ```bash
@@ -30,18 +38,22 @@ sudo ./build
 ```
 
 ##Generate Bindings
+
+Return to the root directory of the repository and:
+
 `swig2.0 -python wiringpi.i`
+
 or
+
 `swig3.0 -thread -python wiringpi.i`
 
 ##Build & install with
+
 `sudo python setup.py install`
 
 Or Python 3:
-`sudo python3 setup.py install`
 
-#Class-based Usage
-Description incoming!
+`sudo python3 setup.py install`
 
 ##Usage
 

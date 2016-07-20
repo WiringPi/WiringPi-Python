@@ -13,6 +13,7 @@ Built against Python 2.7.2, Python 3.2.3
 ```bash
 git clone --recursive https://github.com/WiringPi/WiringPi-Python.git
 cd WiringPi-Python
+git submodule update --init
 ```
 
 ##Prerequisites

@@ -10,6 +10,7 @@ WiringPi implements new functions for managing IO expanders.
 A quick and dirty build script is supplied to install WiringPi-Python for Python 2 and 3. Just:
 
 ```
+sudo apt-get install wiringpi
 git clone --recursive https://github.com/WiringPi/WiringPi-Python.git
 cd WiringPi-Python
 ./build.sh
@@ -26,9 +27,10 @@ git submodule update --init
 
 ##Prerequisites
 To rebuild the bindings
-you **must** first have python-dev, python-setuptools and swig installed.
+you **must** first have python-dev, python-setuptools and swig installed. Wiring Pi should also be installed system-wide
+for access to the `gpio` tool.
 ```bash
-sudo apt-get install python-dev python-setuptools swig
+sudo apt-get install python-dev python-setuptools swig wiringpi
 ```
 
 ##Build WiringPi

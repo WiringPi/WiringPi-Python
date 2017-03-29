@@ -34,6 +34,13 @@
 #include "WiringPi/wiringPi/softServo.h"
 #include "WiringPi/wiringPi/softTone.h"
 #include "WiringPi/wiringPi/sr595.h"
+#include "WiringPi/wiringPi/bmp180.h"
+#include "WiringPi/wiringPi/drcNet.h"
+#include "WiringPi/wiringPi/ds18b20.h"
+#include "WiringPi/wiringPi/htu21d.h"
+#include "WiringPi/wiringPi/pseudoPins.h"
+#include "WiringPi/wiringPi/rht03.h"
+#include "WiringPi/wiringPi/wpiExtensions.h"
 #include "WiringPi/devLib/ds1302.h"
 #include "WiringPi/devLib/font.h"
 #include "WiringPi/devLib/gertboard.h"
@@ -43,6 +50,7 @@
 #include "WiringPi/devLib/piGlow.h"
 #include "WiringPi/devLib/piNes.h"
 #include "WiringPi/devLib/scrollPhat.h"
+#include "WiringPi/devLib/piFace.h"
 %}
 
 %apply unsigned char { uint8_t };

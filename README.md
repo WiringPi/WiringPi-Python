@@ -1,3 +1,7 @@
+### Note
+
+This is an unofficial port of Gordon's WiringPi library. Please do not email Gordon if you have issues, he will not be able to help.
+
 # WiringPi for Python
 
 WiringPi: An implementation of most of the Arduino Wiring

@@ -12,12 +12,13 @@ sources.remove('WiringPi/devLib/piFaceOld.c')
 _wiringpi = Extension(
     '_wiringpi',
     include_dirs=['WiringPi/wiringPi','WiringPi/devLib'],
-    sources=sources
+    sources=sources,
+    extra_link_args=['-lcrypt', '-lrt']
 )
 
 setup(
     name = 'wiringpi',
-    version = '2.32.1',
+    version = '2.44',
     author = "Philip Howard",
     author_email = "phil@gadgetoid.com",
     url = 'https://github.com/WiringPi/WiringPi-Python/',

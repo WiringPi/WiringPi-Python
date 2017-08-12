@@ -4,31 +4,35 @@
 extern int wiringPiFailure (int fatal, const char *message, ...) ;
 extern struct wiringPiNodeStruct *wiringPiFindNode (int pin) ;
 extern struct wiringPiNodeStruct *wiringPiNewNode  (int pinBase, int numPins) ;
+extern void wiringPiVersion	(int *major, int *minor) ;
 extern int  wiringPiSetup       (void) ;
 extern int  wiringPiSetupSys    (void) ;
 extern int  wiringPiSetupGpio   (void) ;
 extern int  wiringPiSetupPhys   (void) ;
-extern void pinModeAlt          (int pin, int mode) ;
-extern void pinMode             (int pin, int mode) ;
-extern void pullUpDnControl     (int pin, int pud) ;
-extern int  digitalRead         (int pin) ;
-extern void digitalWrite        (int pin, int value) ;
-extern void pwmWrite            (int pin, int value) ;
-extern int  analogRead          (int pin) ;
-extern void analogWrite         (int pin, int value) ;
-extern          int  piBoardRev          (void) ;
+extern          void pinModeAlt          (int pin, int mode) ;
+extern          void pinMode             (int pin, int mode) ;
+extern          void pullUpDnControl     (int pin, int pud) ;
+extern          int  digitalRead         (int pin) ;
+extern          void digitalWrite        (int pin, int value) ;
+extern          void pwmWrite            (int pin, int value) ;
+extern          int  analogRead          (int pin) ;
+extern          void analogWrite         (int pin, int value) ;
+extern          int  piGpioLayout        (void) ;
+extern          int  piBoardRev          (void) ;	// Deprecated
 extern          void piBoardId           (int *model, int *rev, int *mem, int *maker, int *overVolted) ;
 extern          int  wpiPinToGpio        (int wpiPin) ;
 extern          int  physPinToGpio       (int physPin) ;
 extern          void setPadDrive         (int group, int value) ;
 extern          int  getAlt              (int pin) ;
 extern          void pwmToneWrite        (int pin, int freq) ;
-extern          void digitalWriteByte    (int value) ;
-extern unsigned int  digitalReadByte     (void) ;
 extern          void pwmSetMode          (int mode) ;
 extern          void pwmSetRange         (unsigned int range) ;
 extern          void pwmSetClock         (int divisor) ;
 extern          void gpioClockSet        (int pin, int freq) ;
+extern unsigned int  digitalReadByte     (void) ;
+extern unsigned int  digitalReadByte2    (void) ;
+extern          void digitalWriteByte    (int value) ;
+extern          void digitalWriteByte2   (int value) ;
 extern int  waitForInterrupt    (int pin, int mS) ;
 extern int  piThreadCreate      (void *(*fn)(void *)) ;
 extern void piLock              (int key) ;
@@ -141,6 +145,27 @@ extern void softToneWrite  (int pin, int freq) ;
 extern int sr595Setup (const int pinBase, const int numPins,
 	const int dataPin, const int clockPin, const int latchPin) ;
 
+// Header file WiringPi/wiringPi/bmp180.h
+extern int bmp180Setup (const int pinBase) ;
+
+// Header file WiringPi/wiringPi/drcNet.h
+extern int drcSetupNet (const int pinBase, const int numPins, const char *ipAddress, const char *port, const char *password) ;
+
+// Header file WiringPi/wiringPi/ds18b20.h
+extern int ds18b20Setup (const int pinBase, const char *serialNum) ;
+
+// Header file WiringPi/wiringPi/htu21d.h
+extern int htu21dSetup (const int pinBase) ;
+
+// Header file WiringPi/wiringPi/pseudoPins.h
+extern int pseudoPinsSetup (const int pinBase) ;
+
+// Header file WiringPi/wiringPi/rht03.h
+extern int rht03Setup (const int pinBase, const int devicePin) ;
+
+// Header file WiringPi/wiringPi/wpiExtensions.h
+extern int loadWPiExtension (char *progName, char *extensionData, int verbose) ;
+
 // Header file WiringPi/devLib/ds1302.h
 extern unsigned int ds1302rtcRead       (const int reg) ;
 extern void         ds1302rtcWrite      (const int reg, const unsigned int data) ;
@@ -220,3 +245,6 @@ extern void scrollPhatPrintf     (const char *message, ...) ;
 extern void scrollPhatPrintSpeed (const int cps10) ;
 extern void scrollPhatIntensity  (const int percent) ;
 extern int  scrollPhatSetup      (void) ;
+
+// Header file WiringPi/devLib/piFace.h
+extern int  piFaceSetup (const int pinBase) ;

@@ -2,6 +2,8 @@
 
 This is an unofficial port of Gordon's WiringPi library. Please do not email Gordon if you have issues, he will not be able to help.
 
+For support, comments, questions, etc please join the WiringPi Discord channel: https://discord.gg/SM4WUVG
+
 # WiringPi for Python
 
 WiringPi: An implementation of most of the Arduino Wiring

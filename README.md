@@ -11,59 +11,11 @@ WiringPi: An implementation of most of the Arduino Wiring
 
 WiringPi implements new functions for managing IO expanders.
 
-# Quick Build
+# Quick Install
 
-A quick and dirty build script is supplied to install WiringPi-Python for Python 2 and 3. Just:
+`pip install wiringpi`
 
-```
-sudo apt-get install wiringpi
-git clone --recursive https://github.com/WiringPi/WiringPi-Python.git
-cd WiringPi-Python
-./build.sh
-```
-
-# Manual Build
-
-## Get/setup repo
-```bash
-git clone --recursive https://github.com/WiringPi/WiringPi-Python.git
-cd WiringPi-Python
-git submodule update --init
-```
-
-## Prerequisites
-To rebuild the bindings
-you **must** first have python-dev, python-setuptools and swig installed. Wiring Pi should also be installed system-wide
-for access to the `gpio` tool.
-```bash
-sudo apt-get install python-dev python-setuptools swig wiringpi
-```
-
-## Build WiringPi
-```bash
-cd WiringPi
-sudo ./build
-```
-
-## Generate Bindings
-
-Return to the root directory of the repository and:
-
-`swig2.0 -python wiringpi.i`
-
-or
-
-`swig3.0 -thread -python wiringpi.i`
-
-## Build & install with
-
-`sudo python setup.py install`
-
-Or Python 3:
-
-`sudo python3 setup.py install`
-
-## Usage
+# Usage
 
 	import wiringpi
 	
@@ -112,3 +64,27 @@ Hook a speaker up to your Pi and generate music with softTone. Also useful for g
 
 **Full details at:**
 http://www.wiringpi.com
+
+# Manual Build
+
+## Get/setup repo
+```bash
+git clone --recursive https://github.com/WiringPi/WiringPi-Python.git
+cd WiringPi-Python
+```
+
+## Prerequisites
+To rebuild the bindings
+you **must** first have python-dev, python-setuptools and swig installed. Wiring Pi should also be installed system-wide
+for access to the `gpio` tool.
+```bash
+sudo apt-get install python-dev python-setuptools swig wiringpi
+```
+
+## Build & install with
+
+`sudo python setup.py install`
+
+Or Python 3:
+
+`sudo python3 setup.py install`

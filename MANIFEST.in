@@ -4,3 +4,5 @@ include LICENSE.txt
 include bindings.i
 include constants.py
 include wiringpi-class.py
+include wiringpi.i
+include wiringpi_wrap.c

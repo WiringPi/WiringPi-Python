@@ -9,8 +9,8 @@ from setuptools.command.sdist import sdist
 from distutils.spawn import find_executable
 from glob import glob
 
-sources = glob('WiringPi/devLib/*.c')
-sources += glob('WiringPi/wiringPi/*.c')
+sources = []
+
 # If we have swig, use it.  Otherwise, use the pre-generated
 # wrapper from the source distribution.
 if find_executable('swig'):
@@ -22,12 +22,6 @@ else:
           "        (e.g., 'sudo apt install swig') or that wiringpi_wrap.c from the\n"
           "        source distribution (on pypi) is available.")
     sys.exit(1)
-
-try:
-    sources.remove('WiringPi/devLib/piFaceOld.c')
-except ValueError:
-    # the file is already excluded in the source distribution
-    pass
 
 
 # Fix so that build_ext runs before build_py
@@ -52,9 +46,8 @@ class sdist_ext_first(sdist):
 
 _wiringpi = Extension(
     '_wiringpi',
-    include_dirs=['WiringPi/wiringPi','WiringPi/devLib'],
     sources=sources,
-    extra_link_args=['-lcrypt', '-lrt']
+    libraries=['crypt', 'rt', 'wiringPi', 'wiringPiDev']
 )
 
 setup(

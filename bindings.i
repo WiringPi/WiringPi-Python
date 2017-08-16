@@ -133,8 +133,8 @@ extern void softPwmWrite  (int pin, int value) ;
 extern void softPwmStop   (int pin) ;
 
 // Header file WiringPi/wiringPi/softServo.h
-extern void softServoWrite  (int pin, int value) ;
-extern int softServoSetup   (int p0, int p1, int p2, int p3, int p4, int p5, int p6, int p7) ;
+//extern void softServoWrite  (int pin, int value) ;
+//extern int softServoSetup   (int p0, int p1, int p2, int p3, int p4, int p5, int p6, int p7) ;
 
 // Header file WiringPi/wiringPi/softTone.h
 extern int  softToneCreate (int pin) ;

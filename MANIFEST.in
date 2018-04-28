@@ -1,5 +1,5 @@
 recursive-include WiringPi *.h
-include README.md
+include README.rst
 include LICENSE.txt
 include bindings.i
 include constants.py

@@ -54,12 +54,13 @@ _wiringpi = Extension(
     '_wiringpi',
     include_dirs=['WiringPi/wiringPi','WiringPi/devLib'],
     sources=sources,
+    swig_opts=['-threads'],
     extra_link_args=['-lcrypt', '-lrt']
 )
 
 setup(
     name = 'wiringpi',
-    version = '2.44.4',
+    version = '2.44.5',
     ext_modules = [ _wiringpi ],
     py_modules = ["wiringpi"],
     install_requires=[],

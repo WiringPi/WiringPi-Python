@@ -60,12 +60,12 @@
 };
 
 // Grab a Python function object as a Python object.
-%typemap(in) PyObject *pyfunc {
-  if (!PyCallable_Check($1)) {
+%typemap(in) PyObject *PyFunc {
+  if (!PyCallable_Check($input)) {
       PyErr_SetString(PyExc_TypeError, "Need a callable object!");
       return NULL;
   }
-  $1 = $2;
+  $1 = $input;
 }
 
 %{

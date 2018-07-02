@@ -18,6 +18,12 @@ WiringPi implements new functions for managing IO expanders.
 Quick Install
 =============
 
+.. image:: https://badge.fury.io/py/wiringpi.svg
+   :alt: PyPI version badge
+   :target: https://pypi.org/project/wiringpi/
+
+The library is packaged on PyPI and can be installed with pip:
+
 ``pip install wiringpi``
 
 Usage

@@ -8,12 +8,16 @@ For support, comments, questions, etc please join the WiringPi Discord
 channel: https://discord.gg/SM4WUVG
 
 WiringPi for Python
-===================
+~~~~~~~~~~~~~~~~~~~
 
 WiringPi: An implementation of most of the Arduino Wiring functions for
 the Raspberry Pi.
 
 WiringPi implements new functions for managing IO expanders.
+
+**Alternative**
+
+* `GPIO Zero <https://github.com/gpiozero/gpiozero>`_ is another Python library for controlling GPIO.  It is installed by default in Raspberry Pi OS and is used in the `Raspberry Pi GPIO documentation <https://www.raspberrypi.org/documentation/usage/gpio/python/>`_.
 
 Quick Install
 =============
